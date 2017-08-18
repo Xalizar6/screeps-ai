@@ -16,3 +16,5 @@ console.log(Memory.creeps.Aubrey.role);
 Game.cpu.limit
 Game.cpu.tickLimit
 Game.cpu.bucket
+
+
