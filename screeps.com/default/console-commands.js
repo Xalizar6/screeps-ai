@@ -1,14 +1,26 @@
 // Shows the names of all of my creeps
-    for(var i in Game.creeps) { console.log(Game.creeps[i]); }
+    for ( i in Game.creeps ) { console.log(Game.creeps[i]); }
 
 // Shows the names of all of my spawns
-    for(var i in Game.spawns) { console.log(Game.spawns[i]); }
+    for ( i in Game.spawns) { console.log(Game.spawns[i]); }
 
 // Shows the ID of all of my structures
-    for(var i in Game.structures) { console.log(Game.structures[i]); }
+    for( i in Game.structures ) { console.log(Game.structures[i]); }
 
 // Shows the ID of all of my structures
-    for(var i in Game.RoomObject) { console.log(Game.RoomObject[i]); }
+    for ( i in Game.RoomObject ) { console.log(Game.RoomObject[i]); }
+
+// Show the closest Resource by path
+    Game.creeps.Ellie.pos.findClosestByPath(FIND_SOURCES)
+    Game.creeps.Ellie.pos.find(FIND_SOURCES)
+
+Game.creeps.David.room.find(FIND_SOURCES_ACTIVE)
+for(const i in Game.creeps) { Game.creeps[i].name }
+for (x in Game.creeps) {console.log(Game.creeps[x]); break;}
+for (x in Game.creeps) { Game.creeps[x].room.find(FIND_SOURCES_ACTIVE) }
+for (x in Game.creeps) { console.log(Game.creeps[x].room.find(FIND_SOURCES_ACTIVE)) }
+for (x in Game.creeps) { console.log(Game.creeps[x].room.find(FIND_SOURCES_ACTIVE)); break;}
+var blah = for (x in Game.creeps) { Game.creeps[x].room.find(FIND_SOURCES_ACTIVE); break;}
 
 
 console.log(Memory.creeps.Aubrey.role);
