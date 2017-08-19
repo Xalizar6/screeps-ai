@@ -1,6 +1,12 @@
 // Shows the names of all of my creeps
     for ( i in Game.creeps ) { console.log(Game.creeps[i]); }
 
+//shows the time to live of all of my creeps
+    for ( i in Game.creeps ) { console.log(Game.creeps[i].name + " " + Game.creeps[i].ticksToLive) }
+
+//shows the roles of all of my creeps
+    for ( i in Game.creeps ) { console.log(Game.creeps[i].name + " " + Game.creeps[i].memory.role) }
+
 // Shows the names of all of my spawns
     for ( i in Game.spawns) { console.log(Game.spawns[i]); }
 
