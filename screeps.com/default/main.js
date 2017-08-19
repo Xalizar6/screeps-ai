@@ -1,7 +1,9 @@
-var spawncode = require('spawncode')
-var roleHarvester = require('role.harvester');
-var roleUpgrader = require('role.upgrader');
-var rolebuilder = require('role.builder');
+//Included module files
+    var spawncode = require('spawncode')
+    var roleHarvester = require('role.harvester');
+    var roleUpgrader = require('role.upgrader');
+    var rolebuilder = require('role.builder');
+
 
 module.exports.loop = function () {
 
