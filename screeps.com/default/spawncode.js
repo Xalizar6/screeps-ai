@@ -22,12 +22,6 @@ var spawncode = {
             } 
 
         //Spawn additional if needed
-            if(harvesters.length < nMinNumberOfHarvesters) {
-                var newName = Game.spawns['Spawn1'].createCreep([WORK,WORK,CARRY,MOVE,MOVE,MOVE], undefined, {role: 'harvester'});
-                console.log('Spawning new harvester: ' + newName);
-            }
-        
-        //Spawn additional if needed
             if(upgraders.length < nMinNumberOfUpgraders) {
                 var newName = Game.spawns['Spawn1'].createCreep([WORK,WORK,CARRY,MOVE,MOVE,MOVE], undefined, {role: 'upgrader'});
                 console.log('Spawning new upgrader: ' + newName);
@@ -40,6 +34,13 @@ var spawncode = {
                     console.log('Spawning new builder: ' + newName);
                 }    
             }
+
+        //Spawn additional if needed
+            if(harvesters.length < nMinNumberOfHarvesters) {
+                var newName = Game.spawns['Spawn1'].createCreep([WORK,WORK,CARRY,MOVE,MOVE,MOVE], undefined, {role: 'harvester'});
+                console.log('Spawning new harvester: ' + newName);
+            }
+
         
         //add text to the screen indicating spawning process
             if(Game.spawns['Spawn1'].spawning) {
