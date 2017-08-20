@@ -1,20 +1,14 @@
-//Included module files, executed on new global creation every 10 seconds or so.
+//Included module files
+    var spawncode = require('spawncode')
     var roleHarvester = require('role.harvester');
     var roleUpgrader = require('role.upgrader');
     var rolebuilder = require('role.builder');
-    var spawncode = require('spawncode');
-    var towercode = require('towercode');
-    
-    // console.log("Created new Global variables.");
 
-module.exports.loop = function () { 
-    // executed every tick
 
-    // call the spawncode module
+module.exports.loop = function () {
+
+    //call the spawncode module
         spawncode.run()
-
-    // run the towercode module
-        towercode.play()        
 
     //call the role based work modules
         for(var name in Game.creeps) {

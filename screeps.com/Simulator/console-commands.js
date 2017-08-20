@@ -1,11 +1,8 @@
 //shows the roles and time to live of all of my creeps
-    for ( i in Game.creeps ) { console.log(Game.creeps[i].name + " " + Game.creeps[i].memory.role + " " + Game.creeps[i].ticksToLive ) }
+for ( i in Game.creeps ) { console.log(Game.creeps[i].name + " " + Game.creeps[i].memory.role + " " + Game.creeps[i].ticksToLive) }
 
-// Shows the names of all of my creeps ToDO: Working?
-    for ( i in Game.creeps ) { console.log(Game.creeps[i] ) };
-
-// Kills all of my creeps for testing ToDO: Working?
-    for ( i in Game.creeps ) { Game.creeps[i].suicide() };
+// Shows the names of all of my creeps
+    for ( i in Game.creeps ) { console.log(Game.creeps[i]); }
 
 // Shows the names of all of my spawns
     for ( i in Game.spawns) { console.log(Game.spawns[i]); }
