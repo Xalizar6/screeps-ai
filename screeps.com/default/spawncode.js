@@ -4,9 +4,9 @@ module.exports = {
         
         //Set Variables
             // Set the minimum number of each kind that we want
-            var nMinNumberOfHarvesters = 3;
-            var nMinNumberOfUpgraders = 5;
-            var nMinNumberOfBuilders = 3;
+                var nMinNumberOfHarvesters = 3;
+                var nMinNumberOfUpgraders = 5;
+                var nMinNumberOfBuilders = 3;
 
             // Determine the total number we have alive this tick
                 var harvesters = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester');
@@ -21,14 +21,15 @@ module.exports = {
                 }
             }
 
-        //Spawn additional creeps if needed
-            if ( _.size( Game.creeps ) < 2 ) {
+        // Spawn additional creeps if needed, including emergency code and 
+        // prioritizing harvesters first.
+            if (_.size(Game.creeps) < 2) {
                 var newName = Game.spawns['Spawn1'].createCreep([WORK,CARRY,MOVE], undefined, {role: 'harvester'});
                 console.log('Spawning new harvester: ' + newName);
                 
             } else {
 
-                if ( harvesters.length < nMinNumberOfHarvesters ) {
+                if (harvesters.length < nMinNumberOfHarvesters) {
                     var newName = Game.spawns['Spawn1'].createCreep([WORK,WORK,CARRY,MOVE,MOVE,MOVE], undefined, {role: 'harvester'});
                     console.log('Spawning new harvester: ' + newName);
                 
