@@ -46,3 +46,11 @@ eachRecursive(Game.creeps)
 _.forOwn(Game.creeps, function(value,key) {console.log("Key: " + key, "Value: " + value)})
 _.forOwn(Memory.creeps, function(value,key) {console.log("Key: " + key, "Value: " + value)})
 
+Game.creeps.Emma.pos.findClosestByPath(FIND_SOURCES_ACTIVE)
+
+var creep = Game.creeps.Emma; console.log(creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE))
+var creep = Game.creeps.Emma; 
+
+target = (creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE)); 
+
+creep.moveTo(target)
