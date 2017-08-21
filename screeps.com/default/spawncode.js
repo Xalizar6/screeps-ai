@@ -3,10 +3,15 @@ module.exports = {
     run: function() {
         
         //Set Variables
-            // Set the minimum number of each kind that we want
+            // Set the minimum number of each kind that we want for production
                 var nMinNumberOfHarvesters = 3;
                 var nMinNumberOfUpgraders = 5;
                 var nMinNumberOfBuilders = 3;
+
+            // Set the minimum number of each kind that we want for the Simulator
+                // var nMinNumberOfHarvesters = 4;
+                // var nMinNumberOfUpgraders = 1;
+                // var nMinNumberOfBuilders = 10;
 
             // Determine the total number we have alive this tick
                 var harvesters = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester');
