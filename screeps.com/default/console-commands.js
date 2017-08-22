@@ -11,16 +11,13 @@ for ( let key in Game.spawns) { console.log("Key: " + key + "       " + "Spawn: 
 for ( let i in Game.rooms) { console.log(Game.rooms[i]); }
 
 // Kills all of my creeps for testing ToDO: Working?
-    for ( i in Game.creeps ) { Game.creeps[i].suicide() };
+    for ( let i in Game.creeps ) { Game.creeps[i].suicide() };
 
 // Shows the ID of all of my structures
-    for( i in Game.structures ) { console.log(Game.structures[i]); }
-
-// Shows the ID of all of my structures
-    for ( i in Game.RoomObject ) { console.log(Game.RoomObject[i]); }
+    for( let i in Game.structures ) { console.log(Game.structures[i]); }
 
 // Shows all construction sites
-for ( i in Game.constructionSites ) { console.log(Game.constructionSites[i]); }
+for ( let i in Game.constructionSites ) { console.log(Game.constructionSites[i]); }
 
 // Shows the size of the construction sites hash
     _.size(Game.constructionSites)
@@ -55,15 +52,6 @@ eachRecursive(Game.creeps)
 
 _.forOwn(Game.creeps, function(value,key) {console.log("Key: " + key, "Value: " + value)})
 _.forOwn(Memory.creeps, function(value,key) {console.log("Key: " + key, "Value: " + value)})
-
-Game.creeps.Emma.pos.findClosestByPath(FIND_SOURCES_ACTIVE)
-
-var creep = Game.creeps.Emma; console.log(creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE))
-var creep = Game.creeps.Emma; 
-
-target = (creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE)); 
-
-creep.moveTo(target)
 
 // Finding storage to put energy away  
     var creep = Game.creeps.Noah;

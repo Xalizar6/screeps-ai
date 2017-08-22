@@ -7,7 +7,7 @@ module.exports = {
         if(creep.carry.energy < creep.carryCapacity) {
             var sources = creep.room.find(FIND_SOURCES_ACTIVE);
             if(creep.harvest(sources[0]) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(sources[0], {visualizePathStyle: {stroke: '#ffaa00'}});
+                creep.moveTo(sources[0], {visualizePathStyle: {stroke: '#f2f210'}});
             }
         }
         
@@ -25,18 +25,19 @@ module.exports = {
             if(!targets.length) {
                 var targets = creep.room.find(FIND_STRUCTURES, {
                     filter: (structure) => {
-                        return structure.structureType == STRUCTURE_STORAGE && structure.store.energy < structure.storeCapacity;;
+                        // return structure.structureType == STRUCTURE_STORAGE && structure.store.energy < structure.storeCapacity;
+                        return structure.structureType == STRUCTURE_STORAGE && structure.store.energy < 100000;
                     }
                 });
             }
         
             if(targets.length) {
                 if(creep.transfer(targets[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(targets[0], {visualizePathStyle: {stroke: '#ffffff'}});
+                    creep.moveTo(targets[0], {visualizePathStyle: {stroke: '#f2f210'}});
                 }
             }
             else {
-                creep.moveTo(Game.spawns["Spawn1"], {visualizePathStyle: {stroke: '#ffffff'}});                
+                creep.moveTo(Game.spawns["Spawn1"], {visualizePathStyle: {stroke: '#f2f210'}});                
             }
         }
     }
