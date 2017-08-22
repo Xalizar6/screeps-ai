@@ -54,3 +54,13 @@ var creep = Game.creeps.Emma;
 target = (creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE)); 
 
 creep.moveTo(target)
+
+// Finding storage to put energy away
+var targets = creep.room.find(FIND_STRUCTURES, {
+    filter: (structure) => {
+        return (structure.structureType == STRUCTURE_STORAGE) && structure.storage.store[RESOURCE_ENERGY] <100000;
+    }
+});
+
+    Game.creeps.Josiah.room.find(FIND_STRUCTURES, { filter: (structure) => { return (structure.structureType == STRUCTURE_STORAGE) } } )
+    for (var blah of  Game.creeps.Josiah.room.find(FIND_STRUCTURES, { filter: (structure) => { return (structure.structureType == STRUCTURE_STORAGE) } } ) ) {console.log(blah.structure.store)}
