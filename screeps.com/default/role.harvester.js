@@ -25,7 +25,7 @@ module.exports = {
             if(!targets.length) {
                 var targets = creep.room.find(FIND_STRUCTURES, {
                     filter: (structure) => {
-                        return (structure.structureType == STRUCTURE_STORAGE) && structure.storage.store[RESOURCE_ENERGY] <100000;
+                        return structure.structureType == STRUCTURE_STORAGE && structure.store.energy < structure.storeCapacity;;
                     }
                 });
             }

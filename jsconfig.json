@@ -3,5 +3,10 @@
         "target": "ES6",
         "typeRoots" : ["./typings"],
         "checkJs": true
-    }
+    },
+  
+    "typeAcquisition": {
+        "include": [
+            "lodash"
+        ]
  }
