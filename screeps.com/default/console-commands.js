@@ -1,3 +1,6 @@
+// dedicatedHarvester Creep spawn code
+    Game.spawns['Spawn1'].createCreep([WORK,WORK,MOVE,MOVE], "Lenny", {role: 'dedicatedHarvester'});
+
 //shows the roles and time to live of all of my creeps
     for ( let key in Game.creeps ) { console.log(key + " " + Game.creeps[key].memory.role + " " + Game.creeps[key].ticksToLive ) }
     
@@ -38,17 +41,17 @@ for ( let i in Game.constructionSites ) { console.log(Game.constructionSites[i])
     });
 
 //Recursive Object reference: https://stackoverflow.com/questions/2549320/looping-through-an-object-tree-recursively
-function eachRecursive(obj) {
-    for (var k in obj) {
-        if (typeof obj[k] == "object" && obj[k] !== null) {
-            eachRecursive(obj[k]);
-        }
-        else {
-            console.log(obj[k])
+    function eachRecursive(obj) {
+        for (var k in obj) {
+            if (typeof obj[k] == "object" && obj[k] !== null) {
+                eachRecursive(obj[k]);
+            }
+            else {
+                console.log(obj[k])
+            }
         }
     }
-}
-eachRecursive(Game.creeps)
+    eachRecursive(Game.creeps)
 
 _.forOwn(Game.creeps, function(value,key) {console.log("Key: " + key, "Value: " + value)})
 _.forOwn(Memory.creeps, function(value,key) {console.log("Key: " + key, "Value: " + value)})

@@ -4,12 +4,11 @@
     var rolebuilder = require('role.builder');
     var spawncode = require('spawncode');
     var towercode = require('towercode');
+    var roleDedicatedBuilder = require('role.dedicatedHarvester')
     
     // console.log("Created new Global variables.");
 
-module.exports.loop = function () { 
-    // executed every tick
-
+module.exports.loop = function () { // this loop is executed every tick
     // call the spawncode module
         spawncode.run()
 
@@ -27,6 +26,9 @@ module.exports.loop = function () {
             }
             if(creep.memory.role == 'builder') {
                 rolebuilder.run(creep);
+            }
+            if(creep.memory.role == 'dedicatedHarvester') {
+                // roleDedicatedBuilder.run(creep);
             }
         }
 }

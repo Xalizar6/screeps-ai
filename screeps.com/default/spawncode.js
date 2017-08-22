@@ -6,7 +6,7 @@ module.exports = {
             // Set the minimum number of each kind that we want for production
                 var nMinNumberOfHarvesters = 3;
                 var nMinNumberOfUpgraders = 5;
-                var nMinNumberOfBuilders = 3;
+                var nMinNumberOfBuilders = 2;
 
             // Set the minimum number of each kind that we want for the Simulator
                 // var nMinNumberOfHarvesters = 4;
