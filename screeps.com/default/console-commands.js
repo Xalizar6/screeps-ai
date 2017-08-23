@@ -65,3 +65,7 @@ for (let key in aExtensions) {console.log(key + "   " + aExtensions[key].energy)
 
 
 var harvesters = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester'); 
+
+
+var sName = ""; var oCreep = Game.creeps[sName];
+typeof oCreep

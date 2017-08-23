@@ -1,3 +1,6 @@
+// Declaring Strict Mode to enforce better coding standards
+"use strict";
+
 module.exports = {
 
     /** @param {Creep} creep **/
@@ -32,7 +35,7 @@ module.exports = {
                 }
 
                 // If there is room in Storage
-            } else if (creep.room.storage.store.energy < 100000) {
+            } else if (creep.room.storage.store.energy < 250000) {
 
                 // Drop off at Storage
                 if (creep.transfer(oStorage, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {

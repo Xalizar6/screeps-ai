@@ -1,3 +1,6 @@
+// Declaring Strict Mode to enforce better coding standards
+"use strict";
+
 //Included module files, executed on new global creation every 10 seconds or so.
 var C_mRoleHarvester = require('role.harvester');
 var C_mRoleUpgrader = require('role.upgrader');
@@ -8,6 +11,10 @@ var C_mSpawncode = require('spawncode');
 var C_mTowerCode = require('towercode');
 
 module.exports.loop = function () { // this loop is executed every tick
+    // Declare variables
+        var sName = "";
+        var oCreep;
+    
     // call the spawncode module
     C_mSpawncode.run()
 

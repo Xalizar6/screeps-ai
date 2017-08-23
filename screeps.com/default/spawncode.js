@@ -1,3 +1,6 @@
+// Declaring Strict Mode to enforce better coding standards
+"use strict";
+
 module.exports = {
 
     run: function() {
