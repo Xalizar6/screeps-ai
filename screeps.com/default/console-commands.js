@@ -56,12 +56,12 @@ for ( let i in Game.constructionSites ) { console.log(Game.constructionSites[i])
 _.forOwn(Game.creeps, function(value,key) {console.log("Key: " + key, "Value: " + value)})
 _.forOwn(Memory.creeps, function(value,key) {console.log("Key: " + key, "Value: " + value)})
 
-// Finding storage to put energy away  
-    var creep = Game.creeps.Noah;
-    var targets = creep.room.find(FIND_STRUCTURES, {
-        filter: (structure) => {
-            return structure.structureType == STRUCTURE_STORAGE && structure.store.energy < structure.storeCapacity;;
-        }
-    });
-    console.log(targets);
-    console.log(targets.length);
+var oSpawn1 = Game.spawns["Spawn1"]; var aExtensions = oSpawn1.room.find(FIND_MY_STRUCTURES, { filter: { structureType: STRUCTURE_EXTENSION }}); 
+for (let key in aExtensions) {console.log(key + "   " + aExtensions[key].energy)};
+var aExtensions = _.filter(aExtensions, function(extension) {return extension.energy == 0});
+for (let key in aExtensions) {console.log(key + "   " + aExtensions[key].energy)};
+
+//for (let key in aExtensionsToFill) {console.log(key + "   " + aExtensionsToFill[key])};
+
+
+var harvesters = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester'); 

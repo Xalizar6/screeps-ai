@@ -1,34 +1,36 @@
 //Included module files, executed on new global creation every 10 seconds or so.
-    var roleHarvester = require('role.harvester');
-    var roleUpgrader = require('role.upgrader');
-    var rolebuilder = require('role.builder');
-    var spawncode = require('spawncode');
-    var towercode = require('towercode');
-    var roleDedicatedBuilder = require('role.dedicatedHarvester')
-    
-    // console.log("Created new Global variables.");
+var C_mRoleHarvester = require('role.harvester');
+var C_mRoleUpgrader = require('role.upgrader');
+var C_mRoleDedicatedHarvester = require('role.dedicatedHarvester')
+var C_mRoleLogisticsShortRange = require('role.logisticsShortRange')
+var C_mRolebuilder = require('role.builder');
+var C_mSpawncode = require('spawncode');
+var C_mTowerCode = require('towercode');
 
 module.exports.loop = function () { // this loop is executed every tick
     // call the spawncode module
-        spawncode.run()
+    C_mSpawncode.run()
 
     // run the towercode module
-        towercode.play()        
+    C_mTowerCode.play()
 
     //call the role based work modules
-        for(var name in Game.creeps) {
-            var creep = Game.creeps[name];
-            if(creep.memory.role == 'harvester') {
-                roleHarvester.run(creep);
-            }
-            if(creep.memory.role == 'upgrader') {
-                roleUpgrader.run(creep);
-            }
-            if(creep.memory.role == 'builder') {
-                rolebuilder.run(creep);
-            }
-            if(creep.memory.role == 'dedicatedHarvester') {
-                // roleDedicatedBuilder.run(creep);
-            }
+    for (var sName in Game.creeps) {
+        var oCreep = Game.creeps[sName];
+        if (oCreep.memory.role == 'harvester') {
+            C_mRoleHarvester.run(oCreep);
         }
+        if (oCreep.memory.role == 'upgrader') {
+            C_mRoleUpgrader.run(oCreep);
+        }
+        if (oCreep.memory.role == 'builder') {
+            C_mRolebuilder.run(oCreep);
+        }
+        if (oCreep.memory.role == 'dedicatedHarvester') {
+            C_mRoleDedicatedHarvester.run(oCreep);
+        }
+        if (oCreep.memory.role == 'LogisticsShortRange') {
+            C_mRoleLogisticsShortRange.run(oCreep);
+        }
+    }
 }
