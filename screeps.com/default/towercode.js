@@ -4,10 +4,16 @@
 module.exports = {
 
     play: function() {
+        
+        // Declare variables
+        var aTowers;
+        var oTower;
+        
         // @ts-ignore
-        var towers = _.filter(Game.structures, (s) => s.structureType == STRUCTURE_TOWER)
-       for (let i = 0; i < towers.length; i++) {
-            module.exports.run(towers[ i ])
+        aTowers = _.filter(Game.structures, (s) => s.structureType == STRUCTURE_TOWER)
+        
+        for (let oTower in aTowers) {
+            module.exports.run(aTowers[oTower])
         }
     },
 

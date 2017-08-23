@@ -12,9 +12,9 @@ var C_mTowerCode = require('towercode');
 
 module.exports.loop = function () { // this loop is executed every tick
     // Declare variables
-        var sName = "";
-        var oCreep;
-    
+    var sName;
+    var oCreep;
+
     // call the spawncode module
     C_mSpawncode.run()
 
@@ -22,8 +22,8 @@ module.exports.loop = function () { // this loop is executed every tick
     C_mTowerCode.play()
 
     //call the role based work modules
-    for (var sName in Game.creeps) {
-        var oCreep = Game.creeps[sName];
+    for (sName in Game.creeps) {
+        oCreep = Game.creeps[sName];
         if (oCreep.memory.role == 'harvester') {
             C_mRoleHarvester.run(oCreep);
         }
