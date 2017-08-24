@@ -8,10 +8,10 @@ module.exports = {
         //Set Variables
             // Set the minimum number of each kind that we want for production
                 var nMinNumberOfHarvesters = 3;
-                var nMinNumberOfUpgraders = 5;
+                var nMinNumberOfUpgraders = 4;
                 var nMinNumberOfBuilders = 2;
                 var nMinNumberOfDedicatedHarvesters = 1;
-                var nMinNumberOfLogisticsShortRange = 1;
+                var nMinNumberOfLogisticsShortRange = 2;
 
             // Set the minimum number of each kind that we want for the Simulator
                 // var nMinNumberOfHarvesters = 4;
@@ -49,25 +49,25 @@ module.exports = {
             } else {
 
                 if (harvesters.length < nMinNumberOfHarvesters) {
-                    var newName = Game.spawns['Spawn1'].createCreep([WORK,WORK,CARRY,MOVE,MOVE,MOVE], undefined, {role: 'harvester'});
+                    var newName = Game.spawns['Spawn1'].createCreep([WORK,WORK,WORK,WORK,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE], undefined, {role: 'harvester'});
                     console.log('Spawning new harvester: ' + newName);
                 
                 } else if ( upgraders.length < nMinNumberOfUpgraders ) {
-                        var newName = Game.spawns['Spawn1'].createCreep([WORK,WORK,CARRY,MOVE,MOVE,MOVE], undefined, {role: 'upgrader'});
+                        var newName = Game.spawns['Spawn1'].createCreep([WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE], undefined, {role: 'upgrader'});
                         console.log('Spawning new upgrader: ' + newName);
                 
                 } else if (aDedicatedHarvesters.length < nMinNumberOfDedicatedHarvesters) {
-                    var sNewName = Game.spawns['Spawn1'].createCreep([WORK,WORK,WORK,WORK,MOVE,MOVE], undefined, {role: 'dedicatedHarvester'});
-                    console.log('Spawning new harvester: ' + sNewName);                    
+                    var sNewName = Game.spawns['Spawn1'].createCreep([WORK,WORK,WORK,WORK,WORK,MOVE,MOVE,MOVE], undefined, {role: 'dedicatedHarvester'});
+                    console.log('Spawning new harvester: ' + sNewName);
                 
                 } else if (aLogisticsShortRange.length < nMinNumberOfLogisticsShortRange) {
-                    var sNewName = Game.spawns['Spawn1'].createCreep([CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE], undefined, {role: 'LogisticsShortRange'});
-                    console.log('Spawning new harvester: ' + sNewName);                    
+                    var sNewName = Game.spawns['Spawn1'].createCreep([CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE], undefined, {role: 'LogisticsShortRange'});
+                    console.log('Spawning new harvester: ' + sNewName);
                 
                     // @ts-ignore
                 } else if (_.size(Game.constructionSites) > 0) {
-                    if( builders.length < nMinNumberOfBuilders ) {
-                        var newName = Game.spawns['Spawn1'].createCreep([WORK,WORK,CARRY,MOVE,MOVE,MOVE], undefined, {role: 'builder'});
+                    if ( builders.length < nMinNumberOfBuilders ) {
+                        var newName = Game.spawns['Spawn1'].createCreep([WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE], undefined, {role: 'builder'});
                         console.log('Spawning new builder: ' + newName);
                     }
                 } 

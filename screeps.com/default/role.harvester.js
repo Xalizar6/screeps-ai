@@ -1,6 +1,8 @@
 // Declaring Strict Mode to enforce better coding standards
 "use strict";
 
+var myFunctions = require('myFunctions');
+
 module.exports = {
 
     /** @param {Creep} creep **/
@@ -8,10 +10,8 @@ module.exports = {
 
         // If you don't have full energy, go find a source and fill up.
         if (creep.carry.energy < creep.carryCapacity) {
-            var sources = creep.room.find(FIND_SOURCES_ACTIVE);
-            if (creep.harvest(sources[0]) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(sources[0], { visualizePathStyle: { stroke: '#f2f210' } });
-            }
+            var source = creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
+            myFunctions.harvestEnergy(creep, source)
         }
 
         // Find an Extension, Spawn, or Tower to put the energy in.
@@ -29,7 +29,7 @@ module.exports = {
                 var targets = creep.room.find(FIND_STRUCTURES, {
                     filter: (structure) => {
                         // return structure.structureType == STRUCTURE_STORAGE && structure.store.energy < structure.storeCapacity;
-                        return structure.structureType == STRUCTURE_STORAGE && structure.store.energy < 100000;
+                        return structure.structureType == STRUCTURE_STORAGE && structure.store.energy < 250000;
                     }
                 });
             }

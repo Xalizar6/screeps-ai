@@ -9,6 +9,7 @@ var C_mRoleLogisticsShortRange = require('role.logisticsShortRange')
 var C_mRolebuilder = require('role.builder');
 var C_mSpawncode = require('spawncode');
 var C_mTowerCode = require('towercode');
+var myFunctions = require('myFunctions');
 
 module.exports.loop = function () { // this loop is executed every tick
     // Declare variables
