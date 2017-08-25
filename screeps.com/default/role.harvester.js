@@ -16,7 +16,7 @@ module.exports = {
 
         // Find an Extension, Spawn, or Tower to put the energy in.
         else {
-            var targets = creep.room.find(FIND_STRUCTURES, {
+            var targets = creep.room.find(FIND_MY_STRUCTURES, {
                 filter: (structure) => {
                     return (structure.structureType == STRUCTURE_EXTENSION ||
                         structure.structureType == STRUCTURE_SPAWN ||
@@ -26,7 +26,7 @@ module.exports = {
 
             // If you don't find any structures that need filling then look for storage to fill.
             if (!targets.length) {
-                var targets = creep.room.find(FIND_STRUCTURES, {
+                var targets = creep.room.find(FIND_MY_STRUCTURES, {
                     filter: (structure) => {
                         // return structure.structureType == STRUCTURE_STORAGE && structure.store.energy < structure.storeCapacity;
                         return structure.structureType == STRUCTURE_STORAGE && structure.store.energy < 250000;
