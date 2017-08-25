@@ -8,7 +8,7 @@ module.exports = {
         // Declare variables
         var aTowers;
         var oTower;
-        
+                
         // @ts-ignore
         aTowers = _.filter(Game.structures, (s) => s.structureType == STRUCTURE_TOWER)
         
@@ -18,9 +18,24 @@ module.exports = {
     },
 
     run: function(tower) {
+        var oSpawn1 = Game.spawns["Spawn1"];
+        var aTargets;
+
         var enemy = tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
         if (enemy) {
             tower.attack(enemy);
+        
+        } else if (tower.energy >= 600) {
+            aTargets = oSpawn1.room.find(FIND_STRUCTURES, {
+                filter: (structure) => {return (structure.structureType == STRUCTURE_ROAD) && structure.hitsMax - structure.hits >= 1500 
+                }});
+            
+            aTargets.sort((a,b) => a.hits - b.hits);
+
+            if (aTargets.length > 0) {
+                tower.repair(oSpawn1.pos.findClosestByRange(aTargets));
+            }
+
 
         } /* else if (tower.energy >= 600) {
             var priority = 1;

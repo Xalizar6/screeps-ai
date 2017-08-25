@@ -57,7 +57,7 @@ module.exports = {
                     console.log('Spawning new dedicated harvester: ' + sNewName);
                 
                 } else if (aLogisticsShortRange.length < nMinNumberOfLogisticsShortRange) {
-                    var sNewName = Game.spawns['Spawn1'].createCreep([CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE], undefined, {role: 'LogisticsShortRange'});
+                    var sNewName = Game.spawns['Spawn1'].createCreep([CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE], undefined, {role: 'LogisticsShortRange'});
                     console.log('Spawning new Logistics Short Range: ' + sNewName);
 
                 } else if ( upgraders.length < nMinNumberOfUpgraders ) {
