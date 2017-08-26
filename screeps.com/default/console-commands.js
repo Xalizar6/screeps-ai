@@ -1,6 +1,3 @@
-// dedicatedHarvester Creep spawn code
-    Game.spawns['Spawn1'].createCreep([WORK,WORK,MOVE,MOVE], "Lenny", {role: 'dedicatedHarvester'});
-
 //shows the roles and time to live of all of my creeps
     for ( let key in Game.creeps ) { console.log(key + " " + Game.creeps[key].memory.role + " " + Game.creeps[key].ticksToLive ) }
     
@@ -8,19 +5,22 @@
     for ( let key in Game.creeps ) { console.log("Key: " + key + "      " + "Value: " + Game.creeps[key] ) };
 
 // Shows the names of all of my spawns
-for ( let key in Game.spawns) { console.log("Key: " + key + "       " + "Spawn: " + Game.spawns[key]); }
+    for ( let key in Game.spawns) { console.log("Key: " + key + "       " + "Spawn: " + Game.spawns[key]); }
 
 // Shows the names of all of my visible rooms
-for ( let i in Game.rooms) { console.log(Game.rooms[i]); }
+    for ( let i in Game.rooms) { console.log(Game.rooms[i]); }
 
 // Kills all of my creeps for testing ToDO: Working?
     for ( let i in Game.creeps ) { Game.creeps[i].suicide() };
 
 // Shows the ID of all of my structures
-    for( let i in Game.structures ) { console.log(Game.structures[i]); }
+    for( let i in Game.structures ) { console.log("Key: " + i + "     " + Game.structures[i]); }
+
+// Find all of the structures in a particular room
+    for (let i in Game.rooms.W36N18.find(FIND_STRUCTURES)) (console.log("Key: " + i + "     " + Game.rooms.W36N18.find(FIND_STRUCTURES)[i]));
 
 // Shows all construction sites
-for ( let i in Game.constructionSites ) { console.log(Game.constructionSites[i]); }
+    for ( let i in Game.constructionSites ) { console.log(Game.constructionSites[i]); }
 
 // Shows the size of the construction sites hash
     _.size(Game.constructionSites)
@@ -90,4 +90,4 @@ typeof oCreep
         console.log(aSources[i].id)
     };
 
-    Game.rooms.W36N18.memory.sources 
+    Game.rooms.W36N18.memory.sources

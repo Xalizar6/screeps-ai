@@ -18,22 +18,22 @@ module.exports = {
     },
 
     run: function(tower) {
-        var oSpawn1 = Game.spawns["Spawn1"];
+        var oSpawn = Game.spawns["Spawn1"];
         var aTargets;
 
         var enemy = tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
         if (enemy) {
             tower.attack(enemy);
         
-        } else if (tower.energy >= 600) {
-            aTargets = oSpawn1.room.find(FIND_STRUCTURES, {
+        } else if (tower.energy >= 500) {
+            aTargets = oSpawn.room.find(FIND_STRUCTURES, {
                 filter: (structure) => {return (structure.structureType == STRUCTURE_ROAD) && structure.hitsMax - structure.hits >= 1500 
                 }});
             
             aTargets.sort((a,b) => a.hits - b.hits);
 
             if (aTargets.length > 0) {
-                tower.repair(oSpawn1.pos.findClosestByRange(aTargets));
+                tower.repair(oSpawn.pos.findClosestByRange(aTargets));
             }
 
 
