@@ -8,36 +8,34 @@ module.exports = {
         //Set Variables
             // Set the minimum number of each kind that we want for production
                 var nMinNumberOfHarvesters = 4;
-                var nMinNumberOfUpgraders = 5;
+                var nMinNumberOfUpgraders = 6;
                 var nMinNumberOfBuilders = 2;
                 var nMinNumberOfDedicatedHarvesters = 1;
                 var nMinNumberOfLogisticsShortRange = 1;
-
-            // Set the minimum number of each kind that we want for the Simulator
-                // var nMinNumberOfHarvesters = 4;
-                // var nMinNumberOfUpgraders = 1;
-                // var nMinNumberOfBuilders = 10;
-
-            // Determine the total number we have alive this tick
-                    // @ts-ignore
-                var harvesters = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester');                    
-                // @ts-ignore
-                var upgraders = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader');
-                // @ts-ignore
-                var builders = _.filter(Game.creeps, (creep) => creep.memory.role == 'builder');
-                // @ts-ignore
-                var aDedicatedHarvesters = _.filter(Game.creeps, (creep) => creep.memory.role == 'dedicatedHarvester');
-                // @ts-ignore
-                var aLogisticsShortRange = _.filter(Game.creeps, (creep) => creep.memory.role == 'LogisticsShortRange'); 
+                var nMinNumberOflogisticsLocal = 1;
 
         //Clear the deceased creeps from memory
-            for( var name in Memory.creeps ) {
-                if( !Game.creeps[name] ) {
-                    delete Memory.creeps[name];
-                    console.log('Clearing non-existing creep memory:', name);
-                }                
-            }
+        for( var name in Memory.creeps ) {
+            if( !Game.creeps[name] ) {
+                delete Memory.creeps[name];
+                console.log('Clearing non-existing creep memory:', name);
+            }                
+        }
 
+        // Determine the total number we have alive this tick
+        // @ts-ignore
+        var harvesters = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester');                    
+        // @ts-ignore
+        var upgraders = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader');
+        // @ts-ignore
+        var builders = _.filter(Game.creeps, (creep) => creep.memory.role == 'builder');
+        // @ts-ignore
+        var aDedicatedHarvesters = _.filter(Game.creeps, (creep) => creep.memory.role == 'dedicatedHarvester');
+        // @ts-ignore
+        var aLogisticsShortRange = _.filter(Game.creeps, (creep) => creep.memory.role == 'LogisticsShortRange'); 
+        // @ts-ignore
+        var alogisticsLocal = _.filter(Game.creeps, (creep) => creep.memory.role == 'logisticsLocal');
+                
         // Spawn additional creeps if needed, including emergency code and 
         // prioritizing harvesters first.
             if (
@@ -57,13 +55,18 @@ module.exports = {
                     console.log('Spawning new dedicated harvester: ' + sNewName);
                 
                 } else if (aLogisticsShortRange.length < nMinNumberOfLogisticsShortRange) {
-                    var sNewName = Game.spawns['Spawn1'].createCreep([CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE], undefined, {role: 'LogisticsShortRange'});
+                    var sNewName = Game.spawns['Spawn1'].createCreep([CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE], undefined, {role: 'LogisticsShortRange'});
                     console.log('Spawning new Logistics Short Range: ' + sNewName);
 
+                } else if ( alogisticsLocal.length < nMinNumberOflogisticsLocal ) {
+                    var newName = Game.spawns['Spawn1'].createCreep([CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE],
+                                                        undefined, {role: 'logisticsLocal', hauling:false});
+                    console.log('Spawning new Logistics local: ' + newName);
+                    
                 } else if ( upgraders.length < nMinNumberOfUpgraders ) {
                     var newName = Game.spawns['Spawn1'].createCreep([WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE], undefined, {role: 'upgrader'});
                     console.log('Spawning new upgrader: ' + newName);
-                
+               
                     // @ts-ignore
                 } else if (_.size(Game.constructionSites) > 0) {
                     if ( builders.length < nMinNumberOfBuilders ) {

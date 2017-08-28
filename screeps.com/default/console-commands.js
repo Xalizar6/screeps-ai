@@ -1,3 +1,6 @@
+// dedicatedHarvester Creep spawn code
+    Game.spawns['Spawn1'].createCreep([WORK,WORK,MOVE,MOVE], "Lenny", {role: 'dedicatedHarvester'});
+
 //shows the roles and time to live of all of my creeps
     for ( let key in Game.creeps ) { console.log(key + " " + Game.creeps[key].memory.role + " " + Game.creeps[key].ticksToLive ) }
     
@@ -5,22 +8,19 @@
     for ( let key in Game.creeps ) { console.log("Key: " + key + "      " + "Value: " + Game.creeps[key] ) };
 
 // Shows the names of all of my spawns
-    for ( let key in Game.spawns) { console.log("Key: " + key + "       " + "Spawn: " + Game.spawns[key]); }
+for ( let key in Game.spawns) { console.log("Key: " + key + "       " + "Spawn: " + Game.spawns[key]); }
 
 // Shows the names of all of my visible rooms
-    for ( let i in Game.rooms) { console.log(Game.rooms[i]); }
+for ( let i in Game.rooms) { console.log(Game.rooms[i]); }
 
 // Kills all of my creeps for testing ToDO: Working?
     for ( let i in Game.creeps ) { Game.creeps[i].suicide() };
 
 // Shows the ID of all of my structures
-    for( let i in Game.structures ) { console.log("Key: " + i + "     " + Game.structures[i]); }
-
-// Find all of the structures in a particular room
-    for (let i in Game.rooms.W36N18.find(FIND_STRUCTURES)) (console.log("Key: " + i + "     " + Game.rooms.W36N18.find(FIND_STRUCTURES)[i]));
+    for( let i in Game.structures ) { console.log(Game.structures[i]); }
 
 // Shows all construction sites
-    for ( let i in Game.constructionSites ) { console.log(Game.constructionSites[i]); }
+for ( let i in Game.constructionSites ) { console.log(Game.constructionSites[i]); }
 
 // Shows the size of the construction sites hash
     _.size(Game.constructionSites)
@@ -91,3 +91,23 @@ typeof oCreep
     };
 
     Game.rooms.W36N18.memory.sources
+
+// Array of objects to repair
+    const targets = creep.room.find(FIND_STRUCTURES, {
+        filter: object => object.hits < object.hitsMax
+    });
+
+    targets.sort((a,b) => a.hits - b.hits);
+
+    if(targets.length > 0) {
+        if(creep.repair(targets[0]) == ERR_NOT_IN_RANGE) {
+            creep.moveTo(targets[0]);
+        }
+    }
+
+
+
+var oSpawn1 = Game.spawns["Spawn1"];
+var blah = oSpawn1.room.find(FIND_STRUCTURES, {filter: (structure) => {return (structure.structureType == STRUCTURE_ROAD) && structure.hits < 5000}});
+blah.sort((a,b) => a.hits - b.hits);
+console.log(blah);

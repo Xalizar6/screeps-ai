@@ -39,7 +39,7 @@ module.exports = {
                 myFunctions.transferEnergy(creep, oSpawn1)
 
                 // If there is room in Storage
-            } else if (oStorage.store.energy < 250000) {
+            } else if (oStorage.store.energy < 500000) {
 
                 // Drop off at Storage
                 myFunctions.transferEnergy(creep, oStorage)

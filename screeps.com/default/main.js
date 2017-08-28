@@ -5,6 +5,7 @@
 var C_mRoleHarvester = require('role.harvester');
 var C_mRoleUpgrader = require('role.upgrader');
 var C_mRoleDedicatedHarvester = require('role.dedicatedHarvester')
+var logisticsLocal = require('role.logisticsLocal')
 var C_mRoleLogisticsShortRange = require('role.logisticsShortRange')
 var C_mRolebuilder = require('role.builder');
 var C_mSpawncode = require('spawncode');
@@ -39,6 +40,9 @@ module.exports.loop = function () { // this loop is executed every tick
         }
         if (oCreep.memory.role == 'LogisticsShortRange') {
             C_mRoleLogisticsShortRange.run(oCreep);
+        }
+        if (oCreep.memory.role == 'logisticsLocal') {
+            logisticsLocal.run(oCreep);
         }
     }
 }
