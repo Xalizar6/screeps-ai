@@ -21,37 +21,5 @@ module.exports = {
             target = creep.room.storage
             myFunctions.transferEnergy(creep, target)
         };
-
-
-/*
-        // Find an Extension, Spawn, or Tower to put the energy in.
-        else {
-            var targets = creep.room.find(FIND_MY_STRUCTURES, {
-                filter: (structure) => {
-                    return (structure.structureType == STRUCTURE_EXTENSION ||
-                        structure.structureType == STRUCTURE_SPAWN ||
-                        structure.structureType == STRUCTURE_TOWER) && structure.energy < structure.energyCapacity;
-                }
-            });
-
-            // If you don't find any structures that need filling then look for storage to fill.
-            if (!targets.length) {
-                var targets = creep.room.find(FIND_MY_STRUCTURES, {
-                    filter: (structure) => {
-                        return structure.structureType == STRUCTURE_STORAGE && structure.store.energy < 500000;
-                    }
-                });
-            }
-
-            if (targets.length) {
-                if (creep.transfer(targets[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(targets[0], { visualizePathStyle: { stroke: '#f2f210' } });
-                }
-            }
-            else {
-                creep.moveTo(Game.spawns["Spawn1"], { visualizePathStyle: { stroke: '#f2f210' } });
-            }
-        }
-        */
     }
 };

@@ -10,6 +10,7 @@ module.exports = {
         // Variables
             var energySource;
             var targets;
+            var target;
 
         // If hauling mode is on and you are empty, turn off hauling mode
         if (creep.memory.hauling && creep.carry.energy == 0) {
@@ -24,7 +25,7 @@ module.exports = {
         };
 
         // If you are in refill mode, go get energy from Storage
-        if (!creep.memory.hauling) {
+        if (creep.memory.hauling == false) {
             if (creep.room.storage.store.energy > 5000) {
                 energySource = creep.room.storage;
                 myFunctions.withdrawEnergy(creep, energySource);
@@ -46,13 +47,12 @@ module.exports = {
             });
 
             if (targets.length) {
-                if (creep.transfer(targets[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(targets[0], { visualizePathStyle: { stroke: '#f2f210' } });
-                }
+                target = creep.pos.findClosestByPath(targets);
+                myFunctions.transferEnergy(creep, target)
             }
             else {
                 creep.moveTo(Game.spawns["Spawn1"], { visualizePathStyle: { stroke: '#f2f210' } });
-            }
+            };
         };
     }
 };

@@ -8,7 +8,7 @@ module.exports = {
         //Set Variables
             // Set the minimum number of each kind that we want for production
                 var nMinNumberOfHarvesters = 4;
-                var nMinNumberOfUpgraders = 6;
+                var nMinNumberOfUpgraders = 3;
                 var nMinNumberOfBuilders = 2;
                 var nMinNumberOfDedicatedHarvesters = 1;
                 var nMinNumberOfLogisticsShortRange = 1;
@@ -19,8 +19,8 @@ module.exports = {
             if( !Game.creeps[name] ) {
                 delete Memory.creeps[name];
                 console.log('Clearing non-existing creep memory:', name);
-            }                
-        }
+            };
+        };
 
         // Determine the total number we have alive this tick
         // @ts-ignore
@@ -55,7 +55,7 @@ module.exports = {
                     console.log('Spawning new dedicated harvester: ' + sNewName);
                 
                 } else if (aLogisticsShortRange.length < nMinNumberOfLogisticsShortRange) {
-                    var sNewName = Game.spawns['Spawn1'].createCreep([CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE], undefined, {role: 'LogisticsShortRange'});
+                    var sNewName = Game.spawns['Spawn1'].createCreep([CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE], undefined, {role: 'LogisticsShortRange', hauling:false});
                     console.log('Spawning new Logistics Short Range: ' + sNewName);
 
                 } else if ( alogisticsLocal.length < nMinNumberOflogisticsLocal ) {
@@ -64,7 +64,7 @@ module.exports = {
                     console.log('Spawning new Logistics local: ' + newName);
                     
                 } else if ( upgraders.length < nMinNumberOfUpgraders ) {
-                    var newName = Game.spawns['Spawn1'].createCreep([WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE], undefined, {role: 'upgrader'});
+                    var newName = Game.spawns['Spawn1'].createCreep([WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE], undefined, {role: 'upgrader'});
                     console.log('Spawning new upgrader: ' + newName);
                
                     // @ts-ignore
