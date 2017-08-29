@@ -8,12 +8,22 @@ module.exports = {
     /** @param {Creep} creep **/
     run: function (creep) {
 
+        // Variables
+            var target;
+            var source;
+
         // If you don't have full energy, go find a source and fill up.
         if (creep.carry.energy < creep.carryCapacity) {
-            var source = creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
+            source = creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
             myFunctions.harvestEnergy(creep, source)
-        }
+        } else {
+            // Put energy into the storage
+            target = creep.room.storage
+            myFunctions.transferEnergy(creep, target)
+        };
 
+
+/*
         // Find an Extension, Spawn, or Tower to put the energy in.
         else {
             var targets = creep.room.find(FIND_MY_STRUCTURES, {
@@ -42,5 +52,6 @@ module.exports = {
                 creep.moveTo(Game.spawns["Spawn1"], { visualizePathStyle: { stroke: '#f2f210' } });
             }
         }
+        */
     }
 };
