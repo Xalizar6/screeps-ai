@@ -1,5 +1,5 @@
-// Declaring Strict Mode to enforce better coding standards
-"use strict";
+"use strict"; // Declaring Strict Mode to enforce better coding standards
+
 
 module.exports = {
 

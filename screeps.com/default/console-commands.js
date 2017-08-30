@@ -1,7 +1,4 @@
 // @ts-nocheck
-// dedicatedHarvester Creep spawn code
-    Game.spawns['Spawn1'].createCreep([WORK,WORK,MOVE,MOVE], "Lenny", {role: 'dedicatedHarvester'});
-
 //shows the roles and time to live of all of my creeps
     for ( let key in Game.creeps ) { console.log(key + " " + Game.creeps[key].memory.role + " " + Game.creeps[key].ticksToLive ) }
     
@@ -163,31 +160,3 @@ Factory.gatherEnergy
 
 var x = new []; 
 x.push (WORK)
-
-World
-    room_Base //holds functions and properties generic to all rooms
-        task_GatherEnergy
-    Room_dropSpawn //Extends room_Base with room specific actions
-            task_gatherEnergy
-                Size 1-2
-                Size 3+
-            task_upgradeController
-                Size 1-2
-                Size 3+
-            buildRoads
-                Size 1-2
-                Size 3+
-            fortifyRoom
-                Size 1-2
-                Size 3+
-            defendRoom
-                Size 1-2
-                Size 3+
-    
-    Room_takeMineral
-        task_gatherEnergy
-        Size 1-2
-
-    Room_takeOccupied    
-    Room_takeUnOccupied
-    Room_takeFortified

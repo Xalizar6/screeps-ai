@@ -1,20 +1,38 @@
-// Declaring Strict Mode to enforce better coding standards
-"use strict";
+"use strict"; // Declaring Strict Mode to enforce better coding standards
+
+
+
+// Run the prototype extensions as necessary
+    const startProto = Game.cpu.getUsed();
+    console.log("Start - Including prototypes")
+    
+    // @ts-ignore
+    require('prototype.room');
+
+    console.log("Done - Including prototypes, it took: " + (Game.cpu.getUsed() - startProto) + " CPU Time");
+
+
 
 //Included module files, executed on new global creation every 10 seconds or so.
-var C_mRoleHarvester = require('role.harvester');
-var C_mRoleUpgrader = require('role.upgrader');
-var C_mRoleDedicatedHarvester = require('role.dedicatedHarvester')
-var logisticsLocal = require('role.logisticsLocal')
-var C_mRoleLogisticsShortRange = require('role.logisticsShortRange')
-var C_mRolebuilder = require('role.builder');
-var C_mSpawncode = require('spawncode');
-var C_mTowerCode = require('towercode');
-var myFunctions = require('myFunctions');
-console.log("reload globals")
+    const startModules = Game.cpu.getUsed();
+    console.log("Start - Including modules")
+
+    var C_mRoleHarvester = require('role.harvester');
+    var C_mRoleUpgrader = require('role.upgrader');
+    var C_mRoleDedicatedHarvester = require('role.dedicatedHarvester')
+    var logisticsLocal = require('role.logisticsLocal')
+    var C_mRoleLogisticsShortRange = require('role.logisticsShortRange')
+    var C_mRolebuilder = require('role.builder');
+    var C_mSpawncode = require('spawncode');
+    var C_mTowerCode = require('towercode');
+    var myFunctions = require('myFunctions');
+    var roomManager = require('manager.Room');
+
+    console.log("Done - Including modules, it took: " + (Game.cpu.getUsed() - startModules) + " CPU Time");
+
 
 module.exports.loop = function () { // this loop is executed every tick
-    console.log("running loop")
+
     // Declare variables
     var sName;
     var oCreep;
@@ -47,4 +65,11 @@ module.exports.loop = function () { // this loop is executed every tick
             logisticsLocal.run(oCreep);
         }
     }
+
+/*
+    for (room in Game.rooms) {
+        worldManger.run to determine the current mission for the room;
+        roomManager.run(room, currentMission)
+    };
+*/
 }

@@ -1,5 +1,5 @@
-// Declaring Strict Mode to enforce better coding standards
-"use strict";
+"use strict"; // Declaring Strict Mode to enforce better coding standards
+
 
 module.exports = {
 
@@ -64,7 +64,7 @@ module.exports = {
                     console.log('Spawning new Logistics local: ' + newName);
                     
                 } else if ( upgraders.length < nMinNumberOfUpgraders ) {
-                    var newName = Game.spawns['Spawn1'].createCreep([WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE], undefined, {role: 'upgrader'});
+                    var newName = Game.spawns['Spawn1'].createCreep([WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE], undefined, {role: 'upgrader'});
                     console.log('Spawning new upgrader: ' + newName);
                
                     // @ts-ignore
