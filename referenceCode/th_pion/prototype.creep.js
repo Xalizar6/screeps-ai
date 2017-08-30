@@ -1,3 +1,4 @@
+// @ts-nocheck
 var roles = {
     harvester: require('role.harvester'),
     upgrader: require('role.upgrader'),

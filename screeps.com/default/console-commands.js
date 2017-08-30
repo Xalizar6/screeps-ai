@@ -1,3 +1,4 @@
+// @ts-nocheck
 // dedicatedHarvester Creep spawn code
     Game.spawns['Spawn1'].createCreep([WORK,WORK,MOVE,MOVE], "Lenny", {role: 'dedicatedHarvester'});
 
@@ -111,3 +112,82 @@ var oSpawn1 = Game.spawns["Spawn1"];
 var blah = oSpawn1.room.find(FIND_STRUCTURES, {filter: (structure) => {return (structure.structureType == STRUCTURE_ROAD) && structure.hits < 5000}});
 blah.sort((a,b) => a.hits - b.hits);
 console.log(blah);
+
+
+
+
+harvesterCreep
+    - find the appropriate source
+    - call daveHarvest()
+    daveCreepBase
+        - daveHarvest(this, energySource)
+        Game.creep
+            creep.harvest
+
+minerCreep
+    daveCreepBase
+        Game.creep
+
+
+harvesterCreep
+    Game.creep
+    - daveRun()
+
+Game.creep
+    - baseMethods()
+    - baseProperties
+    - daveMethods()
+    - daveProperties
+    harvesterCreep
+        - behavior code here
+    minerCreep
+    - behavior code here
+
+
+
+Factory.gatherEnergy
+    Select the Room size
+        Room Size 1-2
+            Sets to get the job done
+                For each source
+                    Create necessary harvesters
+                    Create necessary trucks
+
+        Room Size 3-4
+            Sets to get the job done
+        
+        Room Size >5
+            Sets to get the job done
+
+
+
+var x = new []; 
+x.push (WORK)
+
+World
+    room_Base //holds functions and properties generic to all rooms
+        task_GatherEnergy
+    Room_dropSpawn //Extends room_Base with room specific actions
+            task_gatherEnergy
+                Size 1-2
+                Size 3+
+            task_upgradeController
+                Size 1-2
+                Size 3+
+            buildRoads
+                Size 1-2
+                Size 3+
+            fortifyRoom
+                Size 1-2
+                Size 3+
+            defendRoom
+                Size 1-2
+                Size 3+
+    
+    Room_takeMineral
+        task_gatherEnergy
+        Size 1-2
+
+    Room_takeOccupied    
+    Room_takeUnOccupied
+    Room_takeFortified

@@ -11,8 +11,10 @@ var C_mRolebuilder = require('role.builder');
 var C_mSpawncode = require('spawncode');
 var C_mTowerCode = require('towercode');
 var myFunctions = require('myFunctions');
+console.log("reload globals")
 
 module.exports.loop = function () { // this loop is executed every tick
+    console.log("running loop")
     // Declare variables
     var sName;
     var oCreep;
