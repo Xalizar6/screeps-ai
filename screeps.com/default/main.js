@@ -7,7 +7,7 @@
     console.log("Start - Including prototypes")
     
     // @ts-ignore
-    require('prototype.room');
+    // require('prototype.room');
 
     console.log("Done - Including prototypes, it took: " + (Game.cpu.getUsed() - startProto) + " CPU Time");
 
@@ -26,7 +26,7 @@
     var C_mSpawncode = require('spawncode');
     var C_mTowerCode = require('towercode');
     var myFunctions = require('myFunctions');
-    var roomManager = require('manager.Room');
+    // var roomManager = require('manager.Room');
 
     console.log("Done - Including modules, it took: " + (Game.cpu.getUsed() - startModules) + " CPU Time");
 
@@ -66,10 +66,14 @@ module.exports.loop = function () { // this loop is executed every tick
         }
     }
 
+    // console.log("Total CPU Time used: " + Game.cpu.getUsed());
+
 /*
     for (room in Game.rooms) {
         worldManger.run to determine the current mission for the room;
         roomManager.run(room, currentMission)
     };
+
 */
+
 }
