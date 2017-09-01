@@ -33,7 +33,6 @@
 module.exports.loop = function () { 
 
     // Create the new World Manager Object
-        // function WorldManager() {};
         // var WorldManager1 = new WorldManager();
 
     // Declare variables
@@ -41,8 +40,8 @@ module.exports.loop = function () {
         
     // Run the World Manager logic
         console.log("This is where I call the World Manager logic for all of the rooms.");
-        
         // WorldManager1.run();
+        var x = require('proto.Manager_World');
 
     // console.log("Total CPU Time used: " + Game.cpu.getUsed());
 

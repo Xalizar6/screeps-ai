@@ -1,10 +1,10 @@
 "use strict"; // Declaring Strict Mode to enforce better coding standards
 
-console.log("Running Proto Manager World")
+console.log("Running Proto Manager World");
 
 // Create the new World Manager Object
-    function WorldManager() {};
-    var WorldManager1 = new WorldManager();
+    // function WorldManager() {};
+    // var WorldManager1 = new WorldManager();
 
 // Create a Run method of the World Manager Object
 WorldManager.prototype.run = function() {
