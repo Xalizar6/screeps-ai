@@ -9,11 +9,11 @@ World Logic
 
 World Logic
     Room Logic - room_Base //Prototype that holds functions and properties generic to all rooms
-        task_GatherEnergy
+        task.GatherEnergy
             Room Size 1-2
             Room Size 3+
 
-        task_upgradeController
+        task.upgradeController
             Room Size 1-2
             Room Size 3+
 

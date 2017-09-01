@@ -48,7 +48,12 @@ module.exports = {
 
                 if (harvesters.length < nMinNumberOfHarvesters) {
                     var newName = Game.spawns['Spawn1'].createCreep([WORK,WORK,WORK,WORK,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE], undefined, {role: 'harvester'});
-                    console.log('Spawning new harvester: ' + newName);                
+                    console.log('Spawning new harvester: ' + newName);
+                    
+                } else if ( alogisticsLocal.length < nMinNumberOflogisticsLocal ) {
+                    var newName = Game.spawns['Spawn1'].createCreep([CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE],
+                                                        undefined, {role: 'logisticsLocal', hauling:false});
+                    console.log('Spawning new Logistics local: ' + newName);
                 
                 } else if (aDedicatedHarvesters.length < nMinNumberOfDedicatedHarvesters) {
                     var sNewName = Game.spawns['Spawn1'].createCreep([WORK,WORK,WORK,WORK,WORK,MOVE,MOVE,MOVE], undefined, {role: 'dedicatedHarvester'});
@@ -57,11 +62,6 @@ module.exports = {
                 } else if (aLogisticsShortRange.length < nMinNumberOfLogisticsShortRange) {
                     var sNewName = Game.spawns['Spawn1'].createCreep([CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE], undefined, {role: 'LogisticsShortRange', hauling:false});
                     console.log('Spawning new Logistics Short Range: ' + sNewName);
-
-                } else if ( alogisticsLocal.length < nMinNumberOflogisticsLocal ) {
-                    var newName = Game.spawns['Spawn1'].createCreep([CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE],
-                                                        undefined, {role: 'logisticsLocal', hauling:false});
-                    console.log('Spawning new Logistics local: ' + newName);
                     
                 } else if ( upgraders.length < nMinNumberOfUpgraders ) {
                     var newName = Game.spawns['Spawn1'].createCreep([WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE], undefined, {role: 'upgrader'});
