@@ -3,11 +3,11 @@
 console.log("Running Proto Manager World");
 
 // Create the new World Manager Object
-    // function WorldManager() {};
-    // var WorldManager1 = new WorldManager();
+// function WorldManager() {};
+// var WorldManager1 = new WorldManager();
 
 // Create a Run method of the World Manager Object
-WorldManager.prototype.run = function() {
+WorldManager.prototype.run = function () {
     console.log("This is where I call the Run method of the World Manager Object to generate logic for specific rooms.");
     for (let i in Game.rooms) {
         let room = Game.rooms[i];

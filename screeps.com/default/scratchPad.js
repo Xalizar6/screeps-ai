@@ -1,4 +1,5 @@
 // @ts-nocheck
+
 //shows the roles and time to live of all of my creeps
     for ( let key in Game.creeps ) { console.log(key + " " + Game.creeps[key].memory.role + " " + Game.creeps[key].ticksToLive ) }
     

@@ -1,20 +1,20 @@
 "use strict"; // Declaring Strict Mode to enforce better coding standards
 
 //Included module files, executed on new global creation every 10 seconds or so.
-    const startModules = Game.cpu.getUsed();
-    console.log("Start - Including modules")
+const startModules = Game.cpu.getUsed();
+console.log("Start - Including modules")
 
-    var C_mRoleHarvester = require('role.harvester');
-    var C_mRoleUpgrader = require('role.upgrader');
-    var C_mRoleDedicatedHarvester = require('role.dedicatedHarvester')
-    var logisticsLocal = require('role.logisticsLocal')
-    var C_mRoleLogisticsShortRange = require('role.logisticsShortRange')
-    var C_mRolebuilder = require('role.builder');
-    var C_mSpawncode = require('spawncode');
-    var C_mTowerCode = require('towercode');
-    var myFunctions = require('myFunctions');
+var C_mRoleHarvester = require('role.harvester');
+var C_mRoleUpgrader = require('role.upgrader');
+var C_mRoleDedicatedHarvester = require('role.dedicatedHarvester')
+var logisticsLocal = require('role.logisticsLocal')
+var C_mRoleLogisticsShortRange = require('role.logisticsShortRange')
+var C_mRolebuilder = require('role.builder');
+var C_mSpawncode = require('spawncode');
+var C_mTowerCode = require('towercode');
+var myFunctions = require('myFunctions');
 
-    console.log("Done - Including modules took: " + (Game.cpu.getUsed() - startModules) + " CPU Time");
+console.log("Done - Including modules took: " + (Game.cpu.getUsed() - startModules) + " CPU Time");
 
 
 module.exports.loop = function () { // this loop is executed every tick
