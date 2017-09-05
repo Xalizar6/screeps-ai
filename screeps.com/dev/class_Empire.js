@@ -19,6 +19,6 @@ module.exports = class Empire {
     static create(name) {
         return new Empire(name);
     };
-    
+
 
 };
