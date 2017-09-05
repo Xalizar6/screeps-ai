@@ -7,4 +7,6 @@ module.exports = class Mission {
     constructor (name) {
         this.name = name;
     };
+
+    
 };
