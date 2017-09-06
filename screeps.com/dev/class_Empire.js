@@ -6,6 +6,7 @@ var _ = require('lodash');
 module.exports = class Empire {
     constructor(name) {
         this.name = name;
+        this.rooms = Game.rooms;
     };
 
 
@@ -16,9 +17,22 @@ module.exports = class Empire {
     };
 
 
+    createOperations() {
+        
+
+    };
+
+
+    getAllSources() {
+        for(let item in this.rooms) {
+            console.log(this.rooms[item].find(FIND_SOURCES_ACTIVE))
+        };
+    };
+
+
     static create(name) {
         return new Empire(name);
     };
-
+    
 
 };

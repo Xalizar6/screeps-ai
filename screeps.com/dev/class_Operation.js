@@ -4,7 +4,20 @@ var _ = require('lodash');
 
 // Class for housing information and functions for managing my operations.
 module.exports = class Operation {
-    constructor (name) {
+    constructor(name) {
         this.name = name;
     };
+
+
+    init() {
+
+    };
+
+
+    static create(name) {
+        return new Operation(name);
+    };
+
+
+
 };
