@@ -1,28 +1,32 @@
 "use strict"; // Declaring Strict Mode to enforce better coding standards
 
-// Included module files. Executed on new global creation.
+
 const log = require('./helper_logging');
+log.output('Info',"Initializing Globals", true);
 const init = require('./helper_initializations');
-
-
-// Provide an info message to the console when the globals are reloaded.
-// log.info("Refreshing Globals")
 
 
 // Initializations to perform with every Global refresh
 // init.initMemory(); // Not doing this right now until I need it
 
 
-// Main loop that is executed every tick.
-module.exports.loop = function () {
+module.exports.loop = function () { // Main loop that is executed every tick.
 
 
-    // Create a new empire object
+    log.output('Info',"Initializing Main", true);
+
+
+    log.output('Info',"Creating Empire Object",false,true);
     init.initEmpire("Xalizar's Empire");
+    log.output('Debug',"Name of Empire object: " + empire.name,false,true);
+
+
+    log.output('Info',"Getting all visible rooms for the Empire Object",false,true);
+    empire.getVisibleRooms();
 
 
     // Post Operations actions and utilities below
-    // Put my console commands into the Global scope so I can access from the command line
+    log.output('Info',"Initializing console commands and adding to global",false,true);
     init.initConsoleCommands();
 
 

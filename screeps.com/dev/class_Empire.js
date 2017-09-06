@@ -6,14 +6,15 @@ var _ = require('lodash');
 module.exports = class Empire {
     constructor(name) {
         this.name = name;
-        this.rooms = Game.rooms;
+        // this.rooms = Game.rooms;
     };
 
 
     getVisibleRooms() {
-        for (let i in Game.rooms) {
-            console.log(Game.rooms[i].name);
-        };
+        if (!this.rooms) {this.rooms = Game.rooms};
+        // for (let i in Game.rooms) {
+        //     console.log(Game.rooms[i].name);
+        // };
     };
 
 

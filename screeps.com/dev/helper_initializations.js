@@ -19,7 +19,7 @@ module.exports = {
     initEmpire: function (empireName) {
         var empire = Empire.create(empireName);
         // @ts-ignore
-        global.emp = empire;
+        global.empire = empire;
     },
 
 
