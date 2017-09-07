@@ -10,8 +10,8 @@ module.exports = {
     /**
      * @param {string} type - The type of output message you want this to be [Event, Info, Debug, Warning, Error]
      * @param {string} message - The message you want to display
-     * @param {boolean} lineBreak - Indicate if you want a line break before the message
-     * @param {boolean} tab - Indicate if you want to indent the message
+     * @param {boolean} [lineBreak] - Indicate if you want a line break before the message
+     * @param {boolean} [tab] - Indicate if you want to indent the message
      */
     output: function (type, message, lineBreak = false, tab = false) {
         var runCode = false;

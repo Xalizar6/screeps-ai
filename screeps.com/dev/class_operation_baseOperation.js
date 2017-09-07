@@ -1,13 +1,12 @@
 "use strict"; // Declaring Strict Mode to enforce better coding standards
 
 
+const Operation = require('./class_Operation');
 const Empire = require('./class_Empire');
-const Mission = require('./class_Mission');
 
 
-// Class for housing information and functions for managing my operations.
-module.exports = class Operation {
-    
+module.exports = class baseOperation extends Operation {
+
 
     /**
      * @param {Flag} flag - missions will operate relative to this flag, use the following naming convention: "operationType_operationName"
@@ -16,44 +15,26 @@ module.exports = class Operation {
      * @param {Empire} empire - object used for empire-scoped behavior (terminal transmission, etc.)
      */
     constructor(flag,name,type,empire) {
-        this.flag = flag;
+        super(flag,name,type,empire);
         this.name = name;
-        this.type = type;
     };
 
 
-    init() {
-
-    };
-
-
-    roleCall() {
-
-    };
+    initOperation() {
+        // this line tells our operation where to spawn from
+        this.spawnGroup = this.empire.getSpawnGroup(this.flag.room.name);
+        // instantiate our mission
+        this.addMission(new HarvestMission(this))
+    }
 
 
-    actions() {
-
-    };
-
-
-    finalize() {
+    finalizeOperation() {
 
     };
 
 
-    invalidateCache() {
+    invalidateOperationCache() {
 
-    };
-
-
-    /**
-     * @param {Mission} mission
-     */
-    addMission(mission) {
-        // it is important for every mission belonging to an operation to have
-        // a unique name or they will be overwritten here
-        this.missions[mission.name] = mission;
     };
 
 

@@ -1,15 +1,19 @@
 "use strict"; // Declaring Strict Mode to enforce better coding standards
 
+var Mission = require('./class_Mission');
 
-// Class for housing information and functions for managing missions.
-module.exports = class Mission {
+module.exports = class harvestEnergy extends Mission {
+
+
     constructor (name) {
+        super(name);
         this.name = name;
     };
 
+
     initMission() {};
-
-
+    
+    
     roleCall() {};
 
 
@@ -23,3 +27,4 @@ module.exports = class Mission {
 
 
 };
+
