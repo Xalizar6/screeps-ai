@@ -3,6 +3,7 @@
 
 const Operation = require('./class_Operation');
 const Empire = require('./class_Empire');
+const harvestEnergy = require('./class_mission_harvestEnergy');
 
 
 module.exports = class baseOperation extends Operation {
@@ -14,9 +15,8 @@ module.exports = class baseOperation extends Operation {
      * @param {string} type - first part of flag.name, used to determine which operation class to instantiate
      * @param {Empire} empire - object used for empire-scoped behavior (terminal transmission, etc.)
      */
-    constructor(flag,name,type,empire) {
-        super(flag,name,type,empire);
-        this.name = name;
+    constructor(flag, name, type, empire) {
+        super(flag, name, type, empire);
     };
 
 
@@ -24,7 +24,7 @@ module.exports = class baseOperation extends Operation {
         // this line tells our operation where to spawn from
         this.spawnGroup = this.empire.getSpawnGroup(this.flag.room.name);
         // instantiate our mission
-        this.addMission(new HarvestMission(this))
+        this.addMission(new harvestEnergy(this))
     }
 
 
