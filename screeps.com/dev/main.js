@@ -29,5 +29,6 @@ module.exports.loop = function () { // Main loop that is executed every tick.
     log.output('Info',"Initializing console commands and adding to global",false,true);
     init.initConsoleCommands();
 
+    // test
 
 };
