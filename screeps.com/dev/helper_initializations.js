@@ -18,8 +18,10 @@ module.exports = {
     /** @param {string} empireName */
     initEmpire: function (empireName) {
         var empire = Empire.create(empireName);
+        empire.init();
         // @ts-ignore
         global.empire = empire;
+        return empire;
     },
 
 

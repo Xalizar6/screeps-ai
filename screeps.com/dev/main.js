@@ -17,7 +17,7 @@ module.exports.loop = function () { // Main loop that is executed every tick.
 
 
     log.output('Info',"Creating Empire Object",false,true);
-    init.initEmpire("Xalizar's Empire");
+    let empire = init.initEmpire("Xalizar's Empire");
     log.output('Debug',"Name of Empire object: " + empire.name,false,true);
 
 

@@ -9,6 +9,9 @@ module.exports = class Empire {
         // this.rooms = Game.rooms;
     };
 
+    init() {
+
+    };
 
     getVisibleRooms() {
         if (!this.rooms) {this.rooms = Game.rooms};
