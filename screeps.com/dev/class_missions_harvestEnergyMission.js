@@ -1,7 +1,7 @@
 "use strict"; // Declaring Strict Mode to enforce better coding standards
 
 
-var Mission = require('./class_Mission');
+var Mission = require('./class_missions_Mission');
 
 
 module.exports = class harvestEnergy extends Mission {

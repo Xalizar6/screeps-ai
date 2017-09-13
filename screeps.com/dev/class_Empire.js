@@ -9,15 +9,8 @@ module.exports = class Empire {
         // this.rooms = Game.rooms;
     };
 
-    init() {
-
-    };
-
-    getVisibleRooms() {
-        if (!this.rooms) {this.rooms = Game.rooms};
-        // for (let i in Game.rooms) {
-        //     console.log(Game.rooms[i].name);
-        // };
+    static create(name) {
+        return new Empire(name);
     };
 
 
@@ -34,9 +27,22 @@ module.exports = class Empire {
     };
 
 
-    static create(name) {
-        return new Empire(name);
+    getSpawnGroup(flag) {
+
     };
     
+    
+    getVisibleRooms() {
+        if (!this.rooms) {this.rooms = Game.rooms};
+        // for (let i in Game.rooms) {
+        //     console.log(Game.rooms[i].name);
+        // };
+    };
 
+
+    init() {
+        
+    };
+
+            
 };

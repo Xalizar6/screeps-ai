@@ -1,9 +1,9 @@
 "use strict"; // Declaring Strict Mode to enforce better coding standards
 
 
-const Operation = require('./class_Operation');
+const Operation = require('./class_ops_Operation');
 const Empire = require('./class_Empire');
-const harvestEnergy = require('./class_mission_harvestEnergy');
+const harvestEnergy = require('./class_missions_harvestEnergyMission');
 
 
 module.exports = class baseOperation extends Operation {

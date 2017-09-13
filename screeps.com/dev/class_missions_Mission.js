@@ -1,5 +1,5 @@
 "use strict"; // Declaring Strict Mode to enforce better coding standards
-const Operation = require('./class_Operation');
+const Operation = require('./class_ops_Operation');
 
 // Class for housing information and functions for managing missions.
 module.exports = class Mission {

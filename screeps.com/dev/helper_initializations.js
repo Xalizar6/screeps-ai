@@ -7,14 +7,20 @@ const Empire = require('./class_Empire');
 
 
 module.exports = {
+    
+    /** @param {Empire} empire */
+    getOperations: function (empire) {
+        
+    
+    },
 
 
     initConsoleCommands: function () {
         // @ts-ignore
-        global.cc = consoleCommands; // Make my consoleCommands available in the console.
+        global.cc = consoleCommands; // Make my consoleCommands available globally via the console with cc alias.
     },
 
-
+    
     /** @param {string} empireName */
     initEmpire: function (empireName) {
         var empire = Empire.create(empireName);
@@ -47,10 +53,6 @@ module.exports = {
         });
     },
 
-    initOperations: function () {
-        
-
-    },
 
 
 };

@@ -2,7 +2,7 @@
 
 
 const Empire = require('./class_Empire');
-const Mission = require('./class_Mission');
+const Mission = require('./class_missions_Mission');
 
 
 // Class for housing information and functions for managing my operations.
