@@ -30,11 +30,8 @@ module.exports = {
                 } else {
                     log.output('Warning','Flag ' + flagName + ' could not be matched to an operation type.');
                 };
-
             };
-
         };
-        Game.operations = operationList;
         return operationList
     },
 

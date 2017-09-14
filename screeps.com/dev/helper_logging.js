@@ -1,8 +1,6 @@
 "use strict"; // Declaring Strict Mode to enforce better coding standards
 
-
 const constants = require('./helper_constants');
-
 
 module.exports = {
 

@@ -34,9 +34,7 @@ module.exports = class Empire {
     
     getVisibleRooms() {
         if (!this.rooms) {this.rooms = Game.rooms};
-        // for (let i in Game.rooms) {
-        //     console.log(Game.rooms[i].name);
-        // };
+        // for (let i in Game.rooms) { console.log(Game.rooms[i].name); };
     };
 
 

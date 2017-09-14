@@ -26,11 +26,17 @@ module.exports.loop = function () { // Main loop that is executed every tick.
     log.output('Info', "Begin - Getting all Operations by flags", true, true);
     let operations = init.getOperations(empire);
     log.output('Info', "End - Getting all Operations by flags", false, true);
-    for (let op in operations) {
+
+
+    for (let operation in operations) {
         log.output('Debug',
-            'Operation name: ' + operations[op].name + "    " +
-            'Operation type: ' + operations[op].type, false, true
+            'Operation name: ' + operations[operation].name + "    " +
+            'Operation type: ' + operations[operation].type + "    " +
+            'Operation flag: ' + operations[operation].flag, false, true
         )
+        
+        operations[operation].init();
+
     };
 
 
