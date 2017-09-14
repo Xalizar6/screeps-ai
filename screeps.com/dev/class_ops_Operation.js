@@ -1,6 +1,9 @@
 "use strict"; // Declaring Strict Mode to enforce better coding standards
 
 
+const log = require('./helper_logging');
+
+
 // Class for housing information and functions for managing my operations.
 module.exports = class Operation {
 
@@ -21,8 +24,9 @@ module.exports = class Operation {
 
 
     init() {
-        // console.log('class_ops_Operation initialization'  + '    ' + this.name)
+        log.output('Info','Begin - class_ops_Operation initialization'  + '    ' + this.name,false,true)
         this.initOperation();
+        log.output('Info','End - class_ops_Operation initialization'  + '    ' + this.name,false,true)
     };
 
 

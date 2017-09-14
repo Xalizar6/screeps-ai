@@ -6,7 +6,7 @@ var _ = require('lodash');
 module.exports = class Empire {
     constructor(name) {
         this.name = name;
-        // this.rooms = Game.rooms;
+        this.spawnGroups = {};
     };
 
     static create(name) {
@@ -27,7 +27,7 @@ module.exports = class Empire {
     };
 
 
-    getSpawnGroup(flag) {
+    getSpawnGroup(roomName) {
 
     };
     

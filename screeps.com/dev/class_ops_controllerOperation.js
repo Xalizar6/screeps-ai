@@ -1,5 +1,6 @@
 "use strict"; // Declaring Strict Mode to enforce better coding standards
 
+const log = require('./helper_logging');
 const Operation = require('./class_ops_Operation');
 
 
@@ -18,10 +19,14 @@ module.exports = class baseOperation extends Operation {
 
 
     initOperation() {
-        console.log('class_ops_controllerOperation initialization' + '    ' + this.name)
-        
+        log.output('Info', 'Begin - class_ops_controllerOperation initialization' + '    ' + this.name, false, true)
         // this line tells our operation where to spawn from
         // this.spawnGroup = this.empire.getSpawnGroup(this.flag.room.name);
+
+
+
+        log.output('Info', 'End - class_ops_controllerOperation initialization' + '    ' + this.name, false, true)
+
 
         // instantiate our mission
         // this.addMission(new harvestEnergy(this))

@@ -8,27 +8,33 @@ const log = require('./helper_logging');
 const Empire = require('./class_Empire');
 const baseOperation = require('./class_ops_baseOperation');
 
+// These are the different types of Operations that can be instantiated by putting the
+// property name in the name of the flag that is put on the map.
+const operationClasses = {
+    base: baseOperation,
+};
+
 
 module.exports = {
-    
+
 
     /** @param {Empire} empire */
     getOperations: function (empire) {
         let operationList = {};
         let operation;
         for (let flagName in Game.flags) {
-            for (let operationType in constants.operationClasses){
+            for (let operationType in operationClasses) {
                 if (flagName.substring(0, operationType.length) === operationType) {
-                    let operationClass = constants.operationClasses[operationType];
+                    let operationClass = operationClasses[operationType];
                     let flag = Game.flags[flagName];
                     let name = flagName.substring(flagName.indexOf("_") + 1);
                     if (operationList.hasOwnProperty(name)) {
-                        log.output('Warning','An operation with the name ' + name + ' already exists on the operation list, use a different name.',true)
+                        log.output('Warning', 'An operation with the name ' + name + ' already exists on the operation list, use a different name.', true)
                     };
                     operation = new operationClass(flag, name, operationType, empire);
                     operationList[name] = operation;
                 } else {
-                    log.output('Warning','Flag ' + flagName + ' could not be matched to an operation type.');
+                    log.output('Warning', 'Flag ' + flagName + ' could not be matched to an operation type.');
                 };
             };
         };
@@ -41,7 +47,7 @@ module.exports = {
         global.cc = consoleCommands; // Make my consoleCommands available globally via the console with cc alias.
     },
 
-    
+
     /** @param {string} empireName */
     initEmpire: function (empireName) {
         var empire = Empire.create(empireName);
