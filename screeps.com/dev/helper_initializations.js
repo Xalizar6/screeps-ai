@@ -3,15 +3,39 @@
 
 var _ = require('lodash');
 const consoleCommands = require('./helper_consoleCommands');
+const constants = require('./helper_constants');
+const log = require('./helper_logging');
 const Empire = require('./class_Empire');
+const baseOperation = require('./class_ops_baseOperation');
 
 
 module.exports = {
     
+
     /** @param {Empire} empire */
     getOperations: function (empire) {
-        
-    
+        let operationList = {};
+        let operation;
+        for (let flagName in Game.flags) {
+            for (let operationType in constants.operationClasses){
+                if (flagName.substring(0, operationType.length) === operationType) {
+                    let operationClass = constants.operationClasses[operationType];
+                    let flag = Game.flags[flagName];
+                    let name = flagName.substring(flagName.indexOf("_") + 1);
+                    if (operationList.hasOwnProperty(name)) {
+                        log.output('Warning','An operation with the name ' + name + ' already exists on the operation list, use a different name.',true)
+                    };
+                    operation = new operationClass(flag, name, operationType, empire);
+                    operationList[name] = operation;
+                } else {
+                    log.output('Warning','Flag ' + flagName + ' could not be matched to an operation type.');
+                };
+
+            };
+
+        };
+        Game.operations = operationList;
+        return operationList
     },
 
 

@@ -2,7 +2,7 @@
 
 
 const Empire = require('./class_Empire');
-const Mission = require('./class_missions_Mission');
+// const Mission = require('./class_missions_Mission');
 
 
 // Class for housing information and functions for managing my operations.
@@ -20,7 +20,7 @@ module.exports = class Operation {
         this.name = name;
         this.type = type;
         this.empire = empire;
-        if (!this.missions) { this.missions = {}; };
+        // if (!this.missions) { this.missions = {}; };
     };
 
 
