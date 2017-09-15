@@ -24,9 +24,9 @@ module.exports = class Operation {
 
 
     init() {
-        log.output('Info','Begin - class_ops_Operation initialization'  + '    ' + this.name,false,true)
+        log.output('Info','Begin - Master Operation initialization'  + '    ' + this.name,false,true)
         this.initOperation();
-        log.output('Info','End - class_ops_Operation initialization'  + '    ' + this.name,false,true)
+        log.output('Info','End - Master Operation initialization'  + '    ' + this.name,false,true)
     };
 
 

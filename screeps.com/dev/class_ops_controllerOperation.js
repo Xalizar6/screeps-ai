@@ -19,13 +19,14 @@ module.exports = class baseOperation extends Operation {
 
 
     initOperation() {
-        log.output('Info', 'Begin - class_ops_controllerOperation initialization' + '    ' + this.name, false, true)
+        log.output('Info', 'Begin - controllerOperation initialization' + '    ' + this.name, false, true)
         // this line tells our operation where to spawn from
-        // this.spawnGroup = this.empire.getSpawnGroup(this.flag.room.name);
+        this.spawnGroup = this.empire.getSpawnGroup(this.flag.room.name);
+        log.output('Debug','Controller Operation Spawn Group: ' + this.spawnGroup);
 
 
 
-        log.output('Info', 'End - class_ops_controllerOperation initialization' + '    ' + this.name, false, true)
+        log.output('Info', 'End - controllerOperation initialization' + '    ' + this.name, false, true)
 
 
         // instantiate our mission

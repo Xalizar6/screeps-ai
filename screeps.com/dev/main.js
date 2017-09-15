@@ -18,6 +18,9 @@ module.exports.loop = function () { // Main loop that is executed every tick.
     let empire = init.initEmpire("Xalizar's Empire");
     log.output('Info', "End - Creating Empire Object", false, true);
     log.output('Debug', "Name of Empire object: " + empire.name, false, true);
+    log.output('Debug', "Spawn Groups on Empire object: " + empire.spawnGroups, false, true);
+    for (let i in empire.spawnGroups) { console.log(i) };
+    
 
 
     log.output('Info', "Begin - Getting all Operations by flags", true, true);

@@ -1,6 +1,6 @@
 "use strict"; // Declaring Strict Mode to enforce better coding standards
 var _ = require('lodash');
-
+const SpawnGroup = require('./class_spawnGroup');
 
 // Class for housing information and functions for managing my empire.
 module.exports = class Empire {
@@ -28,7 +28,15 @@ module.exports = class Empire {
 
 
     getSpawnGroup(roomName) {
-
+        if (this.spawnGroups[roomName]){
+            return this.spawnGroups[roomName];
+        } else {
+            let room = Game.rooms[roomName];
+            if (room && room.find(FIND_MY_SPAWNS).length > 0) {
+                this.spawnGroups[roomName] = new SpawnGroup(room);
+                return this.spawnGroups[roomName];
+            };
+        };
     };
     
     
