@@ -4,9 +4,6 @@ World Logic
         Task Level Logic based on the room Size
 
 
-
-
-
 World Logic
     Room Logic - room_Base //Prototype that holds functions and properties generic to all rooms
         task.GatherEnergy
