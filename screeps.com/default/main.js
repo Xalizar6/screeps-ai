@@ -1,33 +1,41 @@
 "use strict"; // Declaring Strict Mode to enforce better coding standards
 
+
 //Included module files, executed on new global creation every 10 seconds or so.
-const startModules = Game.cpu.getUsed();
-console.log("Start - Including modules")
+const log = require('./helper_logging');
 
-var C_mRoleHarvester = require('role.harvester');
-var C_mRoleUpgrader = require('role.upgrader');
-var C_mRoleDedicatedHarvester = require('role.dedicatedHarvester')
-var logisticsLocal = require('role.logisticsLocal')
-var C_mRoleLogisticsShortRange = require('role.logisticsShortRange')
-var C_mRolebuilder = require('role.builder');
-var C_mSpawncode = require('spawncode');
-var C_mTowerCode = require('towercode');
-var myFunctions = require('myFunctions');
+log.output('Info', 'Begin - Initializing Globals', true);
 
-console.log("Done - Including modules took: " + (Game.cpu.getUsed() - startModules) + " CPU Time");
+let startModules = Game.cpu.getUsed();
+
+let C_mRoleHarvester = require('role.harvester');
+let C_mRoleUpgrader = require('role.upgrader');
+let C_mRoleDedicatedHarvester = require('role.dedicatedHarvester')
+let logisticsLocal = require('role.logisticsLocal')
+let C_mRoleLogisticsShortRange = require('role.logisticsShortRange')
+let C_mRolebuilder = require('role.builder');
+let C_mSpawncode = require('spawncode');
+let C_mTowerCode = require('towercode');
+let myFunctions = require('myFunctions');
+
+log.output('Info', 'End - Initializing Globals');
+log.output('Info', 'Initializing modules took: ' + (Game.cpu.getUsed() - startModules) + ' CPU Time',false,true);
 
 
 module.exports.loop = function () { // this loop is executed every tick
 
+    log.output('Info', "Begin - Main", true);
+    let mainLoop = Game.cpu.getUsed();
+
     // Declare variables
-    var sName;
-    var oCreep;
+    let sName;
+    let oCreep;
 
     // call the spawncode module
-    C_mSpawncode.run()
+    C_mSpawncode.run();
 
     // run the towercode module
-    C_mTowerCode.play()
+    C_mTowerCode.play();
 
     //call the role based work modules
     for (sName in Game.creeps) {
@@ -52,6 +60,6 @@ module.exports.loop = function () { // this loop is executed every tick
         }
     }
 
-    // console.log("Total CPU Time used: " + Game.cpu.getUsed());
-
+    log.output('Info', 'End - Main', true);
+    log.output('Info', 'Main took: ' + (Game.cpu.getUsed() - mainLoop) + ' CPU Time',false,true);
 }
