@@ -17,6 +17,7 @@ let C_mSpawncode = require('spawncode');
 let C_mTowerCode = require('towercode');
 let myFunctions = require('myFunctions');
 let init = require('helper_initializations');
+let cacheData = require('helper_cacheData');
 
 log.output('Info', 'End - Initializing Globals');
 log.output('Info', 'Initializing modules took: ' + (Game.cpu.getUsed() - startModules) + ' CPU Time',false,true);
@@ -26,6 +27,8 @@ module.exports.loop = function () { // this loop is executed every tick
 
     log.output('Info', "Begin - Main", true);
     let mainLoop = Game.cpu.getUsed();
+
+    cacheData();
 
     // Declare variables
     let sName;
