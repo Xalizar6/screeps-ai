@@ -116,3 +116,6 @@ console.log(blah);
 
 var x = new [];
 x.push(WORK)
+
+
+a = Game.getObjectById('5982fc6bb097071b4adbd5f7'); for (let x in a) {console.log(x)}; a.memory = 'test'
