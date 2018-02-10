@@ -5,7 +5,6 @@
 const log = require('./helper_logging');
 
 log.output('Info', 'Begin - Initializing Globals', true);
-
 let startModules = Game.cpu.getUsed();
 
 let C_mRoleHarvester = require('role.harvester');
@@ -17,6 +16,7 @@ let C_mRolebuilder = require('role.builder');
 let C_mSpawncode = require('spawncode');
 let C_mTowerCode = require('towercode');
 let myFunctions = require('myFunctions');
+let init = require('helper_initializations');
 
 log.output('Info', 'End - Initializing Globals');
 log.output('Info', 'Initializing modules took: ' + (Game.cpu.getUsed() - startModules) + ' CPU Time',false,true);
@@ -31,6 +31,9 @@ module.exports.loop = function () { // this loop is executed every tick
     let sName;
     let oCreep;
 
+    // initialize console commands with the alias of cc
+    init.initConsoleCommands();
+    
     // call the spawncode module
     C_mSpawncode.run();
 
