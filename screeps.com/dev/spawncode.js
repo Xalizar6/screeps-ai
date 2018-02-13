@@ -1,26 +1,28 @@
 "use strict"; // Declaring Strict Mode to enforce better coding standards
 
 
-module.exports = {
-
-    run: function() {
-
-        // Code in Progress. Attemping to create the same number of dedicated harvesters as there are sources.
-            // Find the sources in a room and add to an array.
-                // let aSources = Game.spawns['Spawn1'].room.find(FIND_SOURCES);
-            // Find the size of the array
-                // console.log('Number of Sources: ' + aSources.length);
-            // Create 1 dedicated harvester for each source
-                // let nMinNumberOfDedicatedHarvesters = aSources.length;
-
-        //Set Variables
+function findSources() {
+    // Attemping to create the same number of dedicated harvesters as there are sources.
+    // Find the sources in a room and add to an array.
+        let aSources = Game.spawns['Spawn1'].room.find(FIND_SOURCES);
+    // Return the size of the array
+        return aSources.length;
+    };
+    
+    module.exports = {
+        
+        run: function() {
+            
+            //Set Variables
             // Set the minimum number of each kind that we want for production
-                var nMinNumberOfHarvesters = 4;
-                var nMinNumberOfUpgraders = 3;
-                var nMinNumberOfBuilders = 2;
-                var nMinNumberOfDedicatedHarvesters = 1;               
-                var nMinNumberOfLogisticsShortRange = 1;
-                var nMinNumberOflogisticsLocal = 1;
+            // Create 1 dedicated harvester for each source
+            var nMinNumberOfHarvesters = 4;
+            var nMinNumberOfUpgraders = 3;
+            var nMinNumberOfBuilders = 2;
+            // let nMinNumberOfDedicatedHarvesters = findSources();
+            var nMinNumberOfDedicatedHarvesters = 1;               
+            var nMinNumberOfLogisticsShortRange = 1;
+            var nMinNumberOflogisticsLocal = 1;
 
         //Clear the deceased creeps from memory
         for( var name in Memory.creeps ) {

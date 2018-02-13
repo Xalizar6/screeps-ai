@@ -12,7 +12,7 @@ module.exports = {
     showDebugMessages: false,
     showErrorMessages: false,
     showEventMessages: false,
-    showInfoMessages: false,
+    showInfoMessages: true,
     showWarningMessages: false,
 
 

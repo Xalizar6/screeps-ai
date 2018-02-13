@@ -22,6 +22,16 @@ let cacheData = require('helper_cacheData');
 log.output('Info', 'End - Initializing Globals');
 log.output('Info', 'Initializing modules took: ' + (Game.cpu.getUsed() - startModules) + ' CPU Time',false,true);
 
+log.output('Info', 'Start - Adding Sources to Room Memory',true);
+
+    if (!Game.spawns['Spawn1'].room.memory.sourceIds) {
+        // Find the sources and store their id's in memory, 
+        // NOT the full objects
+        Game.spawns['Spawn1'].room.memory.sourceIds = Game.spawns['Spawn1'].room.find(FIND_SOURCES).map(source => source.id);
+    };
+
+log.output('Info', 'End - Adding Sources to Room Memory');
+
 
 module.exports.loop = function () { // this loop is executed every tick
 
