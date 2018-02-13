@@ -1,7 +1,7 @@
 "use strict"; // Declaring Strict Mode to enforce better coding standards
 
 
-var myFunctions = require('myFunctions');
+var myFunctions = require('helper_myFunctions');
 
 module.exports = {
     /** @param {Creep} creep **/

@@ -15,7 +15,7 @@ let C_mRoleLogisticsShortRange = require('role.logisticsShortRange')
 let C_mRolebuilder = require('role.builder');
 let C_mSpawncode = require('spawncode');
 let C_mTowerCode = require('towercode');
-let myFunctions = require('myFunctions');
+let myFunctions = require('helper_myFunctions');
 let init = require('helper_initializations');
 let cacheData = require('helper_cacheData');
 
