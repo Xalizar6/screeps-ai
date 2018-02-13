@@ -1,5 +1,6 @@
 "use strict"; // Declaring Strict Mode to enforce better coding standards
 
+// as of 2/13/18 this is not in use as I don't fully understand it yet.
 
 module.exports = function () {
 

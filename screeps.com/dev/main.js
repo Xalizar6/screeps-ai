@@ -28,7 +28,6 @@ module.exports.loop = function () { // this loop is executed every tick
     log.output('Info', "Begin - Main", true);
     let mainLoop = Game.cpu.getUsed();
 
-    cacheData();
 
     // Declare variables
     let sName;
