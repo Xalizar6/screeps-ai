@@ -12,7 +12,7 @@ module.exports = {
         // test code
             console.log('Dedicated harvester: ' + 'Name: ' + creep.name + ' ' + 'Room: ' + creep.room.name)
             for (let i in creep.room.memory.sourceIds) {
-                console.log(creep.room.memory.sourceIds[i]);
+                console.log('Source ID: ' + creep.room.memory.sourceIds[i]);
             };
             // console.log(creep.room.memory.sourceIds)
 
