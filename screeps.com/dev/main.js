@@ -5,50 +5,40 @@
 const log = require('./helper_logging');
 
 log.output('Info', 'Begin - Initializing Globals', true);
-let startModules = Game.cpu.getUsed();
+    let startModules = Game.cpu.getUsed();
 
-let C_mRoleHarvester = require('role.harvester');
-let C_mRoleUpgrader = require('role.upgrader');
-let C_mRoleDedicatedHarvester = require('role.dedicatedHarvester')
-let logisticsLocal = require('role.logisticsLocal')
-let C_mRoleLogisticsShortRange = require('role.logisticsShortRange')
-let C_mRolebuilder = require('role.builder');
-let C_mSpawncode = require('spawncode');
-let C_mTowerCode = require('towercode');
-let myFunctions = require('helper_myFunctions');
-let init = require('helper_initializations');
-let cacheData = require('helper_cacheData');
+    let C_mRoleHarvester = require('role.harvester');
+    let C_mRoleUpgrader = require('role.upgrader');
+    let C_mRoleDedicatedHarvester = require('role.dedicatedHarvester')
+    let logisticsLocal = require('role.logisticsLocal')
+    let C_mRoleLogisticsShortRange = require('role.logisticsShortRange')
+    let C_mRolebuilder = require('role.builder');
+    let C_mSpawncode = require('spawncode');
+    let C_mTowerCode = require('towercode');
+    let myFunctions = require('helper_myFunctions');
+    let init = require('helper_initializations');
+    let cacheData = require('helper_cacheData');
 
+    log.output('Info', 'Initializing modules took: ' + (Game.cpu.getUsed() - startModules) + ' CPU Time',false,true);
 log.output('Info', 'End - Initializing Globals');
-log.output('Info', 'Initializing modules took: ' + (Game.cpu.getUsed() - startModules) + ' CPU Time',false,true);
 
+ 
 log.output('Info', 'Start - Adding Sources to Room Memory',true);
+    let timer2 = Game.cpu.getUsed();
 
-if (!Game.spawns['Spawn1'].room.memory.sources) {
-    Game.spawns['Spawn1'].room.memory.sources = {};
-};
+    if (!Game.spawns['Spawn1'].room.memory.sources) {
+        Game.spawns['Spawn1'].room.memory.sources = {};
+    };
 
-let arrayOfSources = Game.spawns['Spawn1'].room.find(FIND_SOURCES);
-for (let x in arrayOfSources) {
-    Game.spawns['Spawn1'].room.memory.sources[x] = {};
-    Game.spawns['Spawn1'].room.memory.sources[x].id = arrayOfSources[x].id;
-    Game.spawns['Spawn1'].room.memory.sources[x].harvester = '';
-    Game.spawns['Spawn1'].room.memory.sources[x].hauler = '';
-};
+    let arrayOfSources = Game.spawns['Spawn1'].room.find(FIND_SOURCES);
+    for (let x in arrayOfSources) {
+        Game.spawns['Spawn1'].room.memory.sources[x] = {};
+        Game.spawns['Spawn1'].room.memory.sources[x].id = arrayOfSources[x].id;
+        Game.spawns['Spawn1'].room.memory.sources[x].harvester = '';
+        Game.spawns['Spawn1'].room.memory.sources[x].hauler = '';
+    };
 
-    // if (!Game.spawns['Spawn1'].room.memory.sourceIds) {
-    //     // Find the sources and store their id's in memory, 
-    //     // NOT the full objects
-        
-    //     // Game.spawns['Spawn1'].room.memory.sourceIds = Game.spawns['Spawn1'].room.find(FIND_SOURCES).map(source => source.id);
-    // };
-
-    // if (!Game.spawns['Spawn1'].room.memory.sourceIds.assignedHarvester) {
-    //     for (let x in Game.spawns['Spawn1'].room.memory.sourceIds) {
-    //         // Game.spawns['Spawn1'].room.memory.sourceIds[x].assignedHarvester = ''
-    //     }
-    // };
-
+    log.output('Info', 'Adding Sources to Room Memory took: ' + (Game.cpu.getUsed() - timer2) + ' CPU Time',false,true);
 log.output('Info', 'End - Adding Sources to Room Memory');
 
 
@@ -94,6 +84,6 @@ module.exports.loop = function () { // this loop is executed every tick
         }
     }
 
-    log.output('Info', 'End - Main', true);
-    log.output('Info', 'Main took: ' + (Game.cpu.getUsed() - mainLoop) + ' CPU Time',false,true);
+    log.output('Info', 'Main took: ' + (Game.cpu.getUsed() - mainLoop) + ' CPU Time',true,true);
+    log.output('Info', 'End - Main');
 }
