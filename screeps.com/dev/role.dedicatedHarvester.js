@@ -1,13 +1,11 @@
 "use strict"; // Declaring Strict Mode to enforce better coding standards
 
-var myFunctions = require('helper_myFunctions');
+const myFunctions = require('helper_myFunctions');
 
 module.exports = {
 
     /** @param {Creep} creep **/
     run: function (creep) {
-        // Declare variables
-        var source
 
         // test code
             console.log('Dedicated harvester: ' + 'Name: ' + creep.name + ' ' + 'Room: ' + creep.room.name)
@@ -17,7 +15,7 @@ module.exports = {
             // console.log(creep.room.memory.sourceIds)
 
         // Locate the source
-        source = Game.getObjectById("5982fc6bb097071b4adbd5f7")
+        let source = Game.getObjectById("5982fc6bb097071b4adbd5f7")
         
         // Call the function to harvest energy
         myFunctions.harvestEnergy(creep, source)
