@@ -9,7 +9,7 @@ module.exports = {
 
     // These properties are used by the helper_logging module to control the level of output
     // you see in the console.
-    showDebugMessages: false,
+    showDebugMessages: true,
     showErrorMessages: false,
     showEventMessages: false,
     showInfoMessages: true,

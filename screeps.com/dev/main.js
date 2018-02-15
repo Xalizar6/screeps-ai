@@ -4,7 +4,7 @@
 //Included module files, executed on new global creation every 10 seconds or so.
 const log = require('./helper_logging');
 
-log.output('Info', 'Begin - Initializing Globals', true);
+log.output('Info', 'Begin - Initializing Modules', true);
     let startModules = Game.cpu.getUsed();
 
     let C_mRoleHarvester = require('role.harvester');
@@ -20,7 +20,7 @@ log.output('Info', 'Begin - Initializing Globals', true);
     let cacheData = require('helper_cacheData');
 
     log.output('Info', 'Initializing modules took: ' + (Game.cpu.getUsed() - startModules) + ' CPU Time',false,true);
-log.output('Info', 'End - Initializing Globals');
+log.output('Info', 'End - Initializing Modules');
 
  
 log.output('Info', 'Start - Adding Sources to Room Memory',true);
@@ -32,10 +32,23 @@ log.output('Info', 'Start - Adding Sources to Room Memory',true);
 
     let arrayOfSources = Game.spawns['Spawn1'].room.find(FIND_SOURCES);
     for (let x in arrayOfSources) {
-        Game.spawns['Spawn1'].room.memory.sources[x] = {};
-        Game.spawns['Spawn1'].room.memory.sources[x].id = arrayOfSources[x].id;
-        Game.spawns['Spawn1'].room.memory.sources[x].harvester = '';
-        Game.spawns['Spawn1'].room.memory.sources[x].hauler = '';
+
+        if (!Game.spawns['Spawn1'].room.memory.sources[x]) {
+            Game.spawns['Spawn1'].room.memory.sources[x] = {};
+        };
+
+        if (!Game.spawns['Spawn1'].room.memory.sources[x].id) {
+            Game.spawns['Spawn1'].room.memory.sources[x].id = arrayOfSources[x].id;
+        };
+
+        if (!Game.spawns['Spawn1'].room.memory.sources[x].harvester) {
+            Game.spawns['Spawn1'].room.memory.sources[x].harvester = '';
+        };
+
+        if (!Game.spawns['Spawn1'].room.memory.sources[x].hauler) {
+            Game.spawns['Spawn1'].room.memory.sources[x].hauler = '';
+        };
+
     };
 
     log.output('Info', 'Adding Sources to Room Memory took: ' + (Game.cpu.getUsed() - timer2) + ' CPU Time',false,true);
