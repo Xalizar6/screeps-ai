@@ -23,7 +23,7 @@ log.output('Info', 'Begin - Initializing Modules', true);
 log.output('Info', 'End - Initializing Modules');
 
  
-log.output('Info', 'Start - Adding Sources to Room Memory',true);
+log.output('Info', 'Begin - Adding Sources to Room Memory',true);
     let timer2 = Game.cpu.getUsed();
 
     if (!Game.spawns['Spawn1'].room.memory.sources) {
