@@ -6,8 +6,8 @@ module.exports = {
     /** @param {Creep} creep **/
     harvestEnergy: function (creep, energySource) {
         if (creep.harvest(energySource) == ERR_NOT_IN_RANGE) {
-            creep.moveTo(energySource, { visualizePathStyle: { stroke: '#f2f210' } });
-        }
+            creep.moveTo(energySource, { visualizePathStyle: { stroke: '#f2f210' } });            
+        };
     },
 
     /** @param {Creep} creep **/

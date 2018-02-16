@@ -5,7 +5,7 @@
 const log = require('./helper_logging');
 
 log.output('Info', 'Begin - Initializing Modules', true);
-    let startModules = Game.cpu.getUsed();
+    let timer1 = Game.cpu.getUsed();
 
     let C_mRoleHarvester = require('role.harvester');
     let C_mRoleUpgrader = require('role.upgrader');
@@ -19,7 +19,7 @@ log.output('Info', 'Begin - Initializing Modules', true);
     let init = require('helper_initializations');
     let cacheData = require('helper_cacheData');
 
-    log.output('Info', 'Initializing modules took: ' + (Game.cpu.getUsed() - startModules) + ' CPU Time',false,true);
+    log.output('Info', 'Initializing modules took: ' + (Game.cpu.getUsed() - timer1) + ' CPU Time',false,true);
 log.output('Info', 'End - Initializing Modules');
 
  
@@ -31,6 +31,7 @@ log.output('Info', 'Start - Adding Sources to Room Memory',true);
     };
 
     let arrayOfSources = Game.spawns['Spawn1'].room.find(FIND_SOURCES);
+    
     for (let x in arrayOfSources) {
 
         if (!Game.spawns['Spawn1'].room.memory.sources[x]) {
@@ -41,13 +42,13 @@ log.output('Info', 'Start - Adding Sources to Room Memory',true);
             Game.spawns['Spawn1'].room.memory.sources[x].id = arrayOfSources[x].id;
         };
 
-        if (!Game.spawns['Spawn1'].room.memory.sources[x].harvester) {
-            Game.spawns['Spawn1'].room.memory.sources[x].harvester = '';
-        };
+        // if (!Game.spawns['Spawn1'].room.memory.sources[x].harvester) {
+        //     Game.spawns['Spawn1'].room.memory.sources[x].harvester = '';
+        // };
 
-        if (!Game.spawns['Spawn1'].room.memory.sources[x].hauler) {
-            Game.spawns['Spawn1'].room.memory.sources[x].hauler = '';
-        };
+        // if (!Game.spawns['Spawn1'].room.memory.sources[x].hauler) {
+        //     Game.spawns['Spawn1'].room.memory.sources[x].hauler = '';
+        // };
 
     };
 
