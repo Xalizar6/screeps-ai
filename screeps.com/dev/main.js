@@ -32,22 +32,22 @@ log.output('Info', 'Begin - Adding Sources to Room Memory',true);
 
     let arrayOfSources = Game.spawns['Spawn1'].room.find(FIND_SOURCES);
     
-    for (let x in arrayOfSources) {
+    for (let i in arrayOfSources) {
 
-        if (!Game.spawns['Spawn1'].room.memory.sources[x]) {
-            Game.spawns['Spawn1'].room.memory.sources[x] = {};
+        if (!Game.spawns['Spawn1'].room.memory.sources[i]) {
+            Game.spawns['Spawn1'].room.memory.sources[i] = {};
         };
 
-        if (!Game.spawns['Spawn1'].room.memory.sources[x].id) {
-            Game.spawns['Spawn1'].room.memory.sources[x].id = arrayOfSources[x].id;
+        if (!Game.spawns['Spawn1'].room.memory.sources[i].id) {
+            Game.spawns['Spawn1'].room.memory.sources[i].id = arrayOfSources[i].id;
         };
 
-        // if (!Game.spawns['Spawn1'].room.memory.sources[x].harvester) {
-        //     Game.spawns['Spawn1'].room.memory.sources[x].harvester = '';
+        // if (!Game.spawns['Spawn1'].room.memory.sources[i].harvester) {
+        //     Game.spawns['Spawn1'].room.memory.sources[i].harvester = '';
         // };
 
-        // if (!Game.spawns['Spawn1'].room.memory.sources[x].hauler) {
-        //     Game.spawns['Spawn1'].room.memory.sources[x].hauler = '';
+        // if (!Game.spawns['Spawn1'].room.memory.sources[i].hauler) {
+        //     Game.spawns['Spawn1'].room.memory.sources[i].hauler = '';
         // };
 
     };

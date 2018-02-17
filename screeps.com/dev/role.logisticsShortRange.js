@@ -38,9 +38,9 @@ module.exports = {
             // Set the ID as the creep's Energy Source ID
             for (let i in aSourcesInMemory) {
 
-                if (aSourcesInMemory[i].hauler == creep.name) {
+                if (aSourcesInMemory[i].hauler === creep.name) {
                     // Give the creep the source object
-                    // oEnergySource = Game.getObjectById(aSourcesInMemory[i].id);
+                    oEnergySource = Game.getObjectById(aSourcesInMemory[i].id);
                     bCreepAlreadyAssigned = true;
                 };
 
@@ -59,7 +59,7 @@ module.exports = {
                         aSourcesInMemory[i].hauler = creep.name;                    
                     
                         // Give the creep the source object
-                        // oEnergySource = Game.getObjectById(aSourcesInMemory[i].id);                        
+                        oEnergySource = Game.getObjectById(aSourcesInMemory[i].id);                        
                     
                         // Exit the FOR loop so the creep isn't assigned to every available source
                         break;
@@ -71,7 +71,7 @@ module.exports = {
 
 
             
-            oEnergySource = Game.getObjectById("5982fc6bb097071b4adbd5f7");
+            // oEnergySource = Game.getObjectById("5982fc6bb097071b4adbd5f7");
 
             // Once assigned to an energy source look for dropped resources nearby to it
             aResources = creep.room.find(FIND_DROPPED_RESOURCES);            
@@ -90,6 +90,22 @@ module.exports = {
 
             // Creep is full so go drop off at Storage
             myFunctions.transferEnergy(creep, creep.room.storage);
+
+        };
+
+        // Unregister the creep from the source in memory before it dies
+        if (creep.ticksToLive <= 2) {
+            creep.say("dying");
+
+            // Loop through the sources
+            for (let i in aSourcesInMemory) {
+                    
+                // Remove the creep's assignment to the source before it dies
+                if (aSourcesInMemory[i].hauler === creep.name) {
+                    delete aSourcesInMemory[i].hauler;
+                };
+                
+            };
 
         };
 
