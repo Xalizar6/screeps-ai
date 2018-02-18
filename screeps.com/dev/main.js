@@ -17,7 +17,6 @@ log.output('Info', 'Begin - Initializing Modules', true);
     let C_mTowerCode = require('towercode');
     let myFunctions = require('helper_myFunctions');
     let init = require('helper_initializations');
-    let cacheData = require('helper_cacheData');
 
     log.output('Info', 'Initializing modules took: ' + (Game.cpu.getUsed() - timer1) + ' CPU Time',false,true);
 log.output('Info', 'End - Initializing Modules');
