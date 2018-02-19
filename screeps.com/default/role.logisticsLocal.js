@@ -1,16 +1,21 @@
 "use strict"; // Declaring Strict Mode to enforce better coding standards
 
 
-var myFunctions = require('myFunctions');
+const myFunctions = require('helper_myFunctions');
+const log = require('./helper_logging');
 
 module.exports = {
 
     /** @param {Creep} creep **/
     run: function (creep) {
+
+        log.output('Debug', 'Begin - Role Logistics Local', true);
+        let timer1 = Game.cpu.getUsed();
+
         // Variables
-            var energySource;
-            var targets;
-            var target;
+        var energySource;
+        var targets;
+        var target;
 
         // If hauling mode is on and you are empty, turn off hauling mode
         if (creep.memory.hauling && creep.carry.energy == 0) {
@@ -31,8 +36,8 @@ module.exports = {
                 myFunctions.withdrawEnergy(creep, energySource);
 
             } else {
-                energySource = creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);            
-                myFunctions.harvestEnergy(creep,energySource);
+                energySource = creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
+                myFunctions.harvestEnergy(creep, energySource);
             };
         };
 
@@ -54,5 +59,9 @@ module.exports = {
                 creep.moveTo(Game.spawns["Spawn1"], { visualizePathStyle: { stroke: '#f2f210' } });
             };
         };
-    }
+
+        log.output('Debug', 'Role Logistics Local took: ' + (Game.cpu.getUsed() - timer1) + ' CPU Time', true, true);
+        log.output('Debug', 'End - Role Logistics Local');
+
+    },
 };
