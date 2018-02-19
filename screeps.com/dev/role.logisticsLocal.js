@@ -60,7 +60,7 @@ module.exports = {
             };
         };
 
-        log.output('Debug', 'Role Logistics Local took: ' + (Game.cpu.getUsed() - timer1) + ' CPU Time', true, true);
+        log.output('Debug', 'Role Logistics Local took: ' + (Game.cpu.getUsed() - timer1) + ' CPU Time', false, true);
         log.output('Debug', 'End - Role Logistics Local');
 
     },

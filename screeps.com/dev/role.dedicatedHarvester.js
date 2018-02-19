@@ -23,9 +23,9 @@ module.exports = {
             // Loop through the room sources stored in memory
             for (let i in aSourcesInMemory) {
                 
-                log.output("Debug","Source IDs: " + aSourcesInMemory[i].id,true);
-                log.output("Debug","Harvester: " + aSourcesInMemory[i].harvester);
-                log.output("Debug","Hauler: " + aSourcesInMemory[i].hauler);
+                log.output("Debug","Source IDs: " + aSourcesInMemory[i].id,true,true);
+                log.output("Debug","Harvester: " + aSourcesInMemory[i].harvester,false,true);
+                log.output("Debug","Hauler: " + aSourcesInMemory[i].hauler,false,true);
 
                 // Determine if the creep is already assigned to a source
                 if (aSourcesInMemory[i].harvester === creep.name) {
@@ -45,7 +45,7 @@ module.exports = {
                     
                         // Assign the creep to the source
                         aSourcesInMemory[i].harvester = creep.name;
-                        log.output("Debug",creep.name + " is newly assigned to source " + aSourcesInMemory[i].id)
+                        log.output("Event",creep.name + " is newly assigned to source " + aSourcesInMemory[i].id,false,true)
                     
                         // Give the creep the source object
                         source = Game.getObjectById(aSourcesInMemory[i].id);

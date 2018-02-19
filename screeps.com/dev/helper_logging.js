@@ -4,7 +4,19 @@ const constants = require('./helper_constants');
 
 module.exports = {
 
+    init: function () {
+        //Add the Memory.logging object to hold logging state
+        if (!Memory.logging) {
+            Memory.logging = {};
+        };
 
+        if (!Memory.logging.showDebugMessages) {
+            Memory.logging.showDebugMessages = null;
+        };
+
+    },
+    
+    
     /**
      * @param {string} type - The type of output message you want this to be [Event, Info, Debug, Warning, Error]
      * @param {string} message - The message you want to display
@@ -12,7 +24,7 @@ module.exports = {
      * @param {boolean} [tab] - Indicate if you want to indent the message
      */
     output: function (type, message, lineBreak = false, tab = false) {
-        var runCode = false;
+        let runCode = false;
 
         switch (type) {
             case 'Event':
@@ -28,7 +40,7 @@ module.exports = {
                 break;
 
             case 'Debug':
-                if (constants.showDebugMessages) {
+                if (Memory.logging.showDebugMessages === true) {
                     runCode = true;
                 };
                 break;
@@ -51,7 +63,7 @@ module.exports = {
                 console.log('\n');
             };
             if (tab) {
-                console.log(type + '[' + Game.time + ']: ' + "   " + message);
+                console.log("     " + type + '[' + Game.time + ']: ' + message);
             } else {
                 console.log(type + '[' + Game.time + ']: ' + message);
             };

@@ -1,11 +1,12 @@
 "use strict"; // Declaring Strict Mode to enforce better coding standards
 
-
-//Included module files, executed on new global creation every 10 seconds or so.
+// Including logging module furst so it can be used below.
 const log = require('./helper_logging');
+log.init();
 
+//Including modules, executed on new global creation every 10 seconds or so.
 log.output('Info', 'Begin - Initializing Modules', true);
-    let timer1 = Game.cpu.getUsed();
+let timer1 = Game.cpu.getUsed();
 
     let C_mRoleHarvester = require('role.harvester');
     let C_mRoleUpgrader = require('role.upgrader');
@@ -18,19 +19,18 @@ log.output('Info', 'Begin - Initializing Modules', true);
     let myFunctions = require('helper_myFunctions');
     let init = require('helper_initializations');
 
-    log.output('Info', 'Initializing modules took: ' + (Game.cpu.getUsed() - timer1) + ' CPU Time',false,true);
+log.output('Info', 'Initializing modules took: ' + (Game.cpu.getUsed() - timer1) + ' CPU Time',false,true);
 log.output('Info', 'End - Initializing Modules');
 
  
 log.output('Info', 'Begin - Adding Sources to Room Memory',true);
-    let timer2 = Game.cpu.getUsed();
+let timer2 = Game.cpu.getUsed();
 
     if (!Game.spawns['Spawn1'].room.memory.sources) {
         Game.spawns['Spawn1'].room.memory.sources = {};
     };
 
     let arrayOfSources = Game.spawns['Spawn1'].room.find(FIND_SOURCES);
-    
     for (let i in arrayOfSources) {
 
         if (!Game.spawns['Spawn1'].room.memory.sources[i]) {
@@ -41,17 +41,9 @@ log.output('Info', 'Begin - Adding Sources to Room Memory',true);
             Game.spawns['Spawn1'].room.memory.sources[i].id = arrayOfSources[i].id;
         };
 
-        // if (!Game.spawns['Spawn1'].room.memory.sources[i].harvester) {
-        //     Game.spawns['Spawn1'].room.memory.sources[i].harvester = '';
-        // };
-
-        // if (!Game.spawns['Spawn1'].room.memory.sources[i].hauler) {
-        //     Game.spawns['Spawn1'].room.memory.sources[i].hauler = '';
-        // };
-
     };
 
-    log.output('Info', 'Adding Sources to Room Memory took: ' + (Game.cpu.getUsed() - timer2) + ' CPU Time',false,true);
+log.output('Info', 'Adding Sources to Room Memory took: ' + (Game.cpu.getUsed() - timer2) + ' CPU Time',false,true);
 log.output('Info', 'End - Adding Sources to Room Memory');
 
 
