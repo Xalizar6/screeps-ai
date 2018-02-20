@@ -19,5 +19,41 @@ module.exports = {
         };
     },
 
+    // Turn error logging in the console on/off
+    toggleError: function () {
+        if (Memory.logging.showErrorMessages != true) {
+            Memory.logging.showErrorMessages = true;
+        } else {
+            Memory.logging.showErrorMessages = false;
+        };
+    }, 
+   
+    // Turn event logging in the console on/off
+    toggleEvent: function () {
+        if (Memory.logging.showEventMessages != true) {
+            Memory.logging.showEventMessages = true;
+        } else {
+            Memory.logging.showEventMessages = false;
+        };
+    }, 
+   
+    // Turn info logging in the console on/off
+    toggleInfo: function () {
+        if (Memory.logging.showInfoMessages != true) {
+            Memory.logging.showInfoMessages = true;
+        } else {
+            Memory.logging.showInfoMessages = false;
+        };
+    },
+   
+    // Turn warning logging in the console on/off
+    toggleWarning: function () {
+        if (Memory.logging.showWarningMessages != true) {
+            Memory.logging.showWarningMessages = true;
+        } else {
+            Memory.logging.showWarningMessages = false;
+        };
+    },
+
 
 };

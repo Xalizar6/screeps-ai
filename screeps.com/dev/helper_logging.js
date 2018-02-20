@@ -9,11 +9,21 @@ module.exports = {
         if (!Memory.logging) {
             Memory.logging = {};
         };
-
         if (!Memory.logging.showDebugMessages) {
             Memory.logging.showDebugMessages = null;
         };
-
+        if (!Memory.logging.showErrorMessages) {
+            Memory.logging.showErrorMessages = null;
+        };
+        if (!Memory.logging.showEventMessages) {
+            Memory.logging.showEventMessages = null;
+        };
+        if (!Memory.logging.showInfoMessages) {
+            Memory.logging.showInfoMessages = null;
+        };
+        if (!Memory.logging.showWarningMessages) {
+            Memory.logging.showWarningMessages = null;
+        };
     },
     
     
@@ -27,35 +37,31 @@ module.exports = {
         let runCode = false;
 
         switch (type) {
-            case 'Event':
-                if (constants.showEventMessages) {
-                    runCode = true;
-                };
-                break;
-
-            case 'Info':
-                if (constants.showInfoMessages) {
-                    runCode = true;
-                };
-                break;
-
             case 'Debug':
                 if (Memory.logging.showDebugMessages === true) {
                     runCode = true;
                 };
-                break;
-
-            case 'Warning':
-                if (constants.showWarningMessages) {
-                    runCode = true;
-                };
-                break;
-
+                break;            
             case 'Error':
-                if (constants.showErrorMessages) {
+                if (Memory.logging.showErrorMessages === true) {
                     runCode = true;
                 };
                 break;
+            case 'Event':
+                if (Memory.logging.showEventMessages === true) {
+                    runCode = true;
+                };
+                break;
+            case 'Info':
+                if (Memory.logging.showInfoMessages === true) {
+                    runCode = true;
+                };
+                break;
+            case 'Warning':
+                if (Memory.logging.showWarningMessages === true) {
+                    runCode = true;
+                };
+                break;            
         };
         
         if (runCode) {
