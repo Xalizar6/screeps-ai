@@ -19,62 +19,63 @@ module.exports = {
         const nMinNumberOflogisticsLocal = 1;
 
         //Clear the deceased creeps from memory
-        for (var name in Memory.creeps) {
-            if (!Game.creeps[name]) {
-                delete Memory.creeps[name];
-                console.log('Clearing non-existing creep memory:', name);
+        for (let creep in Memory.creeps) {
+            if (!Game.creeps[creep]) {
+                delete Memory.creeps[creep];
+                console.log('Clearing non-existing creep memory:', creep);
             };
         };
 
         // Determine the total number we have alive this tick
-        var harvesters = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester');
-        var upgraders = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader');
-        var builders = _.filter(Game.creeps, (creep) => creep.memory.role == 'builder');
-        var aDedicatedHarvesters = _.filter(Game.creeps, (creep) => creep.memory.role == 'dedicatedHarvester');
-        var aLogisticsShortRange = _.filter(Game.creeps, (creep) => creep.memory.role == 'LogisticsShortRange');
-        var alogisticsLocal = _.filter(Game.creeps, (creep) => creep.memory.role == 'logisticsLocal');
+        const harvesters = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester');
+        const upgraders = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader');
+        const builders = _.filter(Game.creeps, (creep) => creep.memory.role == 'builder');
+        const aDedicatedHarvesters = _.filter(Game.creeps, (creep) => creep.memory.role == 'dedicatedHarvester');
+        const aLogisticsShortRange = _.filter(Game.creeps, (creep) => creep.memory.role == 'LogisticsShortRange');
+        const alogisticsLocal = _.filter(Game.creeps, (creep) => creep.memory.role == 'logisticsLocal');
 
         // Spawn additional creeps if needed, including emergency code and 
         // prioritizing harvesters first.
         if (
             _.size(Game.creeps) < 2) {
-            var newName = Game.spawns['Spawn1'].createCreep([WORK, CARRY, MOVE], undefined, { role: 'harvester' });
-            console.log('Spawning new harvester: ' + newName);
+            const sNewName = Game.spawns['Spawn1'].createCreep([WORK, CARRY, MOVE], undefined, { role: 'harvester' });
+            console.log('Spawning new harvester: ' + sNewName);
 
         } else {
 
             if (harvesters.length < nMinNumberOfHarvesters) {
-                var newName = Game.spawns['Spawn1'].createCreep([WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE], undefined, { role: 'harvester' });
-                console.log('Spawning new harvester: ' + newName);
+                const sNewName = Game.spawns['Spawn1'].createCreep([WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE], undefined, { role: 'harvester' });
+                console.log('Spawning new harvester: ' + sNewName);
 
             } else if (alogisticsLocal.length < nMinNumberOflogisticsLocal) {
-                var newName = Game.spawns['Spawn1'].createCreep([CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE],
+                const sNewName = Game.spawns['Spawn1'].createCreep([CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE],
                     undefined, { role: 'logisticsLocal', hauling: false });
-                console.log('Spawning new Logistics local: ' + newName);
+                console.log('Spawning new Logistics local: ' + sNewName);
 
             } else if (aDedicatedHarvesters.length < nMinNumberOfDedicatedHarvesters) {
-                var sNewName = Game.spawns['Spawn1'].createCreep([WORK, WORK, WORK, WORK, WORK, MOVE, MOVE, MOVE], undefined, { role: 'dedicatedHarvester' });
+                const sNewName = Game.spawns['Spawn1'].createCreep([WORK, WORK, WORK, WORK, WORK, MOVE, MOVE, MOVE], undefined, { role: 'dedicatedHarvester' });
                 console.log('Spawning new dedicated harvester: ' + sNewName);
 
             } else if (aLogisticsShortRange.length < nMinNumberOfLogisticsShortRange) {
-                var sNewName = Game.spawns['Spawn1'].createCreep([CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE], undefined, { role: 'LogisticsShortRange', hauling: false });
+                const sNewName = Game.spawns['Spawn1'].createCreep([CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE], undefined, { role: 'LogisticsShortRange', hauling: false });
                 console.log('Spawning new Logistics Short Range: ' + sNewName);
 
             } else if (upgraders.length < nMinNumberOfUpgraders) {
-                var newName = Game.spawns['Spawn1'].createCreep([WORK, WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE], undefined, { role: 'upgrader' });
-                console.log('Spawning new upgrader: ' + newName);
+                const sNewName = Game.spawns['Spawn1'].createCreep([WORK, WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE], undefined, { role: 'upgrader' });
+                console.log('Spawning new upgrader: ' + sNewName);
 
             } else if (_.size(Game.constructionSites) > 0) {
                 if (builders.length < nMinNumberOfBuilders) {
-                    var newName = Game.spawns['Spawn1'].createCreep([WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE], undefined, { role: 'builder' });
-                    console.log('Spawning new builder: ' + newName);
+                    const sNewName = Game.spawns['Spawn1'].createCreep([WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE], undefined, { role: 'builder' });
+                    console.log('Spawning new builder: ' + sNewName);
                 };
             };
+
         };
 
-        //add text to the screen indicating spawning process
+        //Add text to the screen indicating spawning process
         if (Game.spawns['Spawn1'].spawning) {
-            var spawningCreep = Game.creeps[Game.spawns['Spawn1'].spawning.name];
+            const spawningCreep = Game.creeps[Game.spawns['Spawn1'].spawning.name];
             Game.spawns['Spawn1'].room.visual.text(
                 '🛠️' + spawningCreep.memory.role,
                 Game.spawns['Spawn1'].pos.x + 1,
