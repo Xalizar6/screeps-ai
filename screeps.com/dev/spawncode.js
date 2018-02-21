@@ -1,32 +1,43 @@
 "use strict"; // Declaring Strict Mode to enforce better coding standards
 
 const _ = require('lodash');
+const log = require('./helper_logging');
 
 module.exports = {
 
     run: function () {
+        
+        log.output('Debug', 'Begin - Spawncode routine', true);
+        let timer1 = Game.cpu.getUsed();
 
-        // Declare Variables
         // Get the number of energy sources in the room from memory
         const nEnergySourcesInMemory = _.size(Game.spawns['Spawn1'].room.memory.sources);
 
         // Set the minimum number of each kind of creep that we want for production
         const nMinNumberOfHarvesters = 0;
-        const nMinNumberOfUpgraders = 3;
         const nMinNumberOfBuilders = 2;
+        let nMinNumberOfUpgraders = null;
         const nMinNumberOfDedicatedHarvesters = nEnergySourcesInMemory;
         const nMinNumberOfLogisticsShortRange = nEnergySourcesInMemory;
         const nMinNumberOflogisticsLocal = 1;
+
+        // Adjust the number of Upgraders if we have enough energy stored - temporary until I start selling energy
+        if (Game.spawns['Spawn1'].room.storage.store[RESOURCE_ENERGY] > 600000) {
+            nMinNumberOfUpgraders = 4;
+        } else {
+            nMinNumberOfUpgraders = 3;
+        };
 
         //Clear the deceased creeps from memory
         for (let creep in Memory.creeps) {
             if (!Game.creeps[creep]) {
                 delete Memory.creeps[creep];
-                console.log('Clearing non-existing creep memory:', creep);
+                // console.log('Clearing non-existing creep memory:', creep);                
+                log.output("Event", "Clearing non-existing creep memory: " + creep);
             };
         };
 
-        // Determine the total number we have alive this tick
+        // Determine the total number of each role of creep we have alive this tick
         const harvesters = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester');
         const upgraders = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader');
         const builders = _.filter(Game.creeps, (creep) => creep.memory.role == 'builder');
@@ -83,6 +94,9 @@ module.exports = {
                 { align: 'left', opacity: 0.8 });
         };
 
+        log.output('Debug', 'Spawncode routine took: ' + (Game.cpu.getUsed() - timer1) + ' CPU Time',true,true);
+        log.output('Debug', 'End - Spawncode routine');
+        
     },
 
 };
