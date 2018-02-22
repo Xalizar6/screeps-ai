@@ -5,9 +5,11 @@ module.exports = {
 
     // Show info about all of my living creeps
     listCreeps: function () {
+        console.log('\n');
         for (let creep in Game.creeps) {
-            console.log(creep + "    " + Game.creeps[creep].memory.role + "   " + Game.creeps[creep].ticksToLive)
+            console.log(creep + " - " + Game.creeps[creep].memory.role + " - " + Game.creeps[creep].ticksToLive)
         };
+        console.log('\n');
     },
 
     // Turn debug logging in the console on/off
