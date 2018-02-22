@@ -87,7 +87,7 @@ module.exports = {
                 { align: 'left', opacity: 0.8 });
         };
 
-        log.output('Debug', 'Spawncode routine took: ' + (Game.cpu.getUsed() - timer1) + ' CPU Time', true, true);
+        log.output('Debug', 'Spawncode routine took: ' + (Game.cpu.getUsed() - timer1) + ' CPU Time', false, true);
         log.output('Debug', 'End - Spawncode routine');
 
     },

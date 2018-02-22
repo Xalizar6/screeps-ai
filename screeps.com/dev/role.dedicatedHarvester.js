@@ -9,8 +9,8 @@ module.exports = {
     /** @param {Creep} creep **/
     run: function (creep) {
         
-        log.output('Debug', 'Begin - Role Dedicated Harvester', true);
-        let timer1 = Game.cpu.getUsed();
+        log.output('Debug', 'Begin - Role Dedicated Harvester for ' + creep.name, true);
+        const timer1 = Game.cpu.getUsed();
 
         // Declare variables
             const aSourcesInMemory = creep.room.memory.sources;

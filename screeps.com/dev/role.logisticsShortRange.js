@@ -9,7 +9,7 @@ module.exports = {
     /** @param {Creep} creep **/
     run: function (creep) {
 
-        log.output('Debug', 'Begin - Role Logistics Short Range', true);
+        log.output('Debug', 'Begin - Role Logistics Short Range for ' + creep.name, true);
         let timer1 = Game.cpu.getUsed();
 
         // Declare Variables
