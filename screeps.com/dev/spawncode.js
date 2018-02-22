@@ -6,7 +6,7 @@ const log = require('./helper_logging');
 module.exports = {
 
     run: function () {
-        
+
         log.output('Debug', 'Begin - Spawncode routine', true);
         let timer1 = Game.cpu.getUsed();
 
@@ -22,8 +22,8 @@ module.exports = {
         const nMinNumberOflogisticsLocal = 1;
 
         // Adjust the number of Upgraders if we have enough energy stored - temporary until I start selling energy
-        if (Game.spawns['Spawn1'].room.storage.store[RESOURCE_ENERGY] > 600000) {
-            nMinNumberOfUpgraders = 4;
+        if (Game.spawns['Spawn1'].room.storage.store[RESOURCE_ENERGY] > 500000) {
+            nMinNumberOfUpgraders = 5;
         } else {
             nMinNumberOfUpgraders = 3;
         };
@@ -33,7 +33,7 @@ module.exports = {
             if (!Game.creeps[creep]) {
                 delete Memory.creeps[creep];
                 // console.log('Clearing non-existing creep memory:', creep);                
-                log.output("Event", "Clearing non-existing creep memory: " + creep);
+                log.output("Event", "Clearing non-existing creep memory: " + creep, false, true);
             };
         };
 
@@ -47,38 +47,30 @@ module.exports = {
 
         // Spawn additional creeps if needed, including emergency code and 
         // prioritizing harvesters first.
-        if (
-            _.size(Game.creeps) < 2) {
-            const sNewName = Game.spawns['Spawn1'].createCreep([WORK, CARRY, MOVE], undefined, { role: 'harvester' });
-            console.log('Spawning new harvester: ' + sNewName);
+        if (_.size(Game.creeps) < 2) {
+            Game.spawns['Spawn1'].createCreep([WORK, CARRY, MOVE], undefined, { role: 'harvester' });
 
         } else {
 
             if (harvesters.length < nMinNumberOfHarvesters) {
-                const sNewName = Game.spawns['Spawn1'].createCreep([WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE], undefined, { role: 'harvester' });
-                console.log('Spawning new harvester: ' + sNewName);
+                Game.spawns['Spawn1'].createCreep([WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE], undefined, { role: 'harvester' });
 
             } else if (alogisticsLocal.length < nMinNumberOflogisticsLocal) {
-                const sNewName = Game.spawns['Spawn1'].createCreep([CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE],
+                Game.spawns['Spawn1'].createCreep([CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE],
                     undefined, { role: 'logisticsLocal', hauling: false });
-                console.log('Spawning new Logistics local: ' + sNewName);
 
             } else if (aDedicatedHarvesters.length < nMinNumberOfDedicatedHarvesters) {
-                const sNewName = Game.spawns['Spawn1'].createCreep([WORK, WORK, WORK, WORK, WORK, MOVE, MOVE, MOVE], undefined, { role: 'dedicatedHarvester' });
-                console.log('Spawning new dedicated harvester: ' + sNewName);
+                Game.spawns['Spawn1'].createCreep([WORK, WORK, WORK, WORK, WORK, MOVE, MOVE, MOVE], undefined, { role: 'dedicatedHarvester' });
 
             } else if (aLogisticsShortRange.length < nMinNumberOfLogisticsShortRange) {
-                const sNewName = Game.spawns['Spawn1'].createCreep([CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE], undefined, { role: 'LogisticsShortRange', hauling: false });
-                console.log('Spawning new Logistics Short Range: ' + sNewName);
+                Game.spawns['Spawn1'].createCreep([CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE], undefined, { role: 'LogisticsShortRange', hauling: false });
 
             } else if (upgraders.length < nMinNumberOfUpgraders) {
-                const sNewName = Game.spawns['Spawn1'].createCreep([WORK, WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE], undefined, { role: 'upgrader' });
-                console.log('Spawning new upgrader: ' + sNewName);
+                Game.spawns['Spawn1'].createCreep([WORK, WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE], undefined, { role: 'upgrader' });
 
             } else if (_.size(Game.constructionSites) > 0) {
                 if (builders.length < nMinNumberOfBuilders) {
-                    const sNewName = Game.spawns['Spawn1'].createCreep([WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE], undefined, { role: 'builder' });
-                    console.log('Spawning new builder: ' + sNewName);
+                    Game.spawns['Spawn1'].createCreep([WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE], undefined, { role: 'builder' });
                 };
             };
 
@@ -87,6 +79,7 @@ module.exports = {
         //Add text to the screen indicating spawning process
         if (Game.spawns['Spawn1'].spawning) {
             const spawningCreep = Game.creeps[Game.spawns['Spawn1'].spawning.name];
+            log.output("Event", "Spawning new creep named " + spawningCreep.name + " with the role " + spawningCreep.memory.role, false, true);
             Game.spawns['Spawn1'].room.visual.text(
                 '🛠️' + spawningCreep.memory.role,
                 Game.spawns['Spawn1'].pos.x + 1,
@@ -94,9 +87,9 @@ module.exports = {
                 { align: 'left', opacity: 0.8 });
         };
 
-        log.output('Debug', 'Spawncode routine took: ' + (Game.cpu.getUsed() - timer1) + ' CPU Time',true,true);
+        log.output('Debug', 'Spawncode routine took: ' + (Game.cpu.getUsed() - timer1) + ' CPU Time', true, true);
         log.output('Debug', 'End - Spawncode routine');
-        
+
     },
 
 };
