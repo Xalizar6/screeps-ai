@@ -69,7 +69,7 @@ module.exports = {
                 console.log('\n');
             };
             if (tab) {
-                console.log("     " + type + '[' + Game.time + ']: ' + message);
+                console.log("\t" + type + '[' + Game.time + ']: ' + message);
             } else {
                 console.log(type + '[' + Game.time + ']: ' + message);
             };
