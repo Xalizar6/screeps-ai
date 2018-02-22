@@ -6,31 +6,31 @@ log.init();
 
 //Including modules, executed on new global creation every 10 seconds or so.
 log.output('Info', 'Begin - Initializing Modules', true);
-let timer1 = Game.cpu.getUsed();
+const timer1 = Game.cpu.getUsed();
 
-    let C_mRoleHarvester = require('role.harvester');
-    let C_mRoleUpgrader = require('role.upgrader');
-    let C_mRoleDedicatedHarvester = require('role.dedicatedHarvester')
-    let logisticsLocal = require('role.logisticsLocal')
-    let C_mRoleLogisticsShortRange = require('role.logisticsShortRange')
-    let C_mRolebuilder = require('role.builder');
-    let C_mSpawncode = require('spawncode');
-    let C_mTowerCode = require('towercode');
-    let myFunctions = require('helper_myFunctions');
-    let init = require('helper_initializations');
+    const C_mRoleHarvester = require('role.harvester');
+    const C_mRoleUpgrader = require('role.upgrader');
+    const C_mRoleDedicatedHarvester = require('role.dedicatedHarvester')
+    const logisticsLocal = require('role.logisticsLocal')
+    const C_mRoleLogisticsShortRange = require('role.logisticsShortRange')
+    const C_mRolebuilder = require('role.builder');
+    const C_mSpawncode = require('spawncode');
+    const C_mTowerCode = require('towercode');
+    const myFunctions = require('helper_myFunctions');
+    const init = require('helper_initializations');
 
 log.output('Info', 'Initializing modules took: ' + (Game.cpu.getUsed() - timer1) + ' CPU Time',false,true);
 log.output('Info', 'End - Initializing Modules');
 
  
 log.output('Info', 'Begin - Adding Sources to Room Memory',true);
-let timer2 = Game.cpu.getUsed();
+const timer2 = Game.cpu.getUsed();
 
     if (!Game.spawns['Spawn1'].room.memory.sources) {
         Game.spawns['Spawn1'].room.memory.sources = {};
     };
 
-    let arrayOfSources = Game.spawns['Spawn1'].room.find(FIND_SOURCES);
+    const arrayOfSources = Game.spawns['Spawn1'].room.find(FIND_SOURCES);
     for (let i in arrayOfSources) {
 
         if (!Game.spawns['Spawn1'].room.memory.sources[i]) {
@@ -50,12 +50,7 @@ log.output('Info', 'End - Adding Sources to Room Memory');
 module.exports.loop = function () { // this loop is executed every tick
 
     log.output('Info', "Begin - Main", true);
-    let mainLoop = Game.cpu.getUsed();
-
-
-    // Declare variables
-    let sName;
-    let oCreep;
+    const mainLoop = Game.cpu.getUsed();
 
     // initialize console commands with the alias of cc
     init.initConsoleCommands();
@@ -67,8 +62,8 @@ module.exports.loop = function () { // this loop is executed every tick
     C_mTowerCode.play();
 
     //call the role based work modules
-    for (sName in Game.creeps) {
-        oCreep = Game.creeps[sName];
+    for (let i in Game.creeps) {
+        const oCreep = Game.creeps[i];
         if (oCreep.memory.role == 'harvester') {
             C_mRoleHarvester.run(oCreep);
         }
