@@ -8,7 +8,7 @@ module.exports = {
     run: function () {
 
         log.output('Debug', 'Begin - Spawncode routine', true);
-        let timer1 = Game.cpu.getUsed();
+        const timer1 = Game.cpu.getUsed();
 
         // Get the number of energy sources in the room from memory
         const nEnergySourcesInMemory = _.size(Game.spawns['Spawn1'].room.memory.sources);

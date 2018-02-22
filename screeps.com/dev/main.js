@@ -18,6 +18,7 @@ const timer1 = Game.cpu.getUsed();
     const C_mTowerCode = require('towercode');
     const myFunctions = require('helper_myFunctions');
     const init = require('helper_initializations');
+    const _ = require('lodash');
 
 log.output('Info', 'Initializing modules took: ' + (Game.cpu.getUsed() - timer1) + ' CPU Time',false,true);
 log.output('Info', 'End - Initializing Modules');
@@ -52,16 +53,19 @@ module.exports.loop = function () { // this loop is executed every tick
     log.output('Info', "Begin - Main", true);
     const mainLoop = Game.cpu.getUsed();
 
-    // initialize console commands with the alias of cc
+    // Initialize console commands with the alias of cc
     init.initConsoleCommands();
     
-    // call the spawncode module
+    // Run the spawncode module
     C_mSpawncode.run();
 
-    // run the towercode module
-    C_mTowerCode.play();
+    // Run the towercode module
+    const aTowers = _.filter(Game.structures, (s) => s.structureType == STRUCTURE_TOWER);
+    for (let i in aTowers) {
+        C_mTowerCode.run(aTowers[i]);
+    };   
 
-    //call the role based work modules
+    // Call the role based work modules
     for (let i in Game.creeps) {
         const oCreep = Game.creeps[i];
         if (oCreep.memory.role == 'harvester') {

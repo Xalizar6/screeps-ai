@@ -1,40 +1,33 @@
 "use strict"; // Declaring Strict Mode to enforce better coding standards
 
+const log = require('./helper_logging');
+const _ = require('lodash');   
+
 module.exports = {
 
-    play: function() {
-        
-        // Declare variables
-        var aTowers;
-        var oTower;
-                
-        // @ts-ignore
-        aTowers = _.filter(Game.structures, (s) => s.structureType == STRUCTURE_TOWER)
-        
-        for (let oTower in aTowers) {
-            module.exports.run(aTowers[oTower])
-        }
-    },
-
     run: function(tower) {
-        var oSpawn = Game.spawns["Spawn1"];
-        var aTargets;
+        
+        log.output('Debug', 'Begin - TowerCode routine', true);
+        const timer1 = Game.cpu.getUsed();
+         
+        let enemy = null;
+        if (tower.room.find(FIND_HOSTILE_CREEPS)) {
+            enemy = tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
+        };
 
-        var enemy = tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
         if (enemy) {
             tower.attack(enemy);
         
-        } else if (tower.energy >= 500) {
-            aTargets = oSpawn.room.find(FIND_STRUCTURES, {
+        } else if (tower.energy > 500) {
+            const aTargets = tower.room.find(FIND_STRUCTURES, {
                 filter: (structure) => {return (structure.structureType == STRUCTURE_ROAD) && structure.hitsMax - structure.hits >= 1500 
                 }});
             
             aTargets.sort((a,b) => a.hits - b.hits);
 
             if (aTargets.length > 0) {
-                tower.repair(oSpawn.pos.findClosestByRange(aTargets));
-            }
-
+                tower.repair(tower.pos.findClosestByRange(aTargets));
+            };
 
         } /* else if (tower.energy >= 600) {
             var priority = 1;
@@ -46,7 +39,11 @@ module.exports = {
                 priority++;
                 }
             }
-        } */
+        }; */
+
+        log.output('Debug', 'TowerCode routine took: ' + (Game.cpu.getUsed() - timer1) + ' CPU Time', false, true);
+        log.output('Debug', 'End - TowerCode routine');
+
     },
     
 /*     getRepairTargets: function(tower, priority) {
@@ -58,4 +55,4 @@ module.exports = {
             tower.pos.find            
         }
     }  */
-}
+};
