@@ -6,5 +6,9 @@
 
 module.exports = {
 
+    STATE_SPAWNING: 0,
+    STATE_MOVING: 1,
+    STATE_HARVESTING: 2,
+    STATE_DEPOSITING: 3,
 
 };
