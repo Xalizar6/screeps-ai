@@ -53,7 +53,7 @@ module.exports = {
     // Add all of the sources in a room to the Room object in memory
     addSourcesToMemory: function () {
 
-        log.output('Info', 'Begin - Adding Sources to Room Memory', true);
+        log.output('Info', 'Begin - Adding Energy sources to Room Memory', true);
         const timer = Game.cpu.getUsed();
 
         if (!Game.spawns['Spawn1'].room.memory.sources) {
@@ -73,8 +73,8 @@ module.exports = {
 
         };
 
-        log.output('Info', 'Adding Sources to Room Memory took: ' + (Game.cpu.getUsed() - timer) + ' CPU Time', false, true);
-        log.output('Info', 'End - Adding Sources to Room Memory');
+        log.output('Info', 'Adding Energy sources to Room Memory took: ' + (Game.cpu.getUsed() - timer) + ' CPU Time', false, true);
+        log.output('Info', 'End - Adding Energy sources to Room Memory');
     },
 
 };

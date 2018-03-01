@@ -125,8 +125,13 @@ module.exports = {
 
     checkForContainer: function (creep) {
         
+        // As we are adding Minerals and Energy sources should we look for nearby containers and store them also?
+
         // Checks if there is a container near the mineral source.
         for (let i in creep.room.memory.minerals) {
+            // isNearTO
+            // findInRange
+            // inRangeTo
 
 
         };
