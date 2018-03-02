@@ -10,7 +10,15 @@ module.exports = {
         log.output('Debug', 'Begin - Spawncode routine', true);
         const timer1 = Game.cpu.getUsed();
 
-        // Get the number of energy sources in the room from memory
+        //Clear the deceased creeps from memory
+        for (let creep in Memory.creeps) {
+            if (!Game.creeps[creep]) {
+                delete Memory.creeps[creep];
+                log.output("Event", "Clearing non-existing creep memory: " + creep, false, true);
+            };
+        };
+
+        // Get the number of energy sources in the room from memory to be used for creep count
         const nEnergySourcesInMemory = _.size(Game.spawns['Spawn1'].room.memory.sources);
 
         // Set the minimum number of each kind of creep that we want for production
@@ -27,14 +35,6 @@ module.exports = {
             nMinNumberOfUpgraders = 5;
         } else {
             nMinNumberOfUpgraders = 3;
-        };
-
-        //Clear the deceased creeps from memory
-        for (let creep in Memory.creeps) {
-            if (!Game.creeps[creep]) {
-                delete Memory.creeps[creep];
-                log.output("Event", "Clearing non-existing creep memory: " + creep, false, true);
-            };
         };
 
         // Determine the total number of each role of creep we have alive this tick

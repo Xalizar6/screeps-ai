@@ -20,31 +20,51 @@ module.exports = {
         log.output('Info', 'Begin - Adding Minerals to Room Memory', true);
         const timer = Game.cpu.getUsed();
 
-        const arrayOfMinerals = Game.spawns['Spawn1'].room.find(FIND_MINERALS);
+        const oRoom = Game.spawns['Spawn1'].room;
+        const arrayOfMinerals = oRoom.find(FIND_MINERALS);
+        const arrayOfContainers = oRoom.find(FIND_STRUCTURES, {
+            filter: (s) => s.structureType == STRUCTURE_CONTAINER
+        });
 
         if (arrayOfMinerals) {
 
-            if (!Game.spawns['Spawn1'].room.memory.minerals) {
-                Game.spawns['Spawn1'].room.memory.minerals = {};
+            if (!oRoom.memory.minerals) {
+                oRoom.memory.minerals = {};
             };
 
             for (let i in arrayOfMinerals) {
 
-                if (!Game.spawns['Spawn1'].room.memory.minerals[i]) {
-                    Game.spawns['Spawn1'].room.memory.minerals[i] = {};
+                if (!oRoom.memory.minerals[i]) {
+                    oRoom.memory.minerals[i] = {};
                 };
 
-                if (!Game.spawns['Spawn1'].room.memory.minerals[i].id) {
-                    Game.spawns['Spawn1'].room.memory.minerals[i].id = arrayOfMinerals[i].id;
+                if (!oRoom.memory.minerals[i].id) {
+                    oRoom.memory.minerals[i].id = arrayOfMinerals[i].id;
                 };
 
-                if (!Game.spawns['Spawn1'].room.memory.minerals[i].pos) {
-                    Game.spawns['Spawn1'].room.memory.minerals[i].pos = arrayOfMinerals[i].pos;
+                // Delete after 3/2/18
+                // if (!oRoom.memory.minerals[i].pos) {
+                //     oRoom.memory.minerals[i].pos = arrayOfMinerals[i].pos;
+                // };
+
+                if (arrayOfContainers) {
+
+                    for (let i in arrayOfContainers) {
+
+                        // Will find a container within 1 space of the mineral
+                        if (arrayOfContainers[i].pos.isNearTo(arrayOfMinerals[i])) {
+
+                            oRoom.memory.minerals[i].container = arrayOfContainers[i].id;
+
+                        };
+
+                    };
+
                 };
 
             };
 
-        }; 
+        };
 
         log.output('Info', 'Adding Minerals to Room Memory took: ' + (Game.cpu.getUsed() - timer) + ' CPU Time', false, true);
         log.output('Info', 'End - Adding Minerals to Room Memory');
