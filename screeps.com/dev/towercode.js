@@ -10,11 +10,46 @@ module.exports = {
         log.output('Debug', 'Begin - TowerCode routine', true);
         const timer1 = Game.cpu.getUsed();
          
-        let enemy = null;
-        if (tower.room.find(FIND_HOSTILE_CREEPS)) {
-            enemy = tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
+        let target = null;
+
+        if (!target) {
+            if (tower.room.find(FIND_HOSTILE_CREEPS)) {
+                target = tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
+                tower.attack(target);
+            };
         };
 
+        if (!target) {
+            console.log ("Repair container");
+            const aTargets = tower.room.find(FIND_STRUCTURES, {
+                filter: (structure) => {return (structure.structureType == STRUCTURE_CONTAINER) && structure.hitsMax - structure.hits >= 5000 
+                }});
+            
+            if (aTargets.length > 0) {
+                aTargets.sort((a,b) => a.hits - b.hits);
+                target = tower.pos.findClosestByRange(aTargets);
+                tower.repair(target);
+            };
+        };
+
+        if (!target) {
+            console.log ("Repair road");
+            const aTargets = tower.room.find(FIND_STRUCTURES, {
+                filter: (structure) => {return (structure.structureType == STRUCTURE_ROAD) && structure.hitsMax - structure.hits >= 1500 
+                }});
+            
+            if (aTargets.length > 0) {
+                aTargets.sort((a,b) => a.hits - b.hits);
+                target = tower.pos.findClosestByRange(aTargets);
+                tower.repair(target);
+            };
+        };
+
+        if (!target) {
+            console.log ("Empty Repair");
+        };
+
+        /*
         if (enemy) {
             tower.attack(enemy);
         
@@ -29,7 +64,7 @@ module.exports = {
                 tower.repair(tower.pos.findClosestByRange(aTargets));
             };
 
-        } /* else if (tower.energy >= 600) {
+        } else if (tower.energy >= 600) {
             var priority = 1;
             var targets = [];
             while (targets.length == 0 && priority <= 3) {
@@ -39,7 +74,8 @@ module.exports = {
                 priority++;
                 }
             }
-        }; */
+        }; 
+        */
 
         log.output('Debug', 'TowerCode routine took: ' + (Game.cpu.getUsed() - timer1) + ' CPU Time', false, true);
         log.output('Debug', 'End - TowerCode routine');
