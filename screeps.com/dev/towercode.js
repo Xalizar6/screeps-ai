@@ -1,52 +1,59 @@
 "use strict"; // Declaring Strict Mode to enforce better coding standards
 
 const log = require('./helper_logging');
-const _ = require('lodash');   
+const _ = require('lodash');
 
 module.exports = {
 
-    run: function(tower) {
-        
+    run: function (tower) {
+
         log.output('Debug', 'Begin - TowerCode routine', true);
         const timer1 = Game.cpu.getUsed();
-         
+
         let target = null;
 
         if (!target) {
-            if (tower.room.find(FIND_HOSTILE_CREEPS)) {
+            const aTargets = tower.room.find(FIND_HOSTILE_CREEPS);
+            if (aTargets.length > 0) {
+                log.output('Debug', 'Defending against hostiles', false, true);
+                log.output('Debug', 'Number of hostiles: ' + aTargets.length, false, true);
                 target = tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
                 tower.attack(target);
             };
         };
 
         if (!target) {
-            console.log ("Repair container");
             const aTargets = tower.room.find(FIND_STRUCTURES, {
-                filter: (structure) => {return (structure.structureType == STRUCTURE_CONTAINER) && structure.hitsMax - structure.hits >= 5000 
-                }});
-            
+                filter: (structure) => {
+                    return (structure.structureType == STRUCTURE_CONTAINER) && structure.hitsMax - structure.hits >= 5000
+                }
+            });
+
             if (aTargets.length > 0) {
-                aTargets.sort((a,b) => a.hits - b.hits);
+                log.output('Debug', 'Repairing containers', false, true);
+                aTargets.sort((a, b) => a.hits - b.hits);
                 target = tower.pos.findClosestByRange(aTargets);
                 tower.repair(target);
             };
         };
 
         if (!target) {
-            console.log ("Repair road");
             const aTargets = tower.room.find(FIND_STRUCTURES, {
-                filter: (structure) => {return (structure.structureType == STRUCTURE_ROAD) && structure.hitsMax - structure.hits >= 1500 
-                }});
-            
+                filter: (structure) => {
+                    return (structure.structureType == STRUCTURE_ROAD) && structure.hitsMax - structure.hits >= 4000
+                }
+            });
+
             if (aTargets.length > 0) {
-                aTargets.sort((a,b) => a.hits - b.hits);
+                log.output('Debug', 'Repairing roads', false, true);
+                aTargets.sort((a, b) => a.hits - b.hits);
                 target = tower.pos.findClosestByRange(aTargets);
                 tower.repair(target);
             };
         };
 
         if (!target) {
-            console.log ("Empty Repair");
+            log.output('Debug', 'No targets to attack or repair', false, true);
         };
 
         /*
@@ -81,14 +88,14 @@ module.exports = {
         log.output('Debug', 'End - TowerCode routine');
 
     },
-    
-/*     getRepairTargets: function(tower, priority) {
-        switch (priority) {
-            case 1: return _.filter(tower.room.find(FIND_STRUCTURES), (s) => (s.structureType == STRUCTURE_ROAD || s.structureType == STRUCTURE_CONTAINER) && s.hitsMax - s.hits >= 1500);
-            case 2: return _.filter(tower.room.find(FIND_STRUCTURES), (s) => s.structureType == STRUCTURE_RAMPART && s.hits < 300000);
-            case 3: return _.filter(tower.room.find(FIND_STRUCTURES), (s) => s.structureType == STRUCTURE_WALL && s.hits < 300000);
-            default: return null;
-            tower.pos.find            
-        }
-    }  */
+
+    /*     getRepairTargets: function(tower, priority) {
+            switch (priority) {
+                case 1: return _.filter(tower.room.find(FIND_STRUCTURES), (s) => (s.structureType == STRUCTURE_ROAD || s.structureType == STRUCTURE_CONTAINER) && s.hitsMax - s.hits >= 1500);
+                case 2: return _.filter(tower.room.find(FIND_STRUCTURES), (s) => s.structureType == STRUCTURE_RAMPART && s.hits < 300000);
+                case 3: return _.filter(tower.room.find(FIND_STRUCTURES), (s) => s.structureType == STRUCTURE_WALL && s.hits < 300000);
+                default: return null;
+                tower.pos.find            
+            }
+        }  */
 };

@@ -23,7 +23,7 @@ module.exports = {
 
         // Set the minimum number of each kind of creep that we want for production
         const nMinNumberOfHarvesters = 0;
-        const nMinNumberOfBuilders = 2;
+        const nMinNumberOfBuilders = 1;
         let nMinNumberOfUpgraders = null;
         const nMinNumberOfDedicatedHarvesters = nEnergySourcesInMemory;
         const nMinNumberOfLogisticsShortRange = nEnergySourcesInMemory;
