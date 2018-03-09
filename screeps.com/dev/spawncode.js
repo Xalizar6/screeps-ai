@@ -72,7 +72,7 @@ module.exports = {
                 Game.spawns['Spawn1'].createCreep([WORK, WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE], undefined, { role: 'upgrader' });
 
             } else if (aMineralHarvesters.length < nMinNumberOfMineralHarvester) {
-                Game.spawns['Spawn1'].createCreep([WORK, CARRY, MOVE], undefined, { role: 'Mineral Harvester' });
+                Game.spawns['Spawn1'].createCreep([WORK, WORK, MOVE], undefined, { role: 'Mineral Harvester' });
 
             } else if (aMineralHaulers.length < nMinNumberOfMineralHaulers) {
                 Game.spawns['Spawn1'].createCreep([CARRY, MOVE], undefined, { role: 'Mineral Hauler' });

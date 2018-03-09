@@ -108,34 +108,62 @@ module.exports = {
     },
 
     runGrabResource: function (creep, transitionState) {
-        log.output('Debug', 'Begin - Mineral Hauler Pickup routine for ' + creep.name, true);
+        log.output('Debug', 'Begin - Mineral Hauler Grab Resource routine for ' + creep.name, true);
         const timer = Game.cpu.getUsed();
 
-        console.log("Running Grab Resource");
+        // Find nearby structures
+        let structures = creep.pos.findInRange(FIND_STRUCTURES, 1);
+        if (structures.length > 0) {
+            log.output("Debug", "Found nearby structures", false, true);
+            // log.output("Debug", creep.pos.findInRange(FIND_STRUCTURES, 1), false, true);
 
-        if (creep.pos.findInRange(FIND_STRUCTURES, 1).length > 0) {
-            console.log("Found nearby structure");
-            console.log(creep.pos.findInRange(FIND_STRUCTURES, 1));
+            // Determine if the structure is a container
+            for (let i in structures) {
+                if (structures[i].structureType === STRUCTURE_CONTAINER) {
+                    log.output("Debug", "At lease one structure is a container", false, true);
+
+                    // Determine if the structure contains Oxygen
+                    if (structures[i].store[RESOURCE_OXYGEN]) {
+                        log.output("Debug", "At lease one container is storing Oxygen", false, true);
+                        log.output("Debug", "There is this much Oxygen in the container: " + structures[i].store[RESOURCE_OXYGEN], false, true);
+
+                        // Witihdraw Oxygen from the container
+                        if (creep.withdraw(structures[i], RESOURCE_OXYGEN) == OK) {
+                            log.output("Debug", "Creep withdrew Oxygen from the container", false, true);
+                            creep.memory.state = myConstants.STATE_MOVING;
+                            this.run(creep);
+                        };
+                    };
+
+                };
+
+            };
+
         };
 
-        if (creep.pos.findInRange(FIND_CREEPS, 1).length > 0) {
-            console.log("Found nearby creep");
-            console.log(creep.pos.findInRange(FIND_CREEPS, 1));
-        };
+        /*
+                if (creep.pos.findInRange(FIND_CREEPS, 1).length > 0) {
+                    console.log("Found nearby creep");
+                    console.log(creep.pos.findInRange(FIND_CREEPS, 1));
+                };
+        */
 
-        log.output('Debug', 'Mineral Hauler Pickup routine took: ' + (Game.cpu.getUsed() - timer) + ' CPU Time', false, true);
-        log.output('Debug', 'End - Mineral Hauler Pickup routine');
+        log.output('Debug', 'Mineral Hauler Grab Resource routine took: ' + (Game.cpu.getUsed() - timer) + ' CPU Time', false, true);
+        log.output('Debug', 'End - Mineral Hauler Grab Resource routine');
 
     },
 
     runDepositResource: function (creep, transitionState) {
-        log.output('Debug', 'Begin - Mineral Hauler Pickup routine for ' + creep.name, true);
+        log.output('Debug', 'Begin - Mineral Hauler Deposit routine for ' + creep.name, true);
         const timer = Game.cpu.getUsed();
 
-        console.log("Running Deposit Resource");
+        creep.transfer(creep.room.storage, RESOURCE_OXYGEN);
+        log.output("Debug", "Transferred Oxygen to storage", false, true);
+        creep.memory.state = myConstants.STATE_MOVING;
+        this.run(creep);
 
-        log.output('Debug', 'Mineral Hauler Pickup routine took: ' + (Game.cpu.getUsed() - timer) + ' CPU Time', false, true);
-        log.output('Debug', 'End - Mineral Hauler Pickup routine');
+        log.output('Debug', 'Mineral Hauler Deposit routine took: ' + (Game.cpu.getUsed() - timer) + ' CPU Time', false, true);
+        log.output('Debug', 'End - Mineral Hauler Deposit routine');
 
     },
 
