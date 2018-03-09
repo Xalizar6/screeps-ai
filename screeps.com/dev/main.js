@@ -17,6 +17,7 @@ const C_mRolebuilder = require('role.builder');
 const C_mSpawncode = require('spawncode');
 const C_mTowerCode = require('towercode');
 const mineralHarvester = require('./role.mineralHarvester');
+const mineralHauler = require("./role.mineralHauler");
 const myFunctions = require('helper_myFunctions');
 const init = require('helper_initializations');
 const _ = require('lodash');
@@ -31,7 +32,7 @@ init.addSourcesToMemory();
 init.addMineralsToMemory();
 
 
-// this loop is executed every tick
+// This loop is executed every tick
 module.exports.loop = function () { 
 
     log.output('Info', "Begin - Main", true);
@@ -79,6 +80,10 @@ module.exports.loop = function () {
 
         if (oCreep.memory.role === 'Mineral Harvester') {
             mineralHarvester.run(oCreep);
+        };
+
+        if (oCreep.memory.role === 'Mineral Hauler') {
+            mineralHauler.run(oCreep);
         };
 
     };

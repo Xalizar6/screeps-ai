@@ -22,13 +22,14 @@ module.exports = {
         const nEnergySourcesInMemory = _.size(Game.spawns['Spawn1'].room.memory.sources);
 
         // Set the minimum number of each kind of creep that we want for production
+        let nMinNumberOfUpgraders = null;
         const nMinNumberOfHarvesters = 0;
         const nMinNumberOfBuilders = 1;
-        let nMinNumberOfUpgraders = null;
         const nMinNumberOfDedicatedHarvesters = nEnergySourcesInMemory;
         const nMinNumberOfLogisticsShortRange = nEnergySourcesInMemory;
         const nMinNumberOflogisticsLocal = 1;
         const nMinNumberOfMineralHarvester = 0;
+        const nMinNumberOfMineralHaulers = 0;
 
         // Adjust the number of Upgraders if we have enough energy stored - temporary until I start selling energy
         if (Game.spawns['Spawn1'].room.storage.store[RESOURCE_ENERGY] > 500000) {
@@ -45,6 +46,7 @@ module.exports = {
         const aLogisticsShortRange = _.filter(Game.creeps, (creep) => creep.memory.role == 'LogisticsShortRange');
         const alogisticsLocal = _.filter(Game.creeps, (creep) => creep.memory.role == 'logisticsLocal');
         const aMineralHarvesters = _.filter(Game.creeps, (creep) => creep.memory.role == 'Mineral Harvester');
+        const aMineralHaulers = _.filter(Game.creeps, (creep) => creep.memory.role == 'Mineral Hauler');
 
         // Spawn additional creeps if needed, including emergency code and 
         // prioritizing harvesters first.
@@ -71,6 +73,9 @@ module.exports = {
 
             } else if (aMineralHarvesters.length < nMinNumberOfMineralHarvester) {
                 Game.spawns['Spawn1'].createCreep([WORK, CARRY, MOVE], undefined, { role: 'Mineral Harvester' });
+
+            } else if (aMineralHaulers.length < nMinNumberOfMineralHaulers) {
+                Game.spawns['Spawn1'].createCreep([CARRY, MOVE], undefined, { role: 'Mineral Hauler' });
 
             } else if (_.size(Game.constructionSites) > 0) {
                 if (builders.length < nMinNumberOfBuilders) {

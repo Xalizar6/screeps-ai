@@ -56,6 +56,14 @@ module.exports = {
             // Store the mineral source ID in the creep's memory. The source is taken from room memory.
             // creep.memory.sourceid = creep.room.memory.minerals[0].id;
 
+            // Store the target position of the container near the mineral source in creep memory OR
+            // store the target position of the mineral source in creep memory.  Both are taken from the room memory.
+            if (creep.room.memory.minerals[0].container) {
+                creep.memory.targetPos = Game.getObjectById(creep.room.memory.minerals[0].container).pos;
+            } else {
+                creep.memory.targetPos = Game.getObjectById(creep.room.memory.minerals[0].id).pos;
+            };
+
             // So that we know in the following ticks that it's already been initialized...
             creep.memory.init = true;
 
@@ -103,6 +111,17 @@ module.exports = {
         log.output('Debug', 'Begin - Mineral Hauler Pickup routine for ' + creep.name, true);
         const timer = Game.cpu.getUsed();
 
+        console.log("Running Grab Resource");
+
+        if (creep.pos.findInRange(FIND_STRUCTURES, 1).length > 0) {
+            console.log("Found nearby structure");
+            console.log(creep.pos.findInRange(FIND_STRUCTURES, 1));
+        };
+
+        if (creep.pos.findInRange(FIND_CREEPS, 1).length > 0) {
+            console.log("Found nearby creep");
+            console.log(creep.pos.findInRange(FIND_CREEPS, 1));
+        };
 
         log.output('Debug', 'Mineral Hauler Pickup routine took: ' + (Game.cpu.getUsed() - timer) + ' CPU Time', false, true);
         log.output('Debug', 'End - Mineral Hauler Pickup routine');
@@ -113,6 +132,7 @@ module.exports = {
         log.output('Debug', 'Begin - Mineral Hauler Pickup routine for ' + creep.name, true);
         const timer = Game.cpu.getUsed();
 
+        console.log("Running Deposit Resource");
 
         log.output('Debug', 'Mineral Hauler Pickup routine took: ' + (Game.cpu.getUsed() - timer) + ' CPU Time', false, true);
         log.output('Debug', 'End - Mineral Hauler Pickup routine');
@@ -135,8 +155,6 @@ const getHaulerDepositTarget = function (creep) {
 
 const getHaulerSourceTarget = function (creep) {
 
-    // Store the target position of the container near the mineral source in creep memory OR
-    // store the target position of the mineral source in creep memory.  Both are taken from the room memory.
     if (creep.room.memory.minerals[0].container) {
         return Game.getObjectById(creep.room.memory.minerals[0].container).pos;
     } else {
@@ -146,6 +164,7 @@ const getHaulerSourceTarget = function (creep) {
 };
 
 const haulerContext = function (creep, currentState) {
+
     switch (currentState) {
         case myConstants.STATE_MOVING:
             if (_.sum(creep.carry) > 0) {
@@ -156,4 +175,5 @@ const haulerContext = function (creep, currentState) {
                 return { nextState: myConstants.STATE_GRAB_RESOURCE };
             };
     };
+
 };
