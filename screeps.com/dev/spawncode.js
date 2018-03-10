@@ -28,8 +28,8 @@ module.exports = {
         const nMinNumberOfDedicatedHarvesters = nEnergySourcesInMemory;
         const nMinNumberOfLogisticsShortRange = nEnergySourcesInMemory;
         const nMinNumberOflogisticsLocal = 1;
-        const nMinNumberOfMineralHarvester = 0;
-        const nMinNumberOfMineralHaulers = 0;
+        const nMinNumberOfMineralHarvester = 1;
+        const nMinNumberOfMineralHaulers = 1;
 
         // Adjust the number of Upgraders if we have enough energy stored - temporary until I start selling energy
         if (Game.spawns['Spawn1'].room.storage.store[RESOURCE_ENERGY] > 500000) {
@@ -72,15 +72,16 @@ module.exports = {
                 Game.spawns['Spawn1'].createCreep([WORK, WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE], undefined, { role: 'upgrader' });
 
             } else if (aMineralHarvesters.length < nMinNumberOfMineralHarvester) {
-                Game.spawns['Spawn1'].createCreep([WORK, WORK, MOVE], undefined, { role: 'Mineral Harvester' });
+                Game.spawns['Spawn1'].createCreep([WORK, WORK, WORK, WORK, WORK, MOVE, MOVE, MOVE], undefined, { role: 'Mineral Harvester' });
 
             } else if (aMineralHaulers.length < nMinNumberOfMineralHaulers) {
-                Game.spawns['Spawn1'].createCreep([CARRY, MOVE], undefined, { role: 'Mineral Hauler' });
+                Game.spawns['Spawn1'].createCreep([CARRY, CARRY, MOVE, MOVE], undefined, { role: 'Mineral Hauler' });
 
             } else if (_.size(Game.constructionSites) > 0) {
                 if (builders.length < nMinNumberOfBuilders) {
                     Game.spawns['Spawn1'].createCreep([WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE], undefined, { role: 'builder' });
                 };
+                
             };
 
         };
