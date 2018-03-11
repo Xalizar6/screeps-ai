@@ -56,9 +56,9 @@ const runSpawning = function (creep, options) {
 
         // Store the target position of the container near the mineral source in creep memory OR
         // Store the target position of the mineral source in creep memory.  Both are taken from the room memory.
-        if (creep.room.memory.minerals[0].container) {
-            creep.memory.pickupContainer = creep.room.memory.minerals[0].container;
-            creep.memory.pickupLoc = Game.getObjectById(creep.room.memory.minerals[0].container).pos;
+        if (creep.room.memory.minerals[0].containerID) {
+            creep.memory.pickupContainer = creep.room.memory.minerals[0].containerID;
+            creep.memory.pickupLoc = Game.getObjectById(creep.room.memory.minerals[0].containerID).pos;
         } else {
             creep.memory.pickupLoc = Game.getObjectById(creep.room.memory.minerals[0].id).pos;
         };

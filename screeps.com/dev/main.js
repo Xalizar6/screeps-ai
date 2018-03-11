@@ -1,9 +1,12 @@
 "use strict"; // Declaring Strict Mode to enforce better coding standards
 
-// Including logging module furst so it can be used below.
+//-------------------------------------------------------
+// Including logging module first so it can be used below.
 const log = require('./helper_logging');
 log.init();
+//-------------------------------------------------------
 
+//-------------------------------------------------------
 //Including modules, executed on new global creation every 10 seconds or so.
 log.output('Info', 'Begin - Initializing Modules', true);
 const timer1 = Game.cpu.getUsed();
@@ -24,16 +27,33 @@ const _ = require('lodash');
 
 log.output('Info', 'Initializing modules took: ' + (Game.cpu.getUsed() - timer1) + ' CPU Time', false, true);
 log.output('Info', 'End - Initializing Modules');
+//-------------------------------------------------------
 
+//-------------------------------------------------------
 // Add sources in a room to the room memory
+log.output('Info', 'Begin - Adding Energy sources to Room Memory', true);
+const timer2 = Game.cpu.getUsed();
+
 init.addSourcesToMemory();
 
+log.output('Info', 'Adding Energy sources to Room Memory took: ' + (Game.cpu.getUsed() - timer2) + ' CPU Time', false, true);
+log.output('Info', 'End - Adding Energy sources to Room Memory');
+//-------------------------------------------------------
+
+//-------------------------------------------------------
 // Add minerals in a room to the room memory
+log.output('Info', 'Begin - Adding Minerals to Room Memory', true);
+const timer3 = Game.cpu.getUsed();
+
 init.addMineralsToMemory();
+
+log.output('Info', 'Adding Minerals to Room Memory took: ' + (Game.cpu.getUsed() - timer3) + ' CPU Time', false, true);
+log.output('Info', 'End - Adding Minerals to Room Memory');
+//-------------------------------------------------------
 
 
 // This loop is executed every tick
-module.exports.loop = function () { 
+module.exports.loop = function () {
 
     log.output('Info', "Begin - Main", true);
     const mainLoop = Game.cpu.getUsed();

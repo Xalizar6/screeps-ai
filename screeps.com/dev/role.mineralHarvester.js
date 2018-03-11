@@ -57,18 +57,16 @@ const runSpawning = function (creep, transitionState) {
 
         // Store the target position of the container near the mineral source in creep memory OR
         // store the target position of the mineral source in creep memory.  Both are taken from the room memory.
-        if (creep.room.memory.minerals[0].container) {
-            creep.memory.targetPos = Game.getObjectById(creep.room.memory.minerals[0].container).pos;
+        if (creep.room.memory.minerals[0].containerID) {
+            creep.memory.source.containerID = creep.room.memory.minerals[0].containerID;
+            creep.memory.targetPos = Game.getObjectById(creep.room.memory.minerals[0].containerID).pos;
         } else {
             creep.memory.targetPos = Game.getObjectById(creep.room.memory.minerals[0].id).pos;
         };
 
         // Store the Extractor ID that is built on the Mineral Source in Memory so we can monitor the cooldown timer.
-        let extractor = creep.room.find(FIND_MY_STRUCTURES, { filter: { structureType: STRUCTURE_EXTRACTOR } });
-        if (extractor) {
-            for (let i in extractor) {
-                creep.memory.source.extractorID = extractor[i].id;
-            };
+        if (creep.room.memory.minerals[0].extractorID) {
+            creep.memory.source.extractorID = creep.room.memory.minerals[0].extractorID;
         };
 
         // So that we know in the following ticks that it's already been initialized...
@@ -90,7 +88,7 @@ const runMoving = function (creep, transitionState) {
 
     // Sit on top of the container if there is one or within 1 of the mineral source if no container
     let range = null;
-    if (creep.room.memory.minerals[0].container) {
+    if (creep.memory.source.containerID) {
         range = 0
     } else {
         range = 1
