@@ -9,8 +9,8 @@ module.exports = {
     /** @param {Creep} creep **/
     run: function (creep) {
 
-        log.output('Debug', 'Begin - Role Logistics Local', true);
-        let timer1 = Game.cpu.getUsed();
+        log.output('Debug', 'Begin - Role Logistics Local for ' + creep.name, true);
+        const timer1 = Game.cpu.getUsed();
 
         // Variables
         var energySource;
@@ -60,7 +60,7 @@ module.exports = {
             };
         };
 
-        log.output('Debug', 'Role Logistics Local took: ' + (Game.cpu.getUsed() - timer1) + ' CPU Time', true, true);
+        log.output('Debug', 'Role Logistics Local took: ' + (Game.cpu.getUsed() - timer1) + ' CPU Time', false, true);
         log.output('Debug', 'End - Role Logistics Local');
 
     },

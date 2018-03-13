@@ -2,6 +2,7 @@
 
 // as of 2/13/18 this is not in use as I don't fully understand it yet.
 
+/*
 module.exports = function () {
 
     Object.defineProperty(Room.prototype, 'sources', {
@@ -56,3 +57,5 @@ module.exports = function () {
     });
 
 };
+
+*/

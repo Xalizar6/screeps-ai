@@ -8,7 +8,7 @@ module.exports = {
     /** @param {Creep} creep **/
     run: function (creep) {
 
-        log.output('Debug', 'Begin - Role Harvester', true);
+        log.output('Debug', 'Begin - Role Harvester for ' + creep.name, true);
         let timer1 = Game.cpu.getUsed();
 
         // Variables
