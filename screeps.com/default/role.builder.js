@@ -1,11 +1,14 @@
 "use strict"; // Declaring Strict Mode to enforce better coding standards
 
-
-var myFunctions = require('myFunctions');
+const myFunctions = require('helper_myFunctions');
+const log = require('./helper_logging');
 
 module.exports = {
     /** @param {Creep} creep **/
     run: function (creep) {
+        
+        log.output('Debug', 'Begin - Role Builder for ' + creep.name, true);
+        const timer1 = Game.cpu.getUsed();
 
         // Declare variables
         var aTargets;
@@ -50,7 +53,11 @@ module.exports = {
                 // If there isn't a storage or the storage is low then get energy from a source
                 energySource = creep.room.find(FIND_SOURCES_ACTIVE)[0];
                 myFunctions.harvestEnergy(creep, energySource);
-            }
-        }
-    }
+            };
+        };
+        
+        log.output('Debug', 'Role Builder took: ' + (Game.cpu.getUsed() - timer1) + ' CPU Time',false,true);
+        log.output('Debug', 'End - Role Builder');
+        
+    },
 };

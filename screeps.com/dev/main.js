@@ -1,102 +1,113 @@
 "use strict"; // Declaring Strict Mode to enforce better coding standards
 
-
-//Included module files, executed on new global creation every 10 seconds or so.
+//-------------------------------------------------------
+// Including logging module first so it can be used below.
 const log = require('./helper_logging');
+log.init();
+//-------------------------------------------------------
 
+//-------------------------------------------------------
+//Including modules, executed on new global creation every 10 seconds or so.
 log.output('Info', 'Begin - Initializing Modules', true);
-    let timer1 = Game.cpu.getUsed();
+const timer1 = Game.cpu.getUsed();
 
-    let C_mRoleHarvester = require('role.harvester');
-    let C_mRoleUpgrader = require('role.upgrader');
-    let C_mRoleDedicatedHarvester = require('role.dedicatedHarvester')
-    let logisticsLocal = require('role.logisticsLocal')
-    let C_mRoleLogisticsShortRange = require('role.logisticsShortRange')
-    let C_mRolebuilder = require('role.builder');
-    let C_mSpawncode = require('spawncode');
-    let C_mTowerCode = require('towercode');
-    let myFunctions = require('helper_myFunctions');
-    let init = require('helper_initializations');
+const C_mRoleHarvester = require('role.harvester');
+const C_mRoleUpgrader = require('role.upgrader');
+const C_mRoleDedicatedHarvester = require('role.dedicatedHarvester');
+const logisticsLocal = require('role.logisticsLocal');
+const C_mRoleLogisticsShortRange = require('role.logisticsShortRange');
+const C_mRolebuilder = require('role.builder');
+const C_mSpawncode = require('spawncode');
+const C_mTowerCode = require('towercode');
+const mineralHarvester = require('./role.mineralHarvester');
+const mineralHauler = require("./role.mineralHauler");
+const myFunctions = require('helper_myFunctions');
+const init = require('helper_initializations');
+const _ = require('lodash');
 
-    log.output('Info', 'Initializing modules took: ' + (Game.cpu.getUsed() - timer1) + ' CPU Time',false,true);
+log.output('Info', 'Initializing modules took: ' + (Game.cpu.getUsed() - timer1) + ' CPU Time', false, true);
 log.output('Info', 'End - Initializing Modules');
+//-------------------------------------------------------
 
- 
-log.output('Info', 'Begin - Adding Sources to Room Memory',true);
-    let timer2 = Game.cpu.getUsed();
+//-------------------------------------------------------
+// Add sources in a room to the room memory
+log.output('Info', 'Begin - Adding Energy sources to Room Memory', true);
+const timer2 = Game.cpu.getUsed();
 
-    if (!Game.spawns['Spawn1'].room.memory.sources) {
-        Game.spawns['Spawn1'].room.memory.sources = {};
-    };
+init.addSourcesToMemory();
 
-    let arrayOfSources = Game.spawns['Spawn1'].room.find(FIND_SOURCES);
-    
-    for (let i in arrayOfSources) {
+log.output('Info', 'Adding Energy sources to Room Memory took: ' + (Game.cpu.getUsed() - timer2) + ' CPU Time', false, true);
+log.output('Info', 'End - Adding Energy sources to Room Memory');
+//-------------------------------------------------------
 
-        if (!Game.spawns['Spawn1'].room.memory.sources[i]) {
-            Game.spawns['Spawn1'].room.memory.sources[i] = {};
-        };
+//-------------------------------------------------------
+// Add minerals in a room to the room memory
+log.output('Info', 'Begin - Adding Minerals to Room Memory', true);
+const timer3 = Game.cpu.getUsed();
 
-        if (!Game.spawns['Spawn1'].room.memory.sources[i].id) {
-            Game.spawns['Spawn1'].room.memory.sources[i].id = arrayOfSources[i].id;
-        };
+init.addMineralsToMemory();
 
-        // if (!Game.spawns['Spawn1'].room.memory.sources[i].harvester) {
-        //     Game.spawns['Spawn1'].room.memory.sources[i].harvester = '';
-        // };
-
-        // if (!Game.spawns['Spawn1'].room.memory.sources[i].hauler) {
-        //     Game.spawns['Spawn1'].room.memory.sources[i].hauler = '';
-        // };
-
-    };
-
-    log.output('Info', 'Adding Sources to Room Memory took: ' + (Game.cpu.getUsed() - timer2) + ' CPU Time',false,true);
-log.output('Info', 'End - Adding Sources to Room Memory');
+log.output('Info', 'Adding Minerals to Room Memory took: ' + (Game.cpu.getUsed() - timer3) + ' CPU Time', false, true);
+log.output('Info', 'End - Adding Minerals to Room Memory');
+//-------------------------------------------------------
 
 
-module.exports.loop = function () { // this loop is executed every tick
+// This loop is executed every tick
+module.exports.loop = function () {
 
     log.output('Info', "Begin - Main", true);
-    let mainLoop = Game.cpu.getUsed();
+    const mainLoop = Game.cpu.getUsed();
 
-
-    // Declare variables
-    let sName;
-    let oCreep;
-
-    // initialize console commands with the alias of cc
+    // Initialize console commands with the alias of cc
     init.initConsoleCommands();
-    
-    // call the spawncode module
+
+    // Run the spawncode module
     C_mSpawncode.run();
 
-    // run the towercode module
-    C_mTowerCode.play();
+    // Run the towercode module
+    const aTowers = _.filter(Game.structures, (s) => s.structureType == STRUCTURE_TOWER);
+    for (let i in aTowers) {
+        C_mTowerCode.run(aTowers[i]);
+    };
 
-    //call the role based work modules
-    for (sName in Game.creeps) {
-        oCreep = Game.creeps[sName];
+    // Call the role based work modules
+    for (let i in Game.creeps) {
+        const oCreep = Game.creeps[i];
+
         if (oCreep.memory.role == 'harvester') {
             C_mRoleHarvester.run(oCreep);
-        }
+        };
+
         if (oCreep.memory.role == 'upgrader') {
             C_mRoleUpgrader.run(oCreep);
-        }
+        };
+
         if (oCreep.memory.role == 'builder') {
             C_mRolebuilder.run(oCreep);
-        }
+        };
+
         if (oCreep.memory.role == 'dedicatedHarvester') {
             C_mRoleDedicatedHarvester.run(oCreep);
-        }
+        };
+
         if (oCreep.memory.role == 'LogisticsShortRange') {
             C_mRoleLogisticsShortRange.run(oCreep);
-        }
+        };
+
         if (oCreep.memory.role == 'logisticsLocal') {
             logisticsLocal.run(oCreep);
-        }
-    }
+        };
 
-    log.output('Info', 'Main took: ' + (Game.cpu.getUsed() - mainLoop) + ' CPU Time',true,true);
+        if (oCreep.memory.role === 'Mineral Harvester') {
+            mineralHarvester.run(oCreep);
+        };
+
+        if (oCreep.memory.role === 'Mineral Hauler') {
+            mineralHauler.run(oCreep);
+        };
+
+    };
+
+    log.output('Info', 'Main took: ' + (Game.cpu.getUsed() - mainLoop) + ' CPU Time', true, true);
     log.output('Info', 'End - Main');
-}
+};

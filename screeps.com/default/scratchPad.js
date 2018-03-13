@@ -76,17 +76,17 @@ new RoomVisual('W36N18').text("Target💥", 1, 1, { color: 'green', font: 0.8 })
 
 // Display all of the room properties
 for (let key in Game.rooms) {
+    console.log(key + "    " + Game.rooms[key].name);
     console.log(key + "    " + Game.rooms[key].controller);
     console.log(key + "    " + Game.rooms[key].energyAvailable);
     console.log(key + "    " + Game.rooms[key].energyCapacityAvailable);
     console.log(key + "    " + Game.rooms[key].memory);
-    console.log(key + "    " + Game.rooms[key].name);
     console.log(key + "    " + Game.rooms[key].storage);
 }
 
 // Put my source IDs in memory
 var oSpawn1 = Game.spawns["Spawn1"];
-var aSources = oSpawn1.room.find(FIND_SOURCES);
+let aSources = oSpawn1.room.find(FIND_SOURCES);
 for (let i in aSources) {
     console.log(aSources[i].id)
 };
@@ -116,3 +116,6 @@ console.log(blah);
 
 var x = new [];
 x.push(WORK)
+
+
+a = Game.getObjectById('5982fc6bb097071b4adbd5f7'); for (let x in a) {console.log(x)}; a.memory = 'test'

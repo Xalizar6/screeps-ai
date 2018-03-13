@@ -9,15 +9,15 @@ module.exports = {
     /** @param {Creep} creep **/
     run: function (creep) {
 
-        log.output('Debug', 'Begin - Role Logistics Short Range', true);
+        log.output('Debug', 'Begin - Role Logistics Short Range for ' + creep.name, true);
         let timer1 = Game.cpu.getUsed();
 
         // Declare Variables
-            const aSourcesInMemory = creep.room.memory.sources;
-            let target = null;
-            let aResources = null;
-            let oEnergySource = null;
-            let bCreepAlreadyAssigned = false;
+        const aSourcesInMemory = creep.room.memory.sources;
+        let target = null;
+        let aResources = null;
+        let oEnergySource = null;
+        let bCreepAlreadyAssigned = false;
 
         // If hauling mode is on creep is empty, turn off hauling mode
         if (creep.memory.hauling && creep.carry.energy == 0) {
@@ -38,6 +38,12 @@ module.exports = {
             // Set the ID as the creep's Energy Source ID
             for (let i in aSourcesInMemory) {
 
+                // Determine if the currently assigned hauler is alive - remove from memory if not.
+                if (aSourcesInMemory[i].harvester && !Game.creeps[aSourcesInMemory[i].hauler]) {
+                    log.output("Event", "Removing dead Hauler " + aSourcesInMemory[i].hauler + " from source.", false, true);
+                    delete aSourcesInMemory[i].hauler;
+                };
+
                 if (aSourcesInMemory[i].hauler === creep.name) {
                     // Give the creep the source object
                     oEnergySource = Game.getObjectById(aSourcesInMemory[i].id);
@@ -50,17 +56,17 @@ module.exports = {
             // find one that needs a hauler
             // Set the ID as the creep's Energy Source ID.
             if (!bCreepAlreadyAssigned) {
-                
+
                 // Loop through the room sources stored in memory 
                 for (let i in aSourcesInMemory) {
 
-                    if (!aSourcesInMemory[i].hauler) {                    
+                    if (!aSourcesInMemory[i].hauler) {
                         // Assign the creep to the source
-                        aSourcesInMemory[i].hauler = creep.name;                    
-                    
+                        aSourcesInMemory[i].hauler = creep.name;
+
                         // Give the creep the source object
-                        oEnergySource = Game.getObjectById(aSourcesInMemory[i].id);                        
-                    
+                        oEnergySource = Game.getObjectById(aSourcesInMemory[i].id);
+
                         // Exit the FOR loop so the creep isn't assigned to every available source
                         break;
                     };
@@ -70,21 +76,21 @@ module.exports = {
             };
 
 
-            
+
             // oEnergySource = Game.getObjectById("5982fc6bb097071b4adbd5f7");
 
             // Once assigned to an energy source look for dropped resources nearby to it
-            aResources = creep.room.find(FIND_DROPPED_RESOURCES);            
+            aResources = creep.room.find(FIND_DROPPED_RESOURCES);
             for (let i in aResources) {
-               
+
                 if (aResources[i].pos.isNearTo(oEnergySource)) {
                     target = aResources[i];
                 };
-                
+
             };
 
             // Go pick up the dropped resources
-            myFunctions.pickupEnergy(creep,target);
+            myFunctions.pickupEnergy(creep, target);
 
         } else {
 
@@ -99,17 +105,17 @@ module.exports = {
 
             // Loop through the sources
             for (let i in aSourcesInMemory) {
-                    
+
                 // Remove the creep's assignment to the source before it dies
                 if (aSourcesInMemory[i].hauler === creep.name) {
                     delete aSourcesInMemory[i].hauler;
                 };
-                
+
             };
 
         };
 
-        log.output('Debug', 'Role Logistics Short Range took: ' + (Game.cpu.getUsed() - timer1) + ' CPU Time',false,true);
+        log.output('Debug', 'Role Logistics Short Range took: ' + (Game.cpu.getUsed() - timer1) + ' CPU Time', false, true);
         log.output('Debug', 'End - Role Logistics Short Range');
 
     },
