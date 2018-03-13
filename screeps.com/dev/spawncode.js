@@ -32,7 +32,7 @@ module.exports = {
         const nMinNumberOfMineralHaulers = 1;
 
         // Adjust the number of Upgraders if we have enough energy stored - temporary until I start selling energy
-        if (Game.spawns['Spawn1'].room.storage.store[RESOURCE_ENERGY] > 500000) {
+        if (Game.spawns['Spawn1'].room.storage.store[RESOURCE_ENERGY] > 250000) {
             nMinNumberOfUpgraders = 5;
         } else {
             nMinNumberOfUpgraders = 3;
