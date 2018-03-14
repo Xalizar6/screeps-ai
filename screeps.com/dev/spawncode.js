@@ -24,7 +24,7 @@ module.exports = {
         // Set the minimum number of each kind of creep that we want for production
         let nMinNumberOfUpgraders = null;
         const nMinNumberOfHarvesters = 0;
-        const nMinNumberOfBuilders = 2;
+        const nMinNumberOfBuilders = 4;
         const nMinNumberOfDedicatedHarvesters = nEnergySourcesInMemory;
         const nMinNumberOfLogisticsShortRange = nEnergySourcesInMemory;
         const nMinNumberOflogisticsLocal = 1;
@@ -71,19 +71,14 @@ module.exports = {
             } else if ( upgraders.length < nMinNumberOfUpgraders ) {
                 Game.spawns['Spawn1'].createCreep( [WORK, WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE], undefined, { role: 'upgrader' } );
 
-            } else if ( aMineralHarvesters.length < nMinNumberOfMineralHarvester ) {
-                if ( checkMineralAmount() > 0 ) {
-                    Game.spawns['Spawn1'].createCreep( [WORK, WORK, WORK, WORK, WORK, MOVE, MOVE, MOVE], undefined, { role: 'Mineral Harvester' } );
-                };
-            } else if ( aMineralHaulers.length < nMinNumberOfMineralHaulers ) {
-                if ( checkMineralAmount() > 0 ) {
-                    Game.spawns['Spawn1'].createCreep( [CARRY, CARRY, MOVE, MOVE], undefined, { role: 'Mineral Hauler' } );
-                };
-            } else if ( _.size( Game.constructionSites ) > 0 ) {
-                if ( builders.length < nMinNumberOfBuilders ) {
-                    Game.spawns['Spawn1'].createCreep( [WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE], undefined, { role: 'builder' } );
-                };
+            } else if ( aMineralHarvesters.length < nMinNumberOfMineralHarvester && checkMineralAmount() > 0 ) {
+                Game.spawns['Spawn1'].createCreep( [WORK, WORK, WORK, WORK, WORK, MOVE, MOVE, MOVE], undefined, { role: 'Mineral Harvester' } );
 
+            } else if ( aMineralHaulers.length < nMinNumberOfMineralHaulers && checkMineralAmount() > 0 ) {
+                Game.spawns['Spawn1'].createCreep( [CARRY, CARRY, MOVE, MOVE], undefined, { role: 'Mineral Hauler' } );
+
+            } else if ( _.size( Game.constructionSites ) > 0 && builders.length < nMinNumberOfBuilders ) {
+                Game.spawns['Spawn1'].createCreep( [WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE], undefined, { role: 'builder' } );
             };
 
         };
