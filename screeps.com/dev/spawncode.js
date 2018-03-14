@@ -24,7 +24,7 @@ module.exports = {
         // Set the minimum number of each kind of creep that we want for production
         let nMinNumberOfUpgraders = null;
         const nMinNumberOfHarvesters = 0;
-        const nMinNumberOfBuilders = 1;
+        const nMinNumberOfBuilders = 2;
         const nMinNumberOfDedicatedHarvesters = nEnergySourcesInMemory;
         const nMinNumberOfLogisticsShortRange = nEnergySourcesInMemory;
         const nMinNumberOflogisticsLocal = 1;
@@ -32,7 +32,7 @@ module.exports = {
         const nMinNumberOfMineralHaulers = 1;
 
         // Adjust the number of Upgraders if we have enough energy stored - temporary until I start selling energy
-        if ( Game.spawns['Spawn1'].room.storage.store[RESOURCE_ENERGY] > 250000 ) {
+        if ( Game.spawns['Spawn1'].room.storage.store[RESOURCE_ENERGY] > 400000 ) {
             nMinNumberOfUpgraders = 5;
         } else {
             nMinNumberOfUpgraders = 3;
