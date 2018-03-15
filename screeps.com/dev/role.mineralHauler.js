@@ -88,15 +88,15 @@ const runMoving = function ( creep, options ) {
     };
 
     // We know that creep.memory.targetPos is set up before this state is called. For haulers, it's set in haulerContext().
-    const pos = new RoomPosition( creep.memory.targetPos.x, creep.memory.targetPos.y, creep.memory.targetPos.roomName );
+    const destination = new RoomPosition( creep.memory.targetPos.x, creep.memory.targetPos.y, creep.memory.targetPos.roomName );
 
     // Has the creep arrived?
-    if ( creep.pos.getRangeTo( pos ) <= 1 ) {
+    if ( creep.pos.getRangeTo( destination ) <= 1 ) {
         creep.memory.state = transitionState;
         module.exports.run( creep );
     } else {
         // It hasn't arrived, so we get it to move to target position
-        creep.moveTo( pos );
+        creep.moveTo( destination );
     };
 
 

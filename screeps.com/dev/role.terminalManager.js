@@ -1,5 +1,3 @@
-"use strict"; // Declaring Strict Mode to enforce better coding standards
-
 /* 
     Logic
         Should only spawn if the terminal has more or less resources than it needs
@@ -10,17 +8,25 @@
         Spawning
         Moving (to terminal / to storage)
         Grab Resources
-        Deposit Resources
+        Deposit Resources        
+        Loading the Terminal with resources
+            Set a memory value as to whether we are in loading or unloading mode?
+            This would allow the moving function to set the target easily
+        Unloading the Terminal of resources
 */
+
+"use strict"; // Declaring Strict Mode to enforce better coding standards
 
 const log = require( './helper_logging' );
 const myConstants = require( './helper_constants' );
+const debug = true; // Turn logging for this module on and off
+
 
 module.exports = {
 
     run: function ( creep ) {
 
-        log.output( 'Debug', 'Begin - Terminal Manager Run routine for ' + creep.name, true );
+        if ( debug ) { log.output( 'Debug', 'Begin - Terminal Manager Run routine for ' + creep.name, true ) };
         const timer = Game.cpu.getUsed();
 
         if ( !creep.memory.state ) {
@@ -42,8 +48,8 @@ module.exports = {
                 break;
         };
 
-        log.output( 'Debug', 'Terminal Manager Run routine took: ' + ( Game.cpu.getUsed() - timer ) + ' CPU Time', false, true );
-        log.output( 'Debug', 'End - Terminal Manager Run routine' );
+        if ( debug ) { log.output( 'Debug', 'Terminal Manager Run routine took: ' + ( Game.cpu.getUsed() - timer ) + ' CPU Time', false, true ) };
+        if ( debug ) { log.output( 'Debug', 'End - Terminal Manager Run routine' ) };
 
     },
 };
@@ -70,25 +76,65 @@ const runSpawning = function ( creep, options ) {
 const runMoving = function ( creep, options ) {
 
     // Determine the next transition state
+    let transitionState = options.context ? getDestination( creep ).nextState : options.nextState;
+    /*
+        // This is the full code that the statement above stands for
+        let transitionState = null;
+        if ( options.context ) {
+            transitionState = getDestination( creep ).nextState;
+        } else {
+            transitionState = options.nextState;
+        };
+    */
 
-    // Get the Destination from memory
+    // Get the Destination from memory that was set in getDestination
+    const destination = new RoomPosition( creep.memory.targetPos.x, creep.memory.targetPos.y, creep.memory.targetPos.roomName );
 
-    // Check if you've arrived at the destination and transition to the next state or Move closer to the Destination
+    // Check if you've arrived at the destination and transition to the next state
+    //   or
+    // Move closer to the Destination
+    if ( creep.pos.getRangeTo( destination ) <= 1 ) {
+        creep.memory.state = transitionState;
+        module.exports.run( creep );
+    } else {
+        creep.moveTo( destination );
+    };
 
 };
 
 const runGrabResource = function ( creep, options ) {
+    // Determine your pickup target
+
+    // Determine which resource to pick up
+
+    // Pick up the resource
 
 };
 
 const runDepositResource = function ( creep, options ) {
+    // Determine your deposit target
+
+    // Determine which resource to deposit
+
+    // Deposit the resource
 
 };
 
 const getDestination = function ( creep, options ) {
 
-    // If Energy in the terminal is low then set target to Storage and transition to Grab Resources
+    // If Energy in the terminal is low then set TargetPOS to Storage and transition to Grab Resources
+    if ( creep.room.terminal.store[RESOURCE_ENERGY] < myConstants.TERMINAL_STORED_ENERGY ) {
+        creep.memory.targetPos = creep.room.storage.pos;
+        return { nextState: myConstants.STATE_GRAB_RESOURCE };
+    };
 
-    // If Oxygen in the terminal is low then set target to Storage and transition to Grab Resources   
+    // If Energy in the terminal is low and carrying energy set Destination to Terminal and transition to Deposit Resources
+    // return { nextState: myConstants.STATE_DEPOSIT_RESOURCE };
+
+    // If Oxygen in the terminal is low then set Destination to Storage and transition to Grab Resources   
+    // return { nextState: myConstants.STATE_GRAB_RESOURCE };
+
+    // If Oxygen in the terminal is low and carrying Oxygen set Destination to Terminal and transition to Deposit Resources
+    // return { nextState: myConstants.STATE_DEPOSIT_RESOURCE };
 
 };

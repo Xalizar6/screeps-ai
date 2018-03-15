@@ -2,12 +2,13 @@
 
 const log = require( './helper_logging' );
 const _ = require( 'lodash' );
+const debug = false; // Turn logging for this module on and off
 
 module.exports = {
 
     run: function ( tower ) {
 
-        log.output( 'Debug', 'Begin - TowerCode routine', true );
+        if ( debug ) { log.output( 'Debug', 'Begin - TowerCode routine', true ) };
         const timer1 = Game.cpu.getUsed();
 
         let target = null;
@@ -15,8 +16,8 @@ module.exports = {
         if ( !target ) {
             const aTargets = tower.room.find( FIND_HOSTILE_CREEPS );
             if ( aTargets.length > 0 ) {
-                log.output( 'Event', 'Defending against hostiles', false, true );
-                log.output( 'Event', 'Number of hostiles: ' + aTargets.length, false, true );
+                if ( debug ) { log.output( "Debug", 'Towercode running Hostile Creeps code', false, true ) };
+                log.output( 'Event', 'Tower Defending against ' + aTargets.length + ' hostiles', true, true );
                 target = tower.pos.findClosestByRange( FIND_HOSTILE_CREEPS );
                 tower.attack( target );
             };
@@ -30,7 +31,8 @@ module.exports = {
             } );
 
             if ( aTargets.length > 0 ) {
-                log.output( 'Event', 'Repairing containers', false, true );
+                if ( debug ) { log.output( "Debug", 'Towercode running Repair Container code', false, true ) };
+                log.output( 'Event', 'Tower Repairing containers', true, true );
                 aTargets.sort( ( a, b ) => a.hits - b.hits );
                 target = tower.pos.findClosestByRange( aTargets );
                 tower.repair( target );
@@ -45,7 +47,8 @@ module.exports = {
             } );
 
             if ( aTargets.length > 0 ) {
-                log.output( 'Event', 'Repairing roads', false, true );
+                if ( debug ) { log.output( "Debug", 'Towercode running Repair Road code', false, true ) };
+                log.output( 'Event', 'Tower Repairing roads', true, true );
                 aTargets.sort( ( a, b ) => a.hits - b.hits );
                 target = tower.pos.findClosestByRange( aTargets );
                 tower.repair( target );
@@ -53,7 +56,7 @@ module.exports = {
         };
 
         if ( !target ) {
-            log.output( 'Debug', 'No targets to attack or repair', false, true );
+            if ( debug ) { log.output( 'Debug', 'No targets to attack or repair', false, true ) };
         };
 
         /*
@@ -84,8 +87,8 @@ module.exports = {
         }; 
         */
 
-        log.output( 'Debug', 'TowerCode routine took: ' + ( Game.cpu.getUsed() - timer1 ) + ' CPU Time', false, true );
-        log.output( 'Debug', 'End - TowerCode routine' );
+        if ( debug ) { log.output( 'Debug', 'TowerCode routine took: ' + ( Game.cpu.getUsed() - timer1 ) + ' CPU Time', false, true ) };
+        if ( debug ) { log.output( 'Debug', 'End - TowerCode routine' ) };
 
     },
 

@@ -12,4 +12,6 @@ module.exports = {
     STATE_DEPOSIT_RESOURCE: 3,
     STATE_GRAB_RESOURCE: 4,
 
+    TERMINAL_STORED_ENERGY: 2000,
+
 };
