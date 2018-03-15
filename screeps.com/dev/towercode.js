@@ -1,59 +1,59 @@
 "use strict"; // Declaring Strict Mode to enforce better coding standards
 
-const log = require('./helper_logging');
-const _ = require('lodash');
+const log = require( './helper_logging' );
+const _ = require( 'lodash' );
 
 module.exports = {
 
-    run: function (tower) {
+    run: function ( tower ) {
 
-        log.output('Debug', 'Begin - TowerCode routine', true);
+        log.output( 'Debug', 'Begin - TowerCode routine', true );
         const timer1 = Game.cpu.getUsed();
 
         let target = null;
 
-        if (!target) {
-            const aTargets = tower.room.find(FIND_HOSTILE_CREEPS);
-            if (aTargets.length > 0) {
-                log.output('Debug', 'Defending against hostiles', false, true);
-                log.output('Debug', 'Number of hostiles: ' + aTargets.length, false, true);
-                target = tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
-                tower.attack(target);
+        if ( !target ) {
+            const aTargets = tower.room.find( FIND_HOSTILE_CREEPS );
+            if ( aTargets.length > 0 ) {
+                log.output( 'Event', 'Defending against hostiles', false, true );
+                log.output( 'Event', 'Number of hostiles: ' + aTargets.length, false, true );
+                target = tower.pos.findClosestByRange( FIND_HOSTILE_CREEPS );
+                tower.attack( target );
             };
         };
 
-        if (!target) {
-            const aTargets = tower.room.find(FIND_STRUCTURES, {
-                filter: (structure) => {
-                    return (structure.structureType == STRUCTURE_CONTAINER) && structure.hitsMax - structure.hits >= 5000
+        if ( !target ) {
+            const aTargets = tower.room.find( FIND_STRUCTURES, {
+                filter: ( structure ) => {
+                    return ( structure.structureType == STRUCTURE_CONTAINER ) && structure.hitsMax - structure.hits >= 5000
                 }
-            });
+            } );
 
-            if (aTargets.length > 0) {
-                log.output('Debug', 'Repairing containers', false, true);
-                aTargets.sort((a, b) => a.hits - b.hits);
-                target = tower.pos.findClosestByRange(aTargets);
-                tower.repair(target);
+            if ( aTargets.length > 0 ) {
+                log.output( 'Event', 'Repairing containers', false, true );
+                aTargets.sort( ( a, b ) => a.hits - b.hits );
+                target = tower.pos.findClosestByRange( aTargets );
+                tower.repair( target );
             };
         };
 
-        if (!target) {
-            const aTargets = tower.room.find(FIND_STRUCTURES, {
-                filter: (structure) => {
-                    return (structure.structureType == STRUCTURE_ROAD) && structure.hitsMax - structure.hits >= 4000
+        if ( !target ) {
+            const aTargets = tower.room.find( FIND_STRUCTURES, {
+                filter: ( structure ) => {
+                    return ( structure.structureType == STRUCTURE_ROAD ) && structure.hitsMax - structure.hits >= 4000
                 }
-            });
+            } );
 
-            if (aTargets.length > 0) {
-                log.output('Debug', 'Repairing roads', false, true);
-                aTargets.sort((a, b) => a.hits - b.hits);
-                target = tower.pos.findClosestByRange(aTargets);
-                tower.repair(target);
+            if ( aTargets.length > 0 ) {
+                log.output( 'Event', 'Repairing roads', false, true );
+                aTargets.sort( ( a, b ) => a.hits - b.hits );
+                target = tower.pos.findClosestByRange( aTargets );
+                tower.repair( target );
             };
         };
 
-        if (!target) {
-            log.output('Debug', 'No targets to attack or repair', false, true);
+        if ( !target ) {
+            log.output( 'Debug', 'No targets to attack or repair', false, true );
         };
 
         /*
@@ -84,8 +84,8 @@ module.exports = {
         }; 
         */
 
-        log.output('Debug', 'TowerCode routine took: ' + (Game.cpu.getUsed() - timer1) + ' CPU Time', false, true);
-        log.output('Debug', 'End - TowerCode routine');
+        log.output( 'Debug', 'TowerCode routine took: ' + ( Game.cpu.getUsed() - timer1 ) + ' CPU Time', false, true );
+        log.output( 'Debug', 'End - TowerCode routine' );
 
     },
 
