@@ -21,13 +21,12 @@ const log = require( './helper_logging' );
 const myConstants = require( './helper_constants' );
 const debug = true; // Turn logging for this module on and off
 
-
 module.exports = {
 
     run: function ( creep ) {
 
         if ( debug ) { log.output( 'Debug', 'Begin - Terminal Manager Run routine for ' + creep.name, true ) };
-        const timer = Game.cpu.getUsed();
+        if ( debug ) { var timer = Game.cpu.getUsed() };
 
         if ( !creep.memory.state ) {
             creep.memory.state = myConstants.STATE_SPAWNING;
@@ -38,7 +37,7 @@ module.exports = {
                 runSpawning( creep, { nextState: myConstants.STATE_MOVING } );
                 break;
             case myConstants.STATE_MOVING:
-                runMoving( creep, { context: getDestination } );
+                runMoving( creep, { context: getNext } );
                 break;
             case myConstants.STATE_GRAB_RESOURCE:
                 runGrabResource( creep, { nextState: myConstants.STATE_MOVING } );
@@ -76,65 +75,93 @@ const runSpawning = function ( creep, options ) {
 const runMoving = function ( creep, options ) {
 
     // Determine the next transition state
-    let transitionState = options.context ? getDestination( creep ).nextState : options.nextState;
+    const transitionState = options.context ? getNext( creep ).nextState : options.nextState;
     /*
         // This is the full code that the statement above stands for
         let transitionState = null;
         if ( options.context ) {
-            transitionState = getDestination( creep ).nextState;
+            transitionState = getNext( creep ).nextState;
         } else {
             transitionState = options.nextState;
         };
     */
-
-    // Get the Destination from memory that was set in getDestination
-    const destination = new RoomPosition( creep.memory.targetPos.x, creep.memory.targetPos.y, creep.memory.targetPos.roomName );
+    const destination = Game.getObjectById( options.destinationID );
+    const range = options.range;
 
     // Check if you've arrived at the destination and transition to the next state
     //   or
     // Move closer to the Destination
-    if ( creep.pos.getRangeTo( destination ) <= 1 ) {
+    if ( creep.pos.getRangeTo( destination.pos ) <= range + 1 ) {
         creep.memory.state = transitionState;
-        module.exports.run( creep );
+        creep.moveTo( destination.pos );
     } else {
-        creep.moveTo( destination );
+        creep.moveTo( destination.pos );
     };
 
 };
 
 const runGrabResource = function ( creep, options ) {
+
     // Determine your pickup target
+    let origin = Game.getObjectById( options.originID );
 
     // Determine which resource to pick up
+    let resource = options.resourceType;
 
     // Pick up the resource
+    if ( origin.store[resource] >= creep.carryCapacity ) {
+        const withdrawStatus = creep.withdraw( origin, resource );
+        if ( debug ) { log.output( "Debug", "Creep.withdraw() status: " + withdrawStatus, false, true ) };
+    };
+
+    if ( _.sum( creep.carry ) == creep.carryCapacity ) {
+        if ( debug ) { log.output( "Debug", "Creep is full, going to deposit", false, true ) };
+        creep.memory.state = options.nextState;
+    };
 
 };
 
 const runDepositResource = function ( creep, options ) {
     // Determine your deposit target
+    const destination = Game.getObjectById( options.destinationID );
 
     // Determine which resource to deposit
+    const resource = options.resourceType;
 
     // Deposit the resource
+    creep.transfer( destination, resource );
+    if ( debug ) { log.output( "Debug", "Transferred " + resource + " to " + destination, false, true ) };
+    creep.memory.state = options.nextState;
 
 };
 
-const getDestination = function ( creep, options ) {
+const getNext = function ( creep, options ) {
+
+    // Declare Variables
+    let terminal = creep.room.terminal;
+    let storage = creep.room.storage;
+    let energyInTerminal = terminal.store[RESOURCE_ENERGY];
+    let desiredEnergyInTerminal = myConstants.TERMINAL_ENERGY_STORAGE_TARGET;
+    let oxygenInTerminal = terminal.store[RESOURCE_OXYGEN];
+    let desiredOxygenInTerminal = myConstants.TERMINAL_OXYGEN_STORAGE_TARGET;
 
     // If Energy in the terminal is low then set TargetPOS to Storage and transition to Grab Resources
-    if ( creep.room.terminal.store[RESOURCE_ENERGY] < myConstants.TERMINAL_STORED_ENERGY ) {
-        creep.memory.targetPos = creep.room.storage.pos;
-        return { nextState: myConstants.STATE_GRAB_RESOURCE };
+    if ( energyInTerminal < desiredEnergyInTerminal && _.sum( creep.carry ) < creep.carryCapacity ) {
+        return { originID: storage.id, resourceType: RESOURCE_ENERGY, nextState: myConstants.STATE_GRAB_RESOURCE, range: 1 };
     };
 
     // If Energy in the terminal is low and carrying energy set Destination to Terminal and transition to Deposit Resources
-    // return { nextState: myConstants.STATE_DEPOSIT_RESOURCE };
+    if ( energyInTerminal < desiredEnergyInTerminal && _.sum( creep.carry ) === creep.carryCapacity ) {
+        return { destinationID: terminal.id, resourceType: RESOURCE_ENERGY, nextState: myConstants.STATE_DEPOSIT_RESOURCE, range: 1 };
+    };
 
     // If Oxygen in the terminal is low then set Destination to Storage and transition to Grab Resources   
-    // return { nextState: myConstants.STATE_GRAB_RESOURCE };
+    if ( oxygenInTerminal < desiredOxygenInTerminal && _.sum( creep.carry ) < creep.carryCapacity ) {
+        return { originID: storage.id, resourceType: RESOURCE_OXYGEN, nextState: myConstants.STATE_GRAB_RESOURCE, range: 1 };
+    };
 
     // If Oxygen in the terminal is low and carrying Oxygen set Destination to Terminal and transition to Deposit Resources
-    // return { nextState: myConstants.STATE_DEPOSIT_RESOURCE };
-
+    if ( oxygenInTerminal < desiredOxygenInTerminal && _.sum( creep.carry ) === creep.carryCapacity ) {
+        return { destinationID: terminal.id, resourceType: RESOURCE_OXYGEN, nextState: myConstants.STATE_DEPOSIT_RESOURCE, range: 1 };
+    };
 };
