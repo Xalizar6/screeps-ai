@@ -15,7 +15,7 @@ module.exports = {
         for ( let creep in Memory.creeps ) {
             if ( !Game.creeps[creep] ) {
                 delete Memory.creeps[creep];
-                log.output( "Event", "Clearing non-existing creep memory: " + creep, false, true );
+                log.output( "Event", "Clearing non-existing creep memory: " + creep, true, true );
             };
         };
 
@@ -75,7 +75,7 @@ module.exports = {
                 Game.spawns['Spawn1'].createCreep( [WORK, WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE], undefined, { role: 'upgrader' } );
 
             } else if ( aMineralHarvesters.length < nMinNumberOfMineralHarvester && checkMineralAmount() > 0 ) {
-                Game.spawns['Spawn1'].createCreep( [WORK, WORK, WORK, WORK, WORK, MOVE, MOVE, MOVE], undefined, { role: 'Mineral Harvester' } );
+                Game.spawns['Spawn1'].createCreep( [WORK, WORK, WORK, WORK, WORK, WORK, MOVE, MOVE, MOVE], undefined, { role: 'Mineral Harvester' } );
 
             } else if ( aMineralHaulers.length < nMinNumberOfMineralHaulers && checkMineralAmount() > 0 ) {
                 Game.spawns['Spawn1'].createCreep( [CARRY, CARRY, MOVE, MOVE], undefined, { role: 'Mineral Hauler' } );
@@ -92,7 +92,7 @@ module.exports = {
         //Add text to the screen indicating spawning process
         if ( Game.spawns['Spawn1'].spawning ) {
             const spawningCreep = Game.creeps[Game.spawns['Spawn1'].spawning.name];
-            log.output( "Event", "Spawning new creep named " + spawningCreep.name + " with the role " + spawningCreep.memory.role, false, true );
+            log.output( "Event", "Spawning new creep named " + spawningCreep.name + " with the role " + spawningCreep.memory.role, true, true );
             Game.spawns['Spawn1'].room.visual.text(
                 '🛠️' + spawningCreep.memory.role,
                 Game.spawns['Spawn1'].pos.x + 1,

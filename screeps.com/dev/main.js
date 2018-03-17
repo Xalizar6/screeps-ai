@@ -107,12 +107,12 @@ module.exports.loop = function () {
             mineralHauler.run( oCreep );
         };
 
-        // if ( oCreep.memory.role === 'Terminal Manager' ) {
-        //     terminalManager.run( oCreep );
-        // };
+        if ( oCreep.memory.role === 'Terminal Manager' ) {
+            terminalManager.run( oCreep );
+        };
 
     };
 
-    log.output( 'Info', 'Main took: ' + ( Game.cpu.getUsed() - mainLoop ) + ' CPU Time', true, true );
+    log.output( 'Info', 'Main took: ' + ( Game.cpu.getUsed() - mainLoop ) + ' CPU Time with ' + Game.cpu.bucket + ' bucket remaining', true, true );
     log.output( 'Info', 'End - Main' );
 };
