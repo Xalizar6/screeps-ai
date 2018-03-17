@@ -2,15 +2,16 @@
 
 const myFunctions = require( 'helper_myFunctions' );
 const log = require( './helper_logging' );
-
+const debug = false;
+let timer = null;
 
 module.exports = {
 
     /** @param {Creep} creep **/
     run: function ( creep ) {
 
-        log.output( 'Debug', 'Begin - Role Dedicated Harvester for ' + creep.name, true );
-        const timer1 = Game.cpu.getUsed();
+        if ( debug ) { log.output( 'Debug', 'Begin - Role Dedicated Harvester for ' + creep.name, true ) };
+        if ( debug ) { timer = Game.cpu.getUsed() };
 
         // Declare variables
         const aSourcesInMemory = creep.room.memory.sources;
@@ -76,8 +77,8 @@ module.exports = {
             };
         };
 
-        log.output( 'Debug', 'Role Dedicated Harvester took: ' + ( Game.cpu.getUsed() - timer1 ) + ' CPU Time', false, true );
-        log.output( 'Debug', 'End - Role Dedicated Harvester' );
+        if ( debug ) { log.output( 'Debug', 'Role Dedicated Harvester took: ' + ( Game.cpu.getUsed() - timer ) + ' CPU Time', false, true ) };
+        if ( debug ) { log.output( 'Debug', 'End - Role Dedicated Harvester' ) };
 
     },
 

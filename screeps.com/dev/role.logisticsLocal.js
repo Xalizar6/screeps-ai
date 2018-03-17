@@ -14,14 +14,16 @@
 
 const myFunctions = require( 'helper_myFunctions' );
 const log = require( './helper_logging' );
+const debug = false;
+let timer = null;
 
 module.exports = {
 
     /** @param {Creep} creep **/
     run: function ( creep ) {
 
-        log.output( 'Debug', 'Begin - Role Logistics Local for ' + creep.name, true );
-        const timer = Game.cpu.getUsed();
+        if ( debug ) { log.output( 'Debug', 'Begin - Role Logistics Local for ' + creep.name, true ) };
+        if ( debug ) { timer = Game.cpu.getUsed() };
 
         // Variables
         let energySource = null;
@@ -72,8 +74,8 @@ module.exports = {
             };
         };
 
-        log.output( 'Debug', 'Role Logistics Local took: ' + ( Game.cpu.getUsed() - timer ) + ' CPU Time', false, true );
-        log.output( 'Debug', 'End - Role Logistics Local' );
+        if ( debug ) { log.output( 'Debug', 'Role Logistics Local took: ' + ( Game.cpu.getUsed() - timer ) + ' CPU Time', false, true ) };
+        if ( debug ) { log.output( 'Debug', 'End - Role Logistics Local' ) };
 
     },
 };

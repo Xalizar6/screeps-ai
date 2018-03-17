@@ -2,13 +2,14 @@
 
 const _ = require( 'lodash' );
 const log = require( './helper_logging' );
+const debug = false;
 
 module.exports = {
 
     run: function () {
 
-        log.output( 'Debug', 'Begin - Spawncode routine', true );
-        const timer1 = Game.cpu.getUsed();
+        if ( debug ) { log.output( 'Debug', 'Begin - Spawncode routine', true ) };
+        if ( debug ) { var timer = Game.cpu.getUsed() };
 
         //Clear the deceased creeps from memory
         for ( let creep in Memory.creeps ) {
@@ -30,12 +31,13 @@ module.exports = {
         const nMinNumberOflogisticsLocal = 1;
         const nMinNumberOfMineralHarvester = 1;
         const nMinNumberOfMineralHaulers = 1;
+        const nMinNumberOfTerminalManagers = 0;
 
         // Adjust the number of Upgraders if we have enough energy stored - temporary until I start selling energy
         if ( Game.spawns['Spawn1'].room.storage.store[RESOURCE_ENERGY] > 400000 ) {
             nMinNumberOfUpgraders = 5;
         } else {
-            nMinNumberOfUpgraders = 3;
+            nMinNumberOfUpgraders = 1;
         };
 
         // Determine the total number of each role of creep we have alive this tick
@@ -47,6 +49,7 @@ module.exports = {
         const alogisticsLocal = _.filter( Game.creeps, ( creep ) => creep.memory.role == 'logisticsLocal' );
         const aMineralHarvesters = _.filter( Game.creeps, ( creep ) => creep.memory.role == 'Mineral Harvester' );
         const aMineralHaulers = _.filter( Game.creeps, ( creep ) => creep.memory.role == 'Mineral Hauler' );
+        const aTerminalManagers = _.filter( Game.creeps, ( creep ) => creep.memory.role == 'Terminal Manager' );
 
         // Spawn additional creeps if needed, including emergency code and 
         // prioritizing harvesters first.
@@ -79,6 +82,9 @@ module.exports = {
 
             } else if ( _.size( Game.constructionSites ) > 0 && builders.length < nMinNumberOfBuilders ) {
                 Game.spawns['Spawn1'].createCreep( [WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE], undefined, { role: 'builder' } );
+
+            } else if ( aTerminalManagers.length < nMinNumberOfTerminalManagers ) {
+                Game.spawns['Spawn1'].createCreep( [CARRY, MOVE], undefined, { role: 'Terminal Manager' } );
             };
 
         };
@@ -94,8 +100,8 @@ module.exports = {
                 { align: 'left', opacity: 0.8 } );
         };
 
-        log.output( 'Debug', 'Spawncode routine took: ' + ( Game.cpu.getUsed() - timer1 ) + ' CPU Time', false, true );
-        log.output( 'Debug', 'End - Spawncode routine' );
+        if ( debug ) { log.output( 'Debug', 'Spawncode routine took: ' + ( Game.cpu.getUsed() - timer ) + ' CPU Time', false, true ) };
+        if ( debug ) { log.output( 'Debug', 'End - Spawncode routine' ) };
 
     },
 

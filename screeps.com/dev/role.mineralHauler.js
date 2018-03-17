@@ -2,12 +2,13 @@
 
 const log = require( './helper_logging' );
 const myConstants = require( './helper_constants' );
+const debug = false;
 
 module.exports = {
 
     run: function ( creep ) {
 
-        log.output( 'Debug', 'Begin - Mineral Hauler Run routine for ' + creep.name, true );
+        if ( debug ) { log.output( 'Debug', 'Begin - Mineral Hauler Run routine for ' + creep.name, true ) };
         const timer = Game.cpu.getUsed();
 
         // Add starting transition state to the creep memory if it doesn't already exist
@@ -31,8 +32,8 @@ module.exports = {
                 break;
         };
 
-        log.output( 'Debug', 'Mineral Hauler Run routine took: ' + ( Game.cpu.getUsed() - timer ) + ' CPU Time', false, true );
-        log.output( 'Debug', 'End - Mineral Hauler Run routine' );
+        if ( debug ) { log.output( 'Debug', 'Mineral Hauler Run routine took: ' + ( Game.cpu.getUsed() - timer ) + ' CPU Time', false, true ) };
+        if ( debug ) { log.output( 'Debug', 'End - Mineral Hauler Run routine' ) };
 
     },
 
@@ -40,7 +41,7 @@ module.exports = {
 
 const runSpawning = function ( creep, options ) {
 
-    log.output( 'Debug', 'Begin - Mineral Hauler Spawning routine for ' + creep.name, true );
+    if ( debug ) { log.output( 'Debug', 'Begin - Mineral Hauler Spawning routine for ' + creep.name, true ) };
     const timer = Game.cpu.getUsed();
 
     // Once the creep finishes spawning we transition to the next state
@@ -67,14 +68,14 @@ const runSpawning = function ( creep, options ) {
 
     };
 
-    log.output( 'Debug', 'Mineral Hauler Spawning routine took: ' + ( Game.cpu.getUsed() - timer ) + ' CPU Time', false, true );
-    log.output( 'Debug', 'End - Mineral Hauler Spawning routine' );
+    if ( debug ) { log.output( 'Debug', 'Mineral Hauler Spawning routine took: ' + ( Game.cpu.getUsed() - timer ) + ' CPU Time', false, true ) };
+    if ( debug ) { log.output( 'Debug', 'End - Mineral Hauler Spawning routine' ) };
 
 };
 
 const runMoving = function ( creep, options ) {
 
-    log.output( 'Debug', 'Begin - Mineral Hauler Moving routine for ' + creep.name, true );
+    if ( debug ) { log.output( 'Debug', 'Begin - Mineral Hauler Moving routine for ' + creep.name, true ) };
     const timer = Game.cpu.getUsed();
 
     // This statement is shorthand for the function right below it. They are both here for clarity for now.
@@ -100,41 +101,41 @@ const runMoving = function ( creep, options ) {
     };
 
 
-    log.output( 'Debug', 'Mineral Hauler Moving routine took: ' + ( Game.cpu.getUsed() - timer ) + ' CPU Time', false, true );
-    log.output( 'Debug', 'End - Mineral Hauler Moving routine' );
+    if ( debug ) { log.output( 'Debug', 'Mineral Hauler Moving routine took: ' + ( Game.cpu.getUsed() - timer ) + ' CPU Time', false, true ) };
+    if ( debug ) { log.output( 'Debug', 'End - Mineral Hauler Moving routine' ) };
 
 };
 
 const runGrabResource = function ( creep, options ) {
-    log.output( 'Debug', 'Begin - Mineral Hauler Grab Resource routine for ' + creep.name, true );
+    if ( debug ) { log.output( 'Debug', 'Begin - Mineral Hauler Grab Resource routine for ' + creep.name, true ) };
     const timer = Game.cpu.getUsed();
 
     const pickupContainer = Game.getObjectById( creep.memory.pickupContainer );
     if ( pickupContainer.store[RESOURCE_OXYGEN] >= creep.carryCapacity ) {
         const withdrawStatus = creep.withdraw( pickupContainer, RESOURCE_OXYGEN );
-        log.output( "Debug", "Creep.Withdraw() status: " + withdrawStatus, false, true );
+        if ( debug ) { log.output( "Debug", "Creep.Withdraw() status: " + withdrawStatus, false, true ) };
     };
 
     if ( _.sum( creep.carry ) == creep.carryCapacity ) {
-        log.output( "Debug", "Creep is full, going to unload", false, true );
+        if ( debug ) { log.output( "Debug", "Creep is full, going to unload", false, true ) };
         creep.memory.state = options.nextState;
     };
 
-    log.output( 'Debug', 'Mineral Hauler Grab Resource routine took: ' + ( Game.cpu.getUsed() - timer ) + ' CPU Time', false, true );
-    log.output( 'Debug', 'End - Mineral Hauler Grab Resource routine' );
+    if ( debug ) { log.output( 'Debug', 'Mineral Hauler Grab Resource routine took: ' + ( Game.cpu.getUsed() - timer ) + ' CPU Time', false, true ) };
+    if ( debug ) { log.output( 'Debug', 'End - Mineral Hauler Grab Resource routine' ) };
 
 };
 
 const runDepositResource = function ( creep, options ) {
-    log.output( 'Debug', 'Begin - Mineral Hauler Deposit routine for ' + creep.name, true );
+    if ( debug ) { log.output( 'Debug', 'Begin - Mineral Hauler Deposit routine for ' + creep.name, true ) };
     const timer = Game.cpu.getUsed();
 
     creep.transfer( creep.room.storage, RESOURCE_OXYGEN );
-    log.output( "Debug", "Transferred Oxygen to storage", false, true );
+    if ( debug ) { log.output( "Debug", "Transferred Oxygen to storage", false, true ) };
     creep.memory.state = options.nextState;
 
-    log.output( 'Debug', 'Mineral Hauler Deposit routine took: ' + ( Game.cpu.getUsed() - timer ) + ' CPU Time', false, true );
-    log.output( 'Debug', 'End - Mineral Hauler Deposit routine' );
+    if ( debug ) { log.output( 'Debug', 'Mineral Hauler Deposit routine took: ' + ( Game.cpu.getUsed() - timer ) + ' CPU Time', false, true ) };
+    if ( debug ) { log.output( 'Debug', 'End - Mineral Hauler Deposit routine' ) };
 
 };
 
