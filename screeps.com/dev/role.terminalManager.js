@@ -25,17 +25,16 @@ module.exports = {
         if ( debug ) { log.output( 'Debug', 'Begin - Terminal Manager Run routine for ' + creep.name, true ) };
         const timer = Game.cpu.getUsed();
 
-        if ( !creep.memory.command ) {
-            creep.memory.command = {};
-            creep.memory.command.nextState = myConstants.STATE_SPAWNING;
+        if ( !creep.memory.state ) {
+            creep.memory.state = myConstants.STATE_SPAWNING;
         };
 
-        switch ( creep.memory.command.nextState ) {
+        switch ( creep.memory.state ) {
             case myConstants.STATE_SPAWNING:
                 runSpawning( creep, { nextState: myConstants.STATE_MOVING } );
                 break;
             case myConstants.STATE_MOVING:
-                runMoving( creep, { context: getNext } );
+                runMoving( creep, { getContext: true } );
                 break;
             case myConstants.STATE_GRAB_RESOURCE:
                 runGrabResource( creep, { nextState: myConstants.STATE_MOVING } );
@@ -43,6 +42,8 @@ module.exports = {
             case myConstants.STATE_DEPOSIT_RESOURCE:
                 runDepositResource( creep, { nextState: myConstants.STATE_MOVING } );
                 break;
+            case myConstants.STATE_IDLE:
+                runIdle( creep );
         };
 
         if ( debug ) { log.output( 'Debug', 'Terminal Manager Run routine took: ' + ( Game.cpu.getUsed() - timer ) + ' CPU Time', false, true ) };
@@ -57,14 +58,15 @@ const runSpawning = function ( creep, options ) {
     const timer = Game.cpu.getUsed();
 
     // Once the creep finishes spawning we transition to the next state
-    if ( creep.spawning === false ) {
-        creep.memory.command.nextState = options.nextState;
+    if ( !creep.spawning ) {
+        creep.memory.state = options.nextState;
         module.exports.run( creep );	// Call the main run function so that the next state function runs straight away
         return;		// We put return here because once we transition to a different state, we don't want any of the following code in this function to run...
     };
 
     // Initialize the creep if that hasn't been done yet.
     if ( !creep.memory.init ) {
+        creep.memory.command = {};
         creep.memory.init = true;
     };
 
@@ -78,33 +80,54 @@ const runMoving = function ( creep, options ) {
     if ( debug ) { log.output( 'Debug', 'Begin - Run Moving routine for ' + creep.name, true ) };
     const timer = Game.cpu.getUsed();
 
-    if ( options.context ) {
+    // Declare Variables
+    const creepMemory = creep.memory.command;
+    let destination = null;
+    let range = null;
+    let transitionState = null;
+    let command = null;
+
+    if ( debug ) { log.output( "Debug", "Options.getContext value = " + options.getContext, false, true ) };
+
+    if ( options.getContext ) {
+
         if ( debug ) { log.output( "Debug", "Running Get Next Routine", false, true ) };
-        getNext( creep );
+        command = getNext( creep );
+        creep.memory.command = command;
+        // transitionState = creepMemory.nextState;
+        transitionState = command.nextState;
+        // destination = Game.getObjectById( creepMemory.destinationID );
+        destination = Game.getObjectById( command.destinationID );
+        // range = creepMemory.range;
+        range = command.range;
 
     } else {
+
         if ( debug ) { log.output( "Debug", "Skipping Get Next Routine", false, true ) };
+        transitionState = options.nextState;
 
     };
 
-    const creepMemory = creep.memory.command;
-    const destination = Game.getObjectById( creepMemory.destinationID );
-    const range = creepMemory.range;
-    const transitionState = creepMemory.nextState;
-    if ( debug ) { log.output( "Debug", "Destination: " + destination, false, true ) };
-    if ( debug ) { log.output( "Debug", "Range: " + range, false, true ) };
-    if ( debug ) { log.output( "Debug", "TransitionState: " + transitionState, false, true ) };
+    if ( debug ) { log.output( "Debug", "Destination = " + destination, false, true ) };
+    if ( debug ) { log.output( "Debug", "Range = " + range, false, true ) };
+    if ( debug ) { log.output( "Debug", "TransitionState = " + transitionState, false, true ) };
 
     // Check if you've arrived at the destination and transition to the next state
     //   or
     // Move closer to the Destination
     if ( creep.pos.getRangeTo( destination.pos ) <= range + 1 ) {
-        creepMemory.nextState = transitionState;
-        creep.moveTo( destination.pos );
+
         if ( debug ) { log.output( "Debug", "Moving within range of destination", false, true ) };
+        let status = creep.moveTo( destination.pos );
+        console.log( "MoveTo status = " + status );
+        creep.memory.state = transitionState;
+
     } else {
-        creep.moveTo( destination.pos );
+
+        let status = creep.moveTo( destination.pos );
+        console.log( "MoveTo status = " + status );
         if ( debug ) { log.output( "Debug", "Moving to destination", false, true ) };
+
     };
 
     if ( debug ) { log.output( 'Debug', 'Run Moving routine took: ' + ( Game.cpu.getUsed() - timer ) + ' CPU Time', false, true ) };
@@ -132,7 +155,7 @@ const runGrabResource = function ( creep, options ) {
     };
 
     if ( _.sum( creep.carry ) == creep.carryCapacity ) {
-        creepMemory.nextState = options.nextState;
+        creep.memory.state = options.nextState;
         if ( debug ) { log.output( "Debug", "Creep is full, going to deposit", false, true ) };
     };
 
@@ -156,7 +179,7 @@ const runDepositResource = function ( creep, options ) {
 
     // Deposit the resource
     creep.transfer( destination, resource );
-    creepMemory.nextState = options.nextState;
+    creep.memory.state = options.nextState;
     if ( debug ) { log.output( "Debug", "Transferred " + resource + " to " + destination, false, true ) };
 
     if ( debug ) { log.output( 'Debug', 'Run Deposit Resources routine took: ' + ( Game.cpu.getUsed() - timer ) + ' CPU Time', false, true ) };
@@ -174,11 +197,14 @@ const getNext = function ( creep ) {
     const storage = creep.room.storage;
     const energyInTerminal = terminal.store[RESOURCE_ENERGY];
     const desiredEnergyInTerminal = myConstants.TERMINAL_ENERGY_STORAGE_TARGET;
-    let oxygenInTerminal = null;
-    if ( terminal.store[RESOURCE_OXYGEN] ) { oxygenInTerminal = terminal.store[RESOURCE_OXYGEN]; } else { oxygenInTerminal = 0 };
-    console.log( "Terminal: " + terminal );
-    console.log( "Oxygen in terminal: " + oxygenInTerminal );
     const desiredOxygenInTerminal = myConstants.TERMINAL_OXYGEN_STORAGE_TARGET;
+    let oxygenInTerminal = null;
+
+    if ( terminal.store[RESOURCE_OXYGEN] ) {
+        oxygenInTerminal = terminal.store[RESOURCE_OXYGEN];
+    } else {
+        oxygenInTerminal = 0
+    };
 
     // If Energy in the terminal is low and the creep is not full then set destinationID to Storage and transition to Grab Resources
     if ( energyInTerminal < desiredEnergyInTerminal && _.sum( creep.carry ) < creep.carryCapacity ) {
@@ -206,9 +232,15 @@ const getNext = function ( creep ) {
     };
 
     // Do nothing
-    creep.memory.command = { destinationID: terminal.id, range: 1, nextState: myConstants.STATE_MOVING };
+    // creep.memory.command = { destinationID: storage.id, range: 1, nextState: myConstants.STATE_IDLE };
+    return { destinationID: storage.id, range: 1, nextState: myConstants.STATE_IDLE };
 
     if ( debug ) { log.output( 'Debug', 'Run Get Next routine took: ' + ( Game.cpu.getUsed() - timer ) + ' CPU Time', false, true ) };
     if ( debug ) { log.output( 'Debug', 'End - Get Next routine' ) };
 
+};
+
+const runIdle = function ( creep ) {
+    if ( debug ) { log.output( "Debug", "Idle, waiting for work", false, true ) };
+    getNext( creep );
 };
