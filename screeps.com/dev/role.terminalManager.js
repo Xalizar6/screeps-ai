@@ -9,7 +9,12 @@
         Spawning
         Moving (to terminal / to storage)
         Grab Resources
-        Deposit Resources        
+        Deposit Resources
+        Idle
+        
+    Modes
+        Loading Terminal
+        Unloading Terminal
 */
 
 "use strict"; // Declaring Strict Mode to enforce better coding standards
@@ -205,6 +210,12 @@ const getNext = function ( creep ) {
     } else {
         oxygenInTerminal = 0
     };
+
+
+    // load terminal
+    if ( energyInStorage > 50000 && energyInTerminal < 30000 ) {
+        return { origin: storage.id, destination: terminal.id, resourceType: RESOURCE_ENERGY };
+    }
 
     // If Energy in the terminal is low and the creep is not full then set destinationID to Storage and transition to Grab Resources
     if ( energyInTerminal < desiredEnergyInTerminal && _.sum( creep.carry ) < creep.carryCapacity ) {

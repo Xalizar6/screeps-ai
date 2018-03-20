@@ -2,7 +2,8 @@
 
 const _ = require( 'lodash' );
 const log = require( './helper_logging' );
-const debug = false;
+const myConstants = require( './helper_constants' );
+const debug = false; // Turn logging for this module on and off
 
 module.exports = {
 
@@ -34,7 +35,7 @@ module.exports = {
         const nMinNumberOfTerminalManagers = 0;
 
         // Adjust the number of Upgraders if we have enough energy stored - temporary until I start selling energy
-        if ( Game.spawns['Spawn1'].room.storage.store[RESOURCE_ENERGY] > 400000 ) {
+        if ( Game.spawns['Spawn1'].room.storage.store[RESOURCE_ENERGY] > myConstants.STORAGE_ENERGY_STORAGE_TARGET ) {
             nMinNumberOfUpgraders = 5;
         } else {
             nMinNumberOfUpgraders = 1;

@@ -14,7 +14,7 @@
 
 const myFunctions = require( 'helper_myFunctions' );
 const log = require( './helper_logging' );
-const debug = false;
+const debug = false; // Turn logging for this module on and off
 let timer = null;
 
 module.exports = {
