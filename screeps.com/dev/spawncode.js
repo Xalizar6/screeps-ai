@@ -32,7 +32,7 @@ module.exports = {
         const nMinNumberOflogisticsLocal = 1;
         const nMinNumberOfMineralHarvester = 1;
         const nMinNumberOfMineralHaulers = 1;
-        const nMinNumberOfTerminalManagers = 0;
+        const nMinNumberOfTerminalManagers = 1;
 
         // Adjust the number of Upgraders if we have enough energy stored - temporary until I start selling energy
         if ( Game.spawns['Spawn1'].room.storage.store[RESOURCE_ENERGY] > myConstants.STORAGE_ENERGY_STORAGE_TARGET ) {
@@ -84,8 +84,8 @@ module.exports = {
             } else if ( _.size( Game.constructionSites ) > 0 && builders.length < nMinNumberOfBuilders ) {
                 Game.spawns['Spawn1'].createCreep( [WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE], undefined, { role: 'builder' } );
 
-            } else if ( aTerminalManagers.length < nMinNumberOfTerminalManagers ) {
-                Game.spawns['Spawn1'].createCreep( [CARRY, MOVE], undefined, { role: 'Terminal Manager' } );
+            } else if ( aTerminalManagers.length < nMinNumberOfTerminalManagers && checkStorageAmount() > 25000 ) {
+                Game.spawns['Spawn1'].createCreep( [CARRY, CARRY, CARRY, CARRY, MOVE, MOVE], undefined, { role: 'Terminal Manager' } );
             };
 
         };
@@ -109,6 +109,9 @@ module.exports = {
 };
 
 const checkMineralAmount = function () {
-    const iMineralAmount = Game.getObjectById( Game.spawns['Spawn1'].room.memory.minerals[0].id ).mineralAmount;
-    return iMineralAmount;
+    return Game.getObjectById( Game.spawns['Spawn1'].room.memory.minerals[0].id ).mineralAmount;
+};
+
+const checkStorageAmount = function () {
+    return Game.spawns['Spawn1'].room.storage.store[RESOURCE_ENERGY];
 };

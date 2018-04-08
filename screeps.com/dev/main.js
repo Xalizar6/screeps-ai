@@ -19,6 +19,7 @@ const C_mRoleLogisticsShortRange = require( 'role.logisticsShortRange' );
 const C_mRolebuilder = require( 'role.builder' );
 const C_mSpawncode = require( 'spawncode' );
 const C_mTowerCode = require( 'towercode' );
+const C_mMarketCode = require( './marketCode' );
 const mineralHarvester = require( './role.mineralHarvester' );
 const mineralHauler = require( "./role.mineralHauler" );
 const terminalManager = require( "./role.terminalManager" );
@@ -26,7 +27,7 @@ const myFunctions = require( 'helper_myFunctions' );
 const init = require( 'helper_initializations' );
 const _ = require( 'lodash' );
 
-log.output( 'Info', 'Initializing modules took: ' + ( Game.cpu.getUsed() - timer1 ) + ' CPU Time', false, true );
+log.output( 'Info', 'Initializing modules took: ' + ( Game.cpu.getUsed() - timer1 ).toFixed( 2 ) + ' CPU Time', false, true );
 log.output( 'Info', 'End - Initializing Modules' );
 //-------------------------------------------------------
 
@@ -37,7 +38,7 @@ const timer2 = Game.cpu.getUsed();
 
 init.addSourcesToMemory();
 
-log.output( 'Info', 'Adding Energy sources to Room Memory took: ' + ( Game.cpu.getUsed() - timer2 ) + ' CPU Time', false, true );
+log.output( 'Info', 'Adding Energy sources to Room Memory took: ' + ( Game.cpu.getUsed() - timer2 ).toFixed( 2 ) + ' CPU Time', false, true );
 log.output( 'Info', 'End - Adding Energy sources to Room Memory' );
 //-------------------------------------------------------
 
@@ -48,7 +49,7 @@ const timer3 = Game.cpu.getUsed();
 
 init.addMineralsToMemory();
 
-log.output( 'Info', 'Adding Minerals to Room Memory took: ' + ( Game.cpu.getUsed() - timer3 ) + ' CPU Time', false, true );
+log.output( 'Info', 'Adding Minerals to Room Memory took: ' + ( Game.cpu.getUsed() - timer3 ).toFixed( 2 ) + ' CPU Time', false, true );
 log.output( 'Info', 'End - Adding Minerals to Room Memory' );
 //-------------------------------------------------------
 
@@ -113,6 +114,8 @@ module.exports.loop = function () {
 
     };
 
-    log.output( 'Info', 'Main took: ' + ( Game.cpu.getUsed() - mainLoop ) + ' CPU Time with ' + Game.cpu.bucket + ' bucket remaining', true, true );
+    C_mMarketCode.run();
+
+    log.output( 'Info', 'Main took: ' + ( Game.cpu.getUsed() - mainLoop ).toFixed( 2 ) + ' CPU Time with ' + Game.cpu.bucket + ' bucket remaining', true, true );
     log.output( 'Info', 'End - Main' );
 };
