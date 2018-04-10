@@ -3,7 +3,7 @@
 
 const myFunctions = require( 'helper_myFunctions' );
 const log = require( './helper_logging' );
-const debug = false; // Turn logging for this module on and off
+const debug = true; // Turn logging for this module on and off
 let timer = null;
 
 module.exports = {
@@ -20,21 +20,24 @@ module.exports = {
         let aResources = null;
         let oEnergySource = null;
         let bCreepAlreadyAssigned = false;
+        let drop = null;
+        const oSpawn = Game.spawns["Spawn1"];
 
-        // If hauling mode is on creep is empty, turn off hauling mode
+        // If hauling mode is on and creep is empty, turn off hauling mode
         if ( creep.memory.hauling && creep.carry.energy == 0 ) {
             creep.memory.hauling = false;
             creep.say( '🔄 refill' );
         };
 
         // If hauling mode is off and creep is full, turn on hauling mode
-        if ( !creep.memory.hauling && creep.carry.energy == creep.carryCapacity ) {
+        if ( !creep.memory.hauling && creep.carry.energy === creep.carryCapacity ) {
             creep.memory.hauling = true;
             creep.say( '🚧 hauling' );
         };
 
         // If creep is empty, identify the assigned source to pickup near
-        if ( creep.memory.hauling == false ) {
+        if ( !creep.memory.hauling || creep.memory.hauling == false ) {
+            if ( debug ) { log.output( 'Debug', 'In refill mode', false, true ) };
 
             // Loop through the energy sources in the room's memory and see if this creep is assigned to one
             // Set the ID as the creep's Energy Source ID
@@ -77,10 +80,6 @@ module.exports = {
 
             };
 
-
-
-            // oEnergySource = Game.getObjectById("5982fc6bb097071b4adbd5f7");
-
             // Once assigned to an energy source look for dropped resources nearby to it
             aResources = creep.room.find( FIND_DROPPED_RESOURCES );
             for ( let i in aResources ) {
@@ -96,8 +95,44 @@ module.exports = {
 
         } else {
 
-            // Creep is full so go drop off at Storage
-            myFunctions.transferEnergy( creep, creep.room.storage );
+            // Creep is full so go drop off
+            if ( debug ) { log.output( 'Debug', 'In dropoff mode', false, true ) };
+
+            // Check if Spawn needs it
+            if ( drop == null ) {
+                if ( oSpawn.energy < oSpawn.energyCapacity ) {
+                    drop = oSpawn;
+                    if ( debug ) { log.output( 'Debug', 'Dropping off at spawn', false, true ) };
+                };
+            };
+
+            // If not dropping in spawn, check if extensions need it
+            if ( drop == null ) {
+                let extensions = creep.room.find( FIND_MY_STRUCTURES, {
+                    // filter: { structureType: STRUCTURE_EXTENSION }
+                    filter: ( i ) => i.structureType == STRUCTURE_EXTENSION && i.energy < i.energyCapacity
+                } );
+                if ( extensions.length > 0 ) {
+                    extensions = _.sortByOrder( extensions, ['energy'], ['asc'] );
+                    drop = extensions[0];
+                    if ( debug ) { log.output( 'Debug', 'Dropping off at extensions', false, true ) };
+                };
+            };
+
+            // If there is Storage drop off there
+            if ( drop == null ) {
+                if ( creep.room.storage ) {
+                    if ( debug ) { log.output( 'Debug', 'Dropping off at storage', false, true ) };
+                    drop = creep.room.storage;
+                };
+            };
+
+            // If a drop target was set then drop it there
+            if ( drop != null ) {
+                myFunctions.transferEnergy( creep, drop )
+            } else {
+                if ( debug ) { log.output( 'Debug', 'No drop target set', false, true ) };
+            };
 
         };
 

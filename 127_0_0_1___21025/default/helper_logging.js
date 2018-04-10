@@ -1,8 +1,30 @@
 "use strict"; // Declaring Strict Mode to enforce better coding standards
 
-const constants = require('./helper_constants');
+const constants = require( './helper_constants' );
 
 module.exports = {
+
+    init: function () {
+        //Add the Memory.logging object to hold logging state
+        if ( !Memory.logging ) {
+            Memory.logging = {};
+        };
+        if ( !Memory.logging.showDebugMessages ) {
+            Memory.logging.showDebugMessages = true;
+        };
+        if ( !Memory.logging.showErrorMessages ) {
+            Memory.logging.showErrorMessages = true;
+        };
+        if ( !Memory.logging.showEventMessages ) {
+            Memory.logging.showEventMessages = true;
+        };
+        if ( !Memory.logging.showInfoMessages ) {
+            Memory.logging.showInfoMessages = true;
+        };
+        if ( !Memory.logging.showWarningMessages ) {
+            Memory.logging.showWarningMessages = true;
+        };
+    },
 
 
     /**
@@ -11,49 +33,45 @@ module.exports = {
      * @param {boolean} [lineBreak] - Indicate if you want a line break before the message
      * @param {boolean} [tab] - Indicate if you want to indent the message
      */
-    output: function (type, message, lineBreak = false, tab = false) {
-        var runCode = false;
+    output: function ( type, message, lineBreak = false, tab = false ) {
+        let runCode = false;
 
-        switch (type) {
-            case 'Event':
-                if (constants.showEventMessages) {
-                    runCode = true;
-                };
-                break;
-
-            case 'Info':
-                if (constants.showInfoMessages) {
-                    runCode = true;
-                };
-                break;
-
+        switch ( type ) {
             case 'Debug':
-                if (constants.showDebugMessages) {
+                if ( Memory.logging.showDebugMessages === true ) {
                     runCode = true;
                 };
                 break;
-
-            case 'Warning':
-                if (constants.showWarningMessages) {
-                    runCode = true;
-                };
-                break;
-
             case 'Error':
-                if (constants.showErrorMessages) {
+                if ( Memory.logging.showErrorMessages === true ) {
+                    runCode = true;
+                };
+                break;
+            case 'Event':
+                if ( Memory.logging.showEventMessages === true ) {
+                    runCode = true;
+                };
+                break;
+            case 'Info':
+                if ( Memory.logging.showInfoMessages === true ) {
+                    runCode = true;
+                };
+                break;
+            case 'Warning':
+                if ( Memory.logging.showWarningMessages === true ) {
                     runCode = true;
                 };
                 break;
         };
-        
-        if (runCode) {
-            if (lineBreak) {
-                console.log('\n');
+
+        if ( runCode ) {
+            if ( lineBreak ) {
+                console.log( '\n' );
             };
-            if (tab) {
-                console.log(type + '[' + Game.time + ']: ' + "   " + message);
+            if ( tab ) {
+                console.log( "\t" + type + '[' + Game.time + ']: ' + message );
             } else {
-                console.log(type + '[' + Game.time + ']: ' + message);
+                console.log( type + '[' + Game.time + ']: ' + message );
             };
         };
     },

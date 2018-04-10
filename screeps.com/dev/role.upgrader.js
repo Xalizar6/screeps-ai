@@ -17,7 +17,7 @@ module.exports = {
             creep.memory.upgrading = false;
             creep.say( '🔄 refill' );
         }
-        if ( !creep.memory.upgrading && creep.carry.energy > 0 ) {
+        if ( !creep.memory.upgrading && creep.carry.energy === creep.carryCapacity ) {
             creep.memory.upgrading = true;
             creep.say( '⚡ upgrade' );
         }
@@ -29,7 +29,7 @@ module.exports = {
 
         } else {
 
-            if ( creep.room.storage.store.energy > 5000 ) {
+            if ( creep.room.storage && creep.room.storage.store.energy > 5000 ) {
                 const energySource = creep.room.storage;
                 myFunctions.withdrawEnergy( creep, energySource );
 

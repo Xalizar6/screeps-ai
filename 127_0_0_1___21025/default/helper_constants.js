@@ -6,14 +6,16 @@
 
 module.exports = {
 
+    STATE_SPAWNING: 0,
+    STATE_MOVING: 1,
+    STATE_HARVESTING: 2,
+    STATE_DEPOSIT_RESOURCE: 3,
+    STATE_GRAB_RESOURCE: 4,
+    STATE_IDLE: 5,
 
-    // These properties are used by the helper_logging module to control the level of output
-    // you see in the console.
-    showDebugMessages: true,
-    showErrorMessages: false,
-    showEventMessages: false,
-    showInfoMessages: true,
-    showWarningMessages: false,
+    TERMINAL_ENERGY_STORAGE_TARGET: 10000,
+    TERMINAL_OXYGEN_STORAGE_TARGET: 10000,
 
+    STORAGE_ENERGY_STORAGE_TARGET: 300000,
 
 };
