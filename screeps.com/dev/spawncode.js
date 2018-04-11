@@ -3,7 +3,7 @@
 const _ = require( 'lodash' );
 const log = require( './helper_logging' );
 const myConstants = require( './helper_constants' );
-const debug = false; // Turn logging for this module on and off
+const debug = true; // Turn logging for this module on and off
 
 module.exports = {
 
@@ -69,6 +69,8 @@ module.exports = {
             spawn.createCreep( [WORK, CARRY, MOVE, MOVE], undefined, { role: 'harvester' } );
 
         } else {
+            if ( debug ) { log.output( 'Debug', 'Running ELSE spawncode', false, true ) };
+            if ( debug ) { log.output( 'Debug', 'Room energy ' + room.energyAvailable + ' of ' + room.energyCapacityAvailable, false, true ) };
 
             if ( harvesters.length < nMinNumberOfHarvesters ) {
                 if ( room.energyCapacityAvailable < 800 ) {
@@ -78,6 +80,7 @@ module.exports = {
                 };
 
             } else if ( aDedicatedHarvesters.length < nMinNumberOfDedicatedHarvesters ) {
+                if ( debug ) { log.output( 'Debug', 'Running Dedicated Harvester spawncode', false, true ) };
                 if ( room.energyCapacityAvailable < 800 ) {
                     spawn.createCreep( [WORK, WORK, MOVE], undefined, { role: 'dedicatedHarvester' } );
                 } else if ( room.energyCapacityAvailable >= 800 ) {
@@ -85,10 +88,18 @@ module.exports = {
                 };
 
             } else if ( aLogisticsShortRange.length < nMinNumberOfLogisticsShortRange ) {
+                if ( debug ) { log.output( 'Debug', 'Running Logistics Short Range spawncode', false, true ) };
                 if ( room.energyCapacityAvailable < 800 ) {
                     spawn.createCreep( [CARRY, CARRY, CARRY, MOVE, MOVE, MOVE], undefined, { role: 'LogisticsShortRange' } );
                 } else if ( room.energyCapacityAvailable >= 800 ) {
                     spawn.createCreep( [CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE], undefined, { role: 'LogisticsShortRange', hauling: false } );
+                };
+
+            } else if ( room.storage && alogisticsLocal.length < nMinNumberOflogisticsLocal ) {
+                if ( room.energyCapacityAvailable < 800 ) {
+                    spawn.createCreep( [CARRY, CARRY, CARRY, MOVE, MOVE, MOVE], undefined, { role: 'logisticsLocal', hauling: false } );
+                } else if ( room.energyCapacityAvailable >= 800 ) {
+                    spawn.createCreep( [CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE], undefined, { role: 'logisticsLocal', hauling: false } );
                 };
 
             } else if ( upgraders.length < nMinNumberOfUpgraders ) {
@@ -105,20 +116,13 @@ module.exports = {
                     spawn.createCreep( [WORK, WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE], undefined, { role: 'builder' } );
                 };
 
-            } else if ( room.storage && alogisticsLocal.length < nMinNumberOflogisticsLocal ) {
-                if ( room.energyCapacityAvailable < 800 ) {
-                    spawn.createCreep( [CARRY, CARRY, CARRY, MOVE, MOVE, MOVE], undefined, { role: 'logisticsLocal', hauling: false } );
-                } else if ( room.energyCapacityAvailable >= 800 ) {
-                    spawn.createCreep( [CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE], undefined, { role: 'logisticsLocal', hauling: false } );
-                };
-
-            } else if ( aMineralHarvesters.length < nMinNumberOfMineralHarvester && checkMineralAmount( spawn ) > 0 ) {
+            } else if ( aMineralHarvesters.length < nMinNumberOfMineralHarvester && checkMineralAmount( room ) > 0 ) {
                 spawn.createCreep( [WORK, WORK, WORK, WORK, WORK, WORK, MOVE, MOVE, MOVE], undefined, { role: 'Mineral Harvester' } );
 
-            } else if ( aMineralHaulers.length < nMinNumberOfMineralHaulers && checkMineralAmount( spawn ) > 0 ) {
+            } else if ( aMineralHaulers.length < nMinNumberOfMineralHaulers && checkMineralAmount( room ) > 0 ) {
                 spawn.createCreep( [CARRY, CARRY, MOVE, MOVE], undefined, { role: 'Mineral Hauler' } );
 
-            } else if ( aTerminalManagers.length < nMinNumberOfTerminalManagers && checkStorageAmount() > 25000 ) {
+            } else if ( aTerminalManagers.length < nMinNumberOfTerminalManagers && checkStorageAmount( room ) > 25000 ) {
                 spawn.createCreep( [CARRY, CARRY, CARRY, CARRY, MOVE, MOVE], undefined, { role: 'Terminal Manager' } );
             };
 
@@ -142,10 +146,10 @@ module.exports = {
 
 };
 
-const checkMineralAmount = function ( spawn ) {
-    return Game.getObjectById( spawn.room.memory.minerals[0].id ).mineralAmount;
+const checkMineralAmount = function ( room ) {
+    return Game.getObjectById( room.memory.minerals[0].id ).mineralAmount;
 };
 
-const checkStorageAmount = function ( spawn ) {
-    return spawn.room.storage.store[RESOURCE_ENERGY];
+const checkStorageAmount = function ( room ) {
+    return room.storage.store[RESOURCE_ENERGY];
 };

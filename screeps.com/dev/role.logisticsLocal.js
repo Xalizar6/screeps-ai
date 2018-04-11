@@ -66,7 +66,7 @@ module.exports = {
             } );
 
             if ( targets.length > 0 ) {
-                target = creep.pos.findClosestByPath( targets );
+                target = creep.pos.findClosestByPath( targets, { maxOps: 500 } );
                 myFunctions.transferEnergy( creep, target )
             }
             else {
