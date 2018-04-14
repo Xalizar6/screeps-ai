@@ -40,7 +40,7 @@ module.exports = {
         if ( room.storage && room.storage.store[RESOURCE_ENERGY] > myConstants.STORAGE_ENERGY_STORAGE_TARGET ) {
             nMinNumberOfUpgraders = 5;
         } else if ( room.controller.level < 8 ) {
-            nMinNumberOfUpgraders = 2;
+            nMinNumberOfUpgraders = 4;
         } else if ( room.controller.level === 8 ) {
             nMinNumberOfUpgraders = 1;
         };
