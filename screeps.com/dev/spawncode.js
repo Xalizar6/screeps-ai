@@ -116,13 +116,13 @@ module.exports = {
                     spawn.createCreep( [WORK, WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE], undefined, { role: 'builder' } );
                 };
 
-            } else if ( aMineralHarvesters.length < nMinNumberOfMineralHarvester && checkMineralAmount( room ) > 0 ) {
+            } else if ( room.storage && aMineralHarvesters.length < nMinNumberOfMineralHarvester && checkMineralAmount( room ) > 0 ) {
                 spawn.createCreep( [WORK, WORK, WORK, WORK, WORK, WORK, MOVE, MOVE, MOVE], undefined, { role: 'Mineral Harvester' } );
 
-            } else if ( aMineralHaulers.length < nMinNumberOfMineralHaulers && checkMineralAmount( room ) > 0 ) {
+            } else if ( room.storage && aMineralHaulers.length < nMinNumberOfMineralHaulers && checkMineralAmount( room ) > 0 ) {
                 spawn.createCreep( [CARRY, CARRY, MOVE, MOVE], undefined, { role: 'Mineral Hauler' } );
 
-            } else if ( aTerminalManagers.length < nMinNumberOfTerminalManagers && checkStorageAmount( room ) > 25000 ) {
+            } else if ( room.terminal && aTerminalManagers.length < nMinNumberOfTerminalManagers && checkStorageAmount( room ) > 25000 ) {
                 spawn.createCreep( [CARRY, CARRY, CARRY, CARRY, MOVE, MOVE], undefined, { role: 'Terminal Manager' } );
             };
 
@@ -151,5 +151,7 @@ const checkMineralAmount = function ( room ) {
 };
 
 const checkStorageAmount = function ( room ) {
-    return room.storage.store[RESOURCE_ENERGY];
+    if ( room.storage ) {
+        return room.storage.store[RESOURCE_ENERGY];
+    }
 };
