@@ -26,6 +26,7 @@ module.exports = {
         // Set the minimum number of each kind of creep that we want for production
         let nMinNumberOfUpgraders = null;
         let nMinNumberOfBuilders = null;
+        let sSpawnStatus = null;
         const nMinNumberOfHarvesters = 0;
         const nMinNumberOfDedicatedHarvesters = nEnergySourcesInMemory;
         const nMinNumberOfLogisticsShortRange = nEnergySourcesInMemory;
@@ -65,7 +66,7 @@ module.exports = {
 
         // Spawn additional creeps if needed, including emergency code and 
         // prioritizing harvesters first.
-        if ( _.size( Game.creeps ) < 2 ) {
+        if ( _.size( Game.creeps ) < 4 ) {
             spawn.createCreep( [WORK, CARRY, MOVE, MOVE], undefined, { role: 'harvester' } );
 
         } else {
@@ -74,56 +75,59 @@ module.exports = {
 
             if ( harvesters.length < nMinNumberOfHarvesters ) {
                 if ( room.energyCapacityAvailable < 800 ) {
-                    spawn.createCreep( [WORK, CARRY, MOVE, MOVE], undefined, { role: 'harvester' } );
+                    sSpawnStatus = spawn.createCreep( [WORK, CARRY, MOVE, MOVE], undefined, { role: 'harvester' } );
                 } else if ( room.energyCapacityAvailable >= 800 ) {
-                    spawn.createCreep( [WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE], undefined, { role: 'harvester' } );
-                };
-
-            } else if ( aDedicatedHarvesters.length < nMinNumberOfDedicatedHarvesters ) {
-                if ( debug ) { log.output( 'Debug', 'Running Dedicated Harvester spawncode', false, true ) };
-                if ( room.energyCapacityAvailable < 800 ) {
-                    spawn.createCreep( [WORK, WORK, MOVE], undefined, { role: 'dedicatedHarvester' } );
-                } else if ( room.energyCapacityAvailable >= 800 ) {
-                    spawn.createCreep( [WORK, WORK, WORK, WORK, WORK, MOVE, MOVE, MOVE], undefined, { role: 'dedicatedHarvester' } );
+                    sSpawnStatus = spawn.createCreep( [WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE], undefined, { role: 'harvester' } );
                 };
 
             } else if ( aLogisticsShortRange.length < nMinNumberOfLogisticsShortRange ) {
                 if ( debug ) { log.output( 'Debug', 'Running Logistics Short Range spawncode', false, true ) };
                 if ( room.energyCapacityAvailable < 800 ) {
-                    spawn.createCreep( [CARRY, CARRY, CARRY, MOVE, MOVE, MOVE], undefined, { role: 'LogisticsShortRange' } );
+                    sSpawnStatus = spawn.createCreep( [CARRY, CARRY, CARRY, MOVE, MOVE, MOVE], undefined, { role: 'LogisticsShortRange' } );
                 } else if ( room.energyCapacityAvailable >= 800 ) {
-                    spawn.createCreep( [CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE], undefined, { role: 'LogisticsShortRange', hauling: false } );
+                    sSpawnStatus = spawn.createCreep( [CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE], undefined, { role: 'LogisticsShortRange', hauling: false } );
+                };
+
+            } else if ( aDedicatedHarvesters.length < nMinNumberOfDedicatedHarvesters ) {
+                if ( debug ) { log.output( 'Debug', 'Running Dedicated Harvester spawncode', false, true ) };
+                if ( room.energyCapacityAvailable < 800 ) {
+                    sSpawnStatus = spawn.createCreep( [WORK, WORK, MOVE], undefined, { role: 'dedicatedHarvester' } );
+                } else if ( room.energyCapacityAvailable >= 800 ) {
+                    sSpawnStatus = spawn.createCreep( [WORK, WORK, WORK, WORK, WORK, MOVE, MOVE, MOVE], undefined, { role: 'dedicatedHarvester' } );
                 };
 
             } else if ( room.storage && alogisticsLocal.length < nMinNumberOflogisticsLocal ) {
+                if ( debug ) { log.output( 'Debug', 'Running Logistics Local spawncode', false, true ) };
                 if ( room.energyCapacityAvailable < 800 ) {
-                    spawn.createCreep( [CARRY, CARRY, CARRY, MOVE, MOVE, MOVE], undefined, { role: 'logisticsLocal', hauling: false } );
+                    sSpawnStatus = spawn.createCreep( [CARRY, CARRY, CARRY, MOVE, MOVE, MOVE], undefined, { role: 'logisticsLocal', hauling: false } );
                 } else if ( room.energyCapacityAvailable >= 800 ) {
-                    spawn.createCreep( [CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE], undefined, { role: 'logisticsLocal', hauling: false } );
+                    sSpawnStatus = spawn.createCreep( [CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE], undefined, { role: 'logisticsLocal', hauling: false } );
                 };
 
             } else if ( upgraders.length < nMinNumberOfUpgraders ) {
+                if ( debug ) { log.output( 'Debug', 'Running Upgrader spawncode', false, true ) };
                 if ( room.energyCapacityAvailable < 800 ) {
-                    spawn.createCreep( [WORK, CARRY, MOVE, MOVE], undefined, { role: 'upgrader' } );
+                    sSpawnStatus = spawn.createCreep( [WORK, CARRY, MOVE, MOVE], undefined, { role: 'upgrader' } );
                 } else if ( room.energyCapacityAvailable >= 800 ) {
-                    spawn.createCreep( [WORK, WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE], undefined, { role: 'upgrader' } );
+                    sSpawnStatus = spawn.createCreep( [WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE], undefined, { role: 'upgrader' } );
                 };
 
             } else if ( _.size( Game.constructionSites ) > 0 && builders.length < nMinNumberOfBuilders ) {
+                if ( debug ) { log.output( 'Debug', 'Running Builder spawncode', false, true ) };
                 if ( room.energyCapacityAvailable < 800 ) {
-                    spawn.createCreep( [WORK, CARRY, MOVE, MOVE], undefined, { role: 'builder' } );
+                    sSpawnStatus = spawn.createCreep( [WORK, CARRY, MOVE, MOVE], undefined, { role: 'builder' } );
                 } else if ( room.energyCapacityAvailable >= 800 ) {
-                    spawn.createCreep( [WORK, WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE], undefined, { role: 'builder' } );
+                    sSpawnStatus = spawn.createCreep( [WORK, WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE], undefined, { role: 'builder' } );
                 };
 
             } else if ( room.storage && aMineralHarvesters.length < nMinNumberOfMineralHarvester && checkMineralAmount( room ) > 0 ) {
-                spawn.createCreep( [WORK, WORK, WORK, WORK, WORK, WORK, MOVE, MOVE, MOVE], undefined, { role: 'Mineral Harvester' } );
+                sSpawnStatus = spawn.createCreep( [WORK, WORK, WORK, WORK, WORK, WORK, MOVE, MOVE, MOVE], undefined, { role: 'Mineral Harvester' } );
 
             } else if ( room.storage && aMineralHaulers.length < nMinNumberOfMineralHaulers && checkMineralAmount( room ) > 0 ) {
-                spawn.createCreep( [CARRY, CARRY, MOVE, MOVE], undefined, { role: 'Mineral Hauler' } );
+                sSpawnStatus = spawn.createCreep( [CARRY, CARRY, MOVE, MOVE], undefined, { role: 'Mineral Hauler' } );
 
             } else if ( room.terminal && aTerminalManagers.length < nMinNumberOfTerminalManagers && checkStorageAmount( room ) > 25000 ) {
-                spawn.createCreep( [CARRY, CARRY, CARRY, CARRY, MOVE, MOVE], undefined, { role: 'Terminal Manager' } );
+                sSpawnStatus = spawn.createCreep( [CARRY, CARRY, CARRY, CARRY, MOVE, MOVE], undefined, { role: 'Terminal Manager' } );
             };
 
         };
@@ -131,12 +135,15 @@ module.exports = {
         //Add text to the screen indicating spawning process
         if ( spawn.spawning ) {
             const spawningCreep = Game.creeps[spawn.spawning.name];
-            log.output( "Event", "Spawning new creep named " + spawningCreep.name + " with the role " + spawningCreep.memory.role, true, true );
+            log.output( "Event", "Spawning new creep named " + spawningCreep.name + " with the role " + spawningCreep.memory.role, false, true );
             spawn.room.visual.text(
                 '🛠️' + spawningCreep.memory.role,
                 spawn.pos.x + 1,
                 spawn.pos.y,
                 { align: 'left', opacity: 0.8 } );
+        } else {
+            log.output( "Event", "Not Spawning new creep with a status of: " + sSpawnStatus, false, true );
+
         };
 
         if ( debug ) { log.output( 'Debug', 'Spawncode routine took: ' + ( Game.cpu.getUsed() - timer ) + ' CPU Time', false, true ) };
