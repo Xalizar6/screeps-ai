@@ -78,9 +78,9 @@ module.exports = {
 
             } else {
 
-                oEnergySource = creep.room.find( FIND_SOURCES_ACTIVE )[0];
-                if ( debug ) { log.output( 'Debug', 'Picking up energy from source at ' + oEnergySource.pos, false, false ) };
-                this.harvestEnergy( creep, oEnergySource );
+                oEnergySource = creep.room.find( FIND_SOURCES_ACTIVE );
+                if ( debug ) { log.output( 'Debug', 'Picking up energy from source at ' + oEnergySource[0].pos, false, false ) };
+                this.harvestEnergy( creep, oEnergySource[0] );
 
             };
         };
