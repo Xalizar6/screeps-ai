@@ -3,7 +3,7 @@
 const _ = require( 'lodash' );
 const log = require( './helper_logging' );
 const myConstants = require( './helper_constants' );
-const debug = true; // Turn logging for this module on and off
+const debug = false; // Turn logging for this module on and off
 
 module.exports = {
 
@@ -67,11 +67,11 @@ module.exports = {
         // Spawn additional creeps if needed, including emergency code and 
         // prioritizing harvesters first.
         if ( _.size( Game.creeps ) < 4 ) {
+            if ( debug ) { log.output( 'Debug', 'Running Emergency spawncode', false, true ) };
             spawn.createCreep( [WORK, CARRY, MOVE, MOVE], undefined, { role: 'harvester' } );
 
         } else {
-            if ( debug ) { log.output( 'Debug', 'Running ELSE spawncode', false, true ) };
-            if ( debug ) { log.output( 'Debug', 'Room energy ' + room.energyAvailable + ' of ' + room.energyCapacityAvailable, false, true ) };
+            if ( debug ) { log.output( 'Debug', 'Running normal spawncode with room energy ' + room.energyAvailable + ' of ' + room.energyCapacityAvailable, false, true ) };
 
             if ( harvesters.length < nMinNumberOfHarvesters ) {
                 if ( room.energyCapacityAvailable < 800 ) {
@@ -142,7 +142,11 @@ module.exports = {
                 spawn.pos.y,
                 { align: 'left', opacity: 0.8 } );
         } else {
-            log.output( "Event", "Not Spawning new creep with a status of: " + sSpawnStatus, false, true );
+            if (sSpawnStatus) {
+                log.output( "Event", "Not Spawning new creep with a status of: " + sSpawnStatus, false, true );
+            } else {
+                if ( debug ) {log.output( "Debug", "No need for a new creep right now", false, true )};
+            };
 
         };
 

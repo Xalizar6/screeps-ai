@@ -49,23 +49,27 @@ module.exports = {
             };
 
         } else {
+            
+            if ( debug ) { log.output( 'Debug', 'Getting Energy', false, true ) };
+            myFunctions.getEnergy_v3( creep );
+            
             // If the room has a storage with enough energy, get energy from there
-            if ( creep.room.storage && creep.room.storage.store.energy > 5000 ) {
-                energySource = creep.room.storage;
-                myFunctions.withdrawEnergy( creep, energySource );
+            // if ( creep.room.storage && creep.room.storage.store.energy > 5000 ) {
+            //     energySource = creep.room.storage;
+            //     myFunctions.withdrawEnergy( creep, energySource );
 
-            } else if ( creep.room.find( FIND_DROPPED_RESOURCES ).length > 0 ) {
-                energySource = _.sortByOrder( creep.room.find( FIND_DROPPED_RESOURCES ), ['amount'], ['desc'] );
-                if ( debug ) { log.output( 'Debug', 'Picking up energy on ground with ' + energySource[0].amount + ' energy', false, true ) };
-                if ( debug ) { log.output( 'Debug', 'Energy source location ' + energySource[0].pos, false, true ) };
-                myFunctions.pickupEnergy( creep, energySource[0] );
+            // } else if ( creep.room.find( FIND_DROPPED_RESOURCES ).length > 0 ) {
+            //     energySource = _.sortByOrder( creep.room.find( FIND_DROPPED_RESOURCES ), ['amount'], ['desc'] );
+            //     if ( debug ) { log.output( 'Debug', 'Picking up energy on ground with ' + energySource[0].amount + ' energy', false, true ) };
+            //     if ( debug ) { log.output( 'Debug', 'Energy source location ' + energySource[0].pos, false, true ) };
+            //     myFunctions.pickupEnergy( creep, energySource[0] );
 
-            } else {
-                // If there isn't a storage or the storage is low then get energy from a source
-                energySource = creep.room.find( FIND_SOURCES_ACTIVE )[0];
-                if ( debug ) { log.output( 'Debug', 'Picking up energy from source at ' + energySource.pos, false, false ) };
-                myFunctions.harvestEnergy( creep, energySource );
-            };
+            // } else {
+            //     // If there isn't a storage or the storage is low then get energy from a source
+            //     energySource = creep.room.find( FIND_SOURCES_ACTIVE )[0];
+            //     if ( debug ) { log.output( 'Debug', 'Picking up energy from source at ' + energySource.pos, false, false ) };
+            //     myFunctions.harvestEnergy( creep, energySource );
+            // };
 
         };
 

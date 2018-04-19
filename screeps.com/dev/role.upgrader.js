@@ -25,13 +25,15 @@ module.exports = {
 
         if ( creep.memory.upgrading ) {
 
+            if ( debug ) { log.output( 'Debug', 'Upgrading Room Controller', false, true ) };
             if ( creep.upgradeController( creep.room.controller ) == ERR_NOT_IN_RANGE ) {
                 creep.moveTo( creep.room.controller, { visualizePathStyle: { stroke: '#f2f3f4' } } );
             };
 
         } else {
 
-            myFunctions.getEnergy_v2( creep );
+            if ( debug ) { log.output( 'Debug', 'Getting Energy', false, true ) };
+            myFunctions.getEnergy_v3( creep );
 
             // if ( creep.room.storage && creep.room.storage.store.energy > 5000 ) {
             //     const energySource = creep.room.storage;

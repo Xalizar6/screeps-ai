@@ -7,7 +7,7 @@ log.init();
 //-------------------------------------------------------
 
 //-------------------------------------------------------
-//Including modules, executed on new global creation every 10 seconds or so.
+//Including modules, executed on new global creation
 log.output( 'Info', 'Begin - Initializing Modules', true );
 const timer1 = Game.cpu.getUsed();
 
@@ -66,13 +66,17 @@ module.exports.loop = function () {
     // Run the spawncode module
     C_mSpawncode.run();
 
-    // Run the towercode module
+    // Run the Tower module
     const aTowers = _.filter( Game.structures, ( s ) => s.structureType == STRUCTURE_TOWER );
     for ( let i in aTowers ) {
         C_mTowerCode.run( aTowers[i] );
     };
+    
+    // Run the Market module
+    C_mMarketCode.run();
 
-    // Call the role based work modules
+
+    // Call the role based work module for each creep
     for ( let i in Game.creeps ) {
         const oCreep = Game.creeps[i];
 
@@ -113,8 +117,6 @@ module.exports.loop = function () {
         };
 
     };
-
-    C_mMarketCode.run();
 
     log.output( 'Info', 'Main took: ' + ( Game.cpu.getUsed() - mainLoop ).toFixed( 2 ) + ' CPU Time with ' + Game.cpu.bucket + ' bucket remaining', true, true );
     log.output( 'Info', 'End - Main' );

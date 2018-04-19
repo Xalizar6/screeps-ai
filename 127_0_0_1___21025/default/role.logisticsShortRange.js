@@ -3,7 +3,7 @@
 
 const myFunctions = require( 'helper_myFunctions' );
 const log = require( './helper_logging' );
-const debug = true; // Turn logging for this module on and off
+const debug = false; // Turn logging for this module on and off
 let timer = null;
 
 module.exports = {
@@ -98,15 +98,7 @@ module.exports = {
             // Creep is full so go drop off
             if ( debug ) { log.output( 'Debug', 'In dropoff mode', false, true ) };
 
-            // Check if Spawn needs it
-            if ( drop == null ) {
-                if ( oSpawn.energy < oSpawn.energyCapacity ) {
-                    drop = oSpawn;
-                    if ( debug ) { log.output( 'Debug', 'Dropping off at spawn', false, true ) };
-                };
-            };
-
-            // If not dropping in spawn, check if extensions need it
+            // Check if extensions need energy
             if ( drop == null ) {
                 let extensions = creep.room.find( FIND_MY_STRUCTURES, {
                     // filter: { structureType: STRUCTURE_EXTENSION }
@@ -119,7 +111,15 @@ module.exports = {
                 };
             };
 
-            // If there is Storage drop off there
+            // Check if Spawn needs energy
+            if ( drop == null ) {
+                if ( oSpawn.energy < oSpawn.energyCapacity ) {
+                    drop = oSpawn;
+                    if ( debug ) { log.output( 'Debug', 'Dropping off at spawn', false, true ) };
+                };
+            };
+
+            // Otherwise if there is Storage drop off there
             if ( drop == null ) {
                 if ( creep.room.storage ) {
                     if ( debug ) { log.output( 'Debug', 'Dropping off at storage', false, true ) };
