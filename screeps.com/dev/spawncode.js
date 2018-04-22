@@ -63,7 +63,7 @@ module.exports = {
         const aMineralHarvesters = _.filter( Game.creeps, ( creep ) => creep.memory.role == 'Mineral Harvester' );
         const aMineralHaulers = _.filter( Game.creeps, ( creep ) => creep.memory.role == 'Mineral Hauler' );
         const aTerminalManagers = _.filter( Game.creeps, ( creep ) => creep.memory.role == 'Terminal Manager' );
-
+        
         // Spawn additional creeps if needed, including emergency code and 
         // prioritizing harvesters first.
         if ( _.size( Game.creeps ) < 4 ) {
@@ -120,13 +120,13 @@ module.exports = {
                     sSpawnStatus = spawn.createCreep( [WORK, WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE], undefined, { role: 'builder' } );
                 };
 
-            } else if ( room.controller.level >= 6 && room.storage && aMineralHarvesters.length < nMinNumberOfMineralHarvester && checkMineralAmount( room ) > 0 ) {
+            } else if ( checkForExtractor( room ) && room.storage && aMineralHarvesters.length < nMinNumberOfMineralHarvester && checkMineralAmount( room ) > 0 ) {
                 sSpawnStatus = spawn.createCreep( [WORK, WORK, WORK, WORK, WORK, WORK, MOVE, MOVE, MOVE], undefined, { role: 'Mineral Harvester' } );
 
-            } else if ( room.controller.level >= 6 && room.storage && aMineralHaulers.length < nMinNumberOfMineralHaulers && checkMineralAmount( room ) > 0 ) {
+            } else if ( checkForExtractor( room ) && room.storage && aMineralHaulers.length < nMinNumberOfMineralHaulers && checkMineralAmount( room ) > 0 ) {
                 sSpawnStatus = spawn.createCreep( [CARRY, CARRY, MOVE, MOVE], undefined, { role: 'Mineral Hauler' } );
 
-            } else if ( room.terminal && aTerminalManagers.length < nMinNumberOfTerminalManagers && checkStorageAmount( room ) > 25000 ) {
+            } else if ( room.terminal && aTerminalManagers.length < nMinNumberOfTerminalManagers && checkStorageAmount( room ) > myConstants.STORAGE_ENERGY_STORAGE_TARGET ) {
                 sSpawnStatus = spawn.createCreep( [CARRY, CARRY, CARRY, CARRY, MOVE, MOVE], undefined, { role: 'Terminal Manager' } );
             };
 
@@ -142,10 +142,10 @@ module.exports = {
                 spawn.pos.y,
                 { align: 'left', opacity: 0.8 } );
         } else {
-            if (sSpawnStatus) {
+            if ( sSpawnStatus ) {
                 log.output( "Event", "Not Spawning new creep with a status of: " + sSpawnStatus, false, true );
             } else {
-                if ( debug ) {log.output( "Debug", "No need for a new creep right now", false, true )};
+                if ( debug ) { log.output( "Debug", "No need for a new creep right now", false, true ) };
             };
 
         };
@@ -165,4 +165,30 @@ const checkStorageAmount = function ( room ) {
     if ( room.storage ) {
         return room.storage.store[RESOURCE_ENERGY];
     }
+};
+
+const checkForExtractor = function ( room ) {
+    const aMinerals = room.find( FIND_MINERALS );
+    let aStructures = null;
+
+    // aMinerals.forEach( function ( oMineral ) {
+    //     console.log(oMineral.pos);
+    //     let aStructures = oMineral.pos.lookFor( LOOK_MINERALS )
+    //     console.log(aStructures);
+    //     if ( aStructures.length > 0 ) {
+    //         return true;
+    //     };
+
+    // } );
+
+    for ( let i in aMinerals ) {
+        aStructures = aMinerals[i].pos.lookFor( LOOK_STRUCTURES );
+
+        if ( aStructures.length > 0 ) {
+            return true;
+        } else {
+            return false;
+        };
+
+    };
 };
