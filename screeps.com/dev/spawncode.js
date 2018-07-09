@@ -1,6 +1,5 @@
 "use strict"; // Declaring Strict Mode to enforce better coding standards
 
-const _ = require( 'lodash' );
 const log = require( './helper_logging' );
 const myConstants = require( './helper_constants' );
 const debug = false; // Turn logging for this module on and off
@@ -12,7 +11,7 @@ module.exports = {
         if ( debug ) { log.output( 'Debug', 'Begin - Spawncode routine', true ) };
         if ( debug ) { var timer = Game.cpu.getUsed() };
 
-        //Clear the deceased creeps from memory
+        //Clear the deceased creeps from memory        
         for ( let creep in Memory.creeps ) {
             if ( !Game.creeps[creep] ) {
                 delete Memory.creeps[creep];
@@ -36,10 +35,11 @@ module.exports = {
         const nMinNumberOfTerminalManagers = 1;
         const spawn = Game.spawns['Spawn1'];
         const room = spawn.room;
+        const storage = room.storage;
 
         // Adjust the number of Upgraders if we have enough energy stored - temporary until I start selling energy
-        if ( room.storage && room.storage.store[RESOURCE_ENERGY] > myConstants.STORAGE_ENERGY_STORAGE_TARGET ) {
-            nMinNumberOfUpgraders = 5;
+        if ( storage && storage.store[RESOURCE_ENERGY] > myConstants.STORAGE_ENERGY_STORAGE_TARGET ) {
+            nMinNumberOfUpgraders = 7;
         } else if ( room.controller.level < 8 ) {
             nMinNumberOfUpgraders = 4;
         } else if ( room.controller.level === 8 ) {
@@ -63,7 +63,7 @@ module.exports = {
         const aMineralHarvesters = _.filter( Game.creeps, ( creep ) => creep.memory.role == 'Mineral Harvester' );
         const aMineralHaulers = _.filter( Game.creeps, ( creep ) => creep.memory.role == 'Mineral Hauler' );
         const aTerminalManagers = _.filter( Game.creeps, ( creep ) => creep.memory.role == 'Terminal Manager' );
-        
+
         // Spawn additional creeps if needed, including emergency code and 
         // prioritizing harvesters first.
         if ( _.size( Game.creeps ) < 4 ) {
@@ -96,7 +96,7 @@ module.exports = {
                     sSpawnStatus = spawn.createCreep( [WORK, WORK, WORK, WORK, WORK, MOVE, MOVE, MOVE], undefined, { role: 'dedicatedHarvester' } );
                 };
 
-            } else if ( room.storage && alogisticsLocal.length < nMinNumberOflogisticsLocal ) {
+            } else if ( storage && alogisticsLocal.length < nMinNumberOflogisticsLocal ) {
                 if ( debug ) { log.output( 'Debug', 'Running Logistics Local spawncode', false, true ) };
                 if ( room.energyCapacityAvailable < 800 ) {
                     sSpawnStatus = spawn.createCreep( [CARRY, CARRY, CARRY, MOVE, MOVE, MOVE], undefined, { role: 'logisticsLocal', hauling: false } );
@@ -120,10 +120,10 @@ module.exports = {
                     sSpawnStatus = spawn.createCreep( [WORK, WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE], undefined, { role: 'builder' } );
                 };
 
-            } else if ( checkForExtractor( room ) && room.storage && aMineralHarvesters.length < nMinNumberOfMineralHarvester && checkMineralAmount( room ) > 0 ) {
+            } else if ( checkForExtractor( room ) && storage && aMineralHarvesters.length < nMinNumberOfMineralHarvester && checkMineralAmount( room ) > 0 ) {
                 sSpawnStatus = spawn.createCreep( [WORK, WORK, WORK, WORK, WORK, WORK, MOVE, MOVE, MOVE], undefined, { role: 'Mineral Harvester' } );
 
-            } else if ( checkForExtractor( room ) && room.storage && aMineralHaulers.length < nMinNumberOfMineralHaulers && checkMineralAmount( room ) > 0 ) {
+            } else if ( checkForExtractor( room ) && storage && aMineralHaulers.length < nMinNumberOfMineralHaulers && checkMineralAmount( room ) > 0 ) {
                 sSpawnStatus = spawn.createCreep( [CARRY, CARRY, MOVE, MOVE], undefined, { role: 'Mineral Hauler' } );
 
             } else if ( room.terminal && aTerminalManagers.length < nMinNumberOfTerminalManagers && checkStorageAmount( room ) > myConstants.STORAGE_ENERGY_STORAGE_TARGET ) {

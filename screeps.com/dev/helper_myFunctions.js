@@ -66,6 +66,8 @@ module.exports = {
 
     getEnergy_v3: function ( creep ) {
 
+        if ( debug ) { log.output( 'Debug', 'Begin - getEnergy_v3 for ' + creep.name, false, true ) };
+
         const oStorage = creep.room.storage;
         const nMinEnergyStorage = myConstants.STORAGE_ENERGY_STORAGE_TARGET;
         let oEnergySource = null;
@@ -95,6 +97,8 @@ module.exports = {
                 this.harvestEnergy( creep, oEnergySource );
             };
         };
+
+        if ( debug ) { log.output( 'Debug', 'End - getEnergy_v3', false, true ) };
 
     },
 
