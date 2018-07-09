@@ -1,8 +1,8 @@
 "use strict"; // Declaring Strict Mode to enforce better coding standards
 
-const myFunctions = require( 'helper_myFunctions' );
-const log = require( './helper_logging' );
+const myFunctions = require( './helper_myFunctions' );
 const myConstants = require( './helper_constants' );
+const log = require( './helper_logging' );
 const debug = false; // Turn logging for this module on and off
 
 module.exports = {
@@ -10,7 +10,7 @@ module.exports = {
     run: function ( creep ) {
 
         if ( debug ) { log.output( 'Debug', 'Begin - Mineral Harvester Run routine for ' + creep.name, true ) };
-        const timer = Game.cpu.getUsed();
+        if ( debug ) { var timer = Game.cpu.getUsed() };
 
         // Add transition state information to the creep memory if it doesn't already exist
         if ( !creep.memory.state ) {
@@ -45,7 +45,8 @@ const runSpawning = function ( creep, transitionState ) {
     // Once the creep finishes spawning we transition to the next state
     if ( creep.spawning === false ) {
         creep.memory.state = myConstants.STATE_MOVING;
-        module.exports.run( creep );	// Call the main run function so that the next state function runs straight away
+        // module.exports.run( creep );	// Call the main run function so that the next state function runs straight away
+        this.run( creep );	// Call the main run function so that the next state function runs straight away
         return;		// We put return here because once we transition to a different state, we don't want any of the following code in this function to run...
     };
 

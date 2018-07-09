@@ -1,7 +1,7 @@
 "use strict"; // Declaring Strict Mode to enforce better coding standards
 const log = require( './helper_logging' );
-const debug = true; // Turn logging for this module on and off
 const myConstants = require( './helper_constants' );
+const debug = true; // Turn logging for this module on and off
 
 
 module.exports = {
@@ -34,46 +34,16 @@ module.exports = {
         };
     },
 
-    getEnergy_v2: function ( creep ) {
-
-        let oEnergySource = {};
-        const oStorage = creep.room.storage;
-
-        if ( oStorage && oStorage.store[RESOURCE_ENERGY] > 5000 ) {
-            oEnergySource = oStorage;
-            this.withdrawEnergy( creep, oEnergySource );
-
-        } else {
-
-            let aDroppedResources = _.sortByOrder( creep.room.find( FIND_DROPPED_RESOURCES ), ['amount'], ['desc'] );
-
-            if ( aDroppedResources.length > 0 && aDroppedResources[0].amount > creep.carryCapacity - _.sum( creep.carry ) ) {
-                oEnergySource = aDroppedResources[0];
-                if ( debug ) { log.output( 'Debug', 'Picking up energy on ground with ' + oEnergySource.amount + ' energy', false, true ) };
-                if ( debug ) { log.output( 'Debug', 'Energy source location ' + oEnergySource.pos, false, true ) };
-                this.pickupEnergy( creep, oEnergySource );
-
-            } else {
-
-                oEnergySource = creep.room.find( FIND_SOURCES_ACTIVE );
-                if ( debug ) { log.output( 'Debug', 'Picking up energy from source at ' + oEnergySource[0].pos, false, false ) };
-                this.harvestEnergy( creep, oEnergySource[0] );
-
-            };
-        };
-
-    },
-
     getEnergy_v3: function ( creep ) {
 
         if ( debug ) { log.output( 'Debug', 'Begin - getEnergy_v3 for ' + creep.name, false, true ) };
 
         const oStorage = creep.room.storage;
-        const nMinEnergyStorage = myConstants.STORAGE_ENERGY_STORAGE_TARGET;
-        let oEnergySource = null;
+        const nMinEnergyInStorage = myConstants.STORAGE_ENERGY_STORAGE_TARGET;
+        let oEnergySource;
 
         if ( !oEnergySource ) {
-            if ( oStorage && oStorage.store[RESOURCE_ENERGY] > nMinEnergyStorage ) {
+            if ( oStorage && oStorage.store[RESOURCE_ENERGY] > nMinEnergyInStorage ) {
                 oEnergySource = oStorage;
                 if ( debug ) { log.output( 'Debug', 'Picking up energy from storage', false, true ) };
                 this.withdrawEnergy( creep, oEnergySource );
