@@ -63,7 +63,7 @@ module.exports = {
         if ( !oEnergySource ) {
             oEnergySource = creep.pos.findClosestByPath( FIND_SOURCES_ACTIVE );
             if ( oEnergySource ) {
-                if ( debug ) { log.output( 'Debug', 'Picking up energy from source at ' + oEnergySource.pos, false, false ) };
+                if ( debug ) { log.output( 'Debug', 'Picking up energy from source at ' + oEnergySource.pos, false, true ) };
                 this.harvestEnergy( creep, oEnergySource );
             };
         };

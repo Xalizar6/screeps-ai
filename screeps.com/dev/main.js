@@ -20,12 +20,12 @@ const C_mRolebuilder = require( 'role.builder' );
 const C_mSpawncode = require( 'spawncode' );
 const C_mTowerCode = require( 'towercode' );
 const C_mMarketCode = require( './marketCode' );
+const C_mConstructionCode = require( './helper_construction' );
 const mineralHarvester = require( './role.mineralHarvester' );
 const mineralHauler = require( "./role.mineralHauler" );
 const terminalManager = require( "./role.terminalManager" );
 const myFunctions = require( 'helper_myFunctions' );
 const init = require( 'helper_initializations' );
-const _ = require( 'lodash' );
 
 log.output( 'Info', 'Initializing modules took: ' + ( Game.cpu.getUsed() - timer1 ).toFixed( 2 ) + ' CPU Time', false, true );
 log.output( 'Info', 'End - Initializing Modules' );
@@ -71,10 +71,12 @@ module.exports.loop = function () {
     for ( let i in aTowers ) {
         C_mTowerCode.run( aTowers[i] );
     };
-    
+
     // Run the Market module
     C_mMarketCode.run();
 
+    // Run the Construction module    
+    // C_mConstructionCode.run();
 
     // Call the role based work module for each creep
     for ( let i in Game.creeps ) {
