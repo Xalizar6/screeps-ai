@@ -76,7 +76,7 @@ module.exports.loop = function () {
     C_mMarketCode.run();
 
     // Run the Construction module    
-    // C_mConstructionCode.run();
+    C_mConstructionCode.run();
 
     // Call the role based work module for each creep
     for ( let i in Game.creeps ) {

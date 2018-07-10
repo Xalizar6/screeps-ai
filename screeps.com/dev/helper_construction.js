@@ -34,10 +34,7 @@ module.exports = {
 
         } );
 
-
         if ( debug ) { log.output( 'Debug', 'End - helper_construction RUN function', false, true ) };
-
-
 
     },
 
