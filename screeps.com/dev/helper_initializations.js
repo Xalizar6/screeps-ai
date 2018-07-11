@@ -16,6 +16,10 @@ module.exports = {
 
     initMemory: function () {
 
+        // Add construction tracking property to Room memory.
+        if ( !oRoom.memory.construction ) {
+            oRoom.memory.construction = {};
+        };
 
     },
 

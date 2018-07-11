@@ -32,6 +32,11 @@ log.output( 'Info', 'End - Initializing Modules' );
 //-------------------------------------------------------
 
 //-------------------------------------------------------
+// Initialize memory
+init.initMemory();
+//-------------------------------------------------------
+
+//-------------------------------------------------------
 // Add sources in a room to the room memory
 log.output( 'Info', 'Begin - Adding Energy sources to Room Memory', true );
 const timer2 = Game.cpu.getUsed();
