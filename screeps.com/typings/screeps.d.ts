@@ -1,6 +1,7 @@
 /**
  * This file is Screeps API description file.
  * This might need some updates when Screeps publishes new features or changes it's existing API
+ * Updated 7/13/18 _DR
  */
 declare const OK: 0;
 declare const ERR_NOT_OWNER: -1;
@@ -398,6 +399,7 @@ declare var Memory: Memory;
 declare var RawMemory: RawMemory;
 declare var Game: Game;
 declare var PathFinder: PathFinder;
+declare function gc(): void;
 declare type Controller = StructureController;
 declare type Extension = StructureExtension;
 declare type KeeperLair = StructureKeeperLair;
@@ -696,7 +698,7 @@ interface Flag extends RoomObject {
     }): number;
 }
 interface FlagConstructor extends _Constructor<Flag> {
-    new (name: string, color: number, secondaryColor: number, roomName: string, x: number, y: number): Flag;
+    new(name: string, color: number, secondaryColor: number, roomName: string, x: number, y: number): Flag;
     (name: string, color: number, secondaryColor: number, roomName: string, x: number, y: number): Flag;
 }
 declare const Flag: FlagConstructor;
@@ -778,6 +780,18 @@ interface GlobalControlLevel {
     progress: number;
     progressTotal: number;
 }
+interface HeapStatistics {
+    total_heap_size: number;
+    total_heap_size_executable: number;
+    total_physical_size: number;
+    total_available_size: number;
+    used_heap_size: number;
+    heap_size_limit: number;
+    malloced_memory: number;
+    peak_malloced_memory: number;
+    does_zap_garbage: 0 | 1;
+    externally_allocated_size: number;
+}
 interface CPU {
     limit: number;
     tickLimit: number;
@@ -786,6 +800,7 @@ interface CPU {
      * Get amount of CPU time used from the beginning of the current game tick. Always returns 0 in the Simulation mode.
      */
     getUsed(): number;
+    getHeapStatistics(): HeapStatistics;
 }
 /**
  * An array describing the creep’s body. Each element contains the following properties:
@@ -964,7 +979,7 @@ interface _Constructor<T> {
     readonly prototype: T;
 }
 interface _ConstructorById<T> extends _Constructor<T> {
-    new (id: string): T;
+    new(id: string): T;
     (id: string): T;
 }
 /**
@@ -1220,7 +1235,7 @@ interface Nuke extends RoomObject {
     timeToLand: number;
 }
 interface NukeConstructor {
-    new (id: string): Nuke;
+    new(id: string): Nuke;
 }
 declare const Nuke: NukeConstructor;
 /**
@@ -1325,7 +1340,7 @@ interface CostMatrix {
      * Creates a new CostMatrix containing 0's for all positions.
      * @constructor
      */
-    new (): CostMatrix;
+    new(): CostMatrix;
     /**
      * Set the cost of a position in this CostMatrix.
      * @param x X position in the room.
@@ -1427,7 +1442,7 @@ interface Resource extends RoomObject {
     resourceType: string;
 }
 interface ResourceConstructor {
-    new (id: string): Resource;
+    new(id: string): Resource;
 }
 declare const Resource: ResourceConstructor;
 /**
@@ -1448,7 +1463,7 @@ interface RoomObject {
     room: Room | undefined;
 }
 interface RoomObjectConstructor extends _Constructor<RoomObject> {
-    new (x: number, y: number, roomName: string): RoomObject;
+    new(x: number, y: number, roomName: string): RoomObject;
     (x: number, y: number, roomName: string): RoomObject;
 }
 declare const RoomObject: RoomObjectConstructor;
@@ -1625,7 +1640,7 @@ interface RoomPositionConstructor extends _Constructor<RoomPosition> {
      * @param y Y position in the room.
      * @param roomName The room name.
      */
-    new (x: number, y: number, roomName: string): RoomPosition;
+    new(x: number, y: number, roomName: string): RoomPosition;
     (x: number, y: number, roomName: string): RoomPosition;
 }
 declare const RoomPosition: RoomPositionConstructor;
@@ -1746,7 +1761,6 @@ interface TextStyle {
     size?: number;
     align?: "center" | "left" | "right";
     opacity?: number;
-    font?: number;
 }
 /**
  * An object representing the room in which your units and structures are in. It can be used to look around, find paths, etc. Every object in the room contains its linked Room instance in the room property.
@@ -1911,7 +1925,7 @@ interface Room {
     lookForAtArea(type: string, top: number, left: number, bottom: number, right: number, asArray?: boolean): LookAtResultMatrix | LookAtResultWithPos[];
 }
 interface RoomConstructor {
-    new (id: string): Room;
+    new(id: string): Room;
     serializePath(path: PathStep[]): string;
     deserializePath(path: string): PathStep[];
 }
@@ -1950,6 +1964,23 @@ interface SourceConstructor extends _Constructor<Source>, _ConstructorById<Sourc
 }
 declare const Source: SourceConstructor;
 /**
+ * An object containing creep spawning options
+ */
+interface SpawnOpts {
+    /**
+     * Memory of the new creep. If provided, it will be immediately stored into Memory.creeps[name].
+     */
+    memory?: any;
+    /**
+     * Array of spawns/extensions from which to draw energy for the spawning process. Structures will be used according to the array order.
+     */
+    energyStructures?: Array<StructureExtension | StructureSpawn>;
+    /**
+     * If dryRun is true, the operation will only check if it is possible to create a creep.
+     */
+    dryRun?: boolean;
+}
+/**
  * Spawns are your colony centers. You can transfer energy into it and create new creeps using createCreep() method.
  */
 interface StructureSpawn extends OwnedStructure {
@@ -1982,12 +2013,14 @@ interface StructureSpawn extends OwnedStructure {
         remainingTime: number;
     };
     /**
+     * @deprecated
      * Check if a creep can be created.
      * @param body An array describing the new creep’s body. Should contain 1 to 50 elements with one of these constants: WORK, MOVE, CARRY, ATTACK, RANGED_ATTACK, HEAL, TOUGH, CLAIM
      * @param name The name of a new creep. It should be unique creep name, i.e. the Game.creeps object should not contain another creep with the same name (hash key). If not defined, a random name will be generated.
      */
     canCreateCreep(body: string[], name?: string): number;
     /**
+     * @deprecated
      * Start the creep spawning process.
      * The name of a new creep or one of these error codes
      * ERR_NOT_OWNER	-1	You are not the owner of this spawn.
@@ -2001,6 +2034,21 @@ interface StructureSpawn extends OwnedStructure {
      * @param memory The memory of a new creep. If provided, it will be immediately stored into Memory.creeps[name].
      */
     createCreep(body: string[], name?: string, memory?: any): number | string;
+    /**
+     * Start the creep spawning process. The required energy amount can be withdrawn from all spawns and extensions in the room.
+     * @param body An array describing the new creep’s body. Should contain 1 to 50 elements with one of these constants: WORK, MOVE, CARRY, ATTACK, RANGED_ATTACK, HEAL, TOUGH, CLAIM
+     * @param name The name of a new creep. It should be unique creep name, i.e. the Game.creeps object should not contain another creep with the same name (hash key). If not defined, a random name will be generated.
+     * @param opts An object with additional options for the spawning process.
+     * @returns One of the following codes:
+     * OK	0 The operation has been scheduled successfully.
+     * ERR_NOT_OWNER	-1 You are not the owner of this spawn.
+     * ERR_NAME_EXISTS	-3 There is a creep with the same name already.
+     * ERR_BUSY	-4 The spawn is already in process of spawning another creep.
+     * ERR_NOT_ENOUGH_ENERGY	-6 The spawn and its extensions contain not enough energy to create a creep with the given body.
+     * ERR_INVALID_ARGS	-10 Body is not properly described or name was not provided.
+     * ERR_RCL_NOT_ENOUGH	-14 Your Room Controller level is insufficient to use this spawn.
+     */
+    spawnCreep(body: string[], name: string, opts?: SpawnOpts): number;
     /**
      * Destroy this spawn immediately.
      */

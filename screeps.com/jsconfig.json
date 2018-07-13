@@ -1,0 +1,16 @@
+{
+    "compilerOptions": {
+        "target": "ES6",
+        "checkJs": true
+    },
+    "exclude": [
+        "node_modules"
+    ],
+    // It is automatically bringing down the latest type files for lodash but not node, do I need node?
+    // "typeAcquisition": {
+    //     "include": [
+    //         "lodash",
+    //         "node"
+    //     ]
+    // }
+}
