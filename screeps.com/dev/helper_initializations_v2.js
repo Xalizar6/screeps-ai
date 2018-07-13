@@ -35,6 +35,46 @@ module.exports = {
 
 };
 
+// Add all of the sources in a room to the Room object in memory
+const f_AddSourcesToMemory_v2 = function () {
+
+    if ( debug ) { log.output( 'Info', 'Begin - Adding Energy sources to Room Memory', true ) };
+    if ( debug ) { var timer = Game.cpu.getUsed() };
+
+    // Declare Variables
+    const arrayOfEnergySources = oRoom.find( FIND_SOURCES );
+
+    if ( !oRoom.memory.sources ) {
+        oRoom.memory.sources = {};
+    };
+
+    arrayOfEnergySources.forEach( function ( oSource, nIndex ) {
+
+        if ( !oRoom.memory.sources[nIndex] ) {
+            oRoom.memory.sources[nIndex] = {};
+        };
+
+        if ( !oRoom.memory.sources[nIndex].id ) {
+            oRoom.memory.sources[nIndex].id = oSource.id;
+        };
+
+        // Store the nearby container in memory to be referenced by the Harvester and Hauler
+        if ( arrayOfContainers.length > 0 ) {
+            arrayOfContainers.forEach( function ( oContainer ) {
+                // Will find a container within 1 space of the mineral
+                if ( oContainer.pos.isNearTo( oSource ) ) {
+                    oRoom.memory.sources[nIndex].containerID = oContainer.id;
+                };
+            } );
+        };
+
+    } );
+
+    if ( debug ) { log.output( 'Info', 'Adding Energy sources to Room Memory took: ' + ( Game.cpu.getUsed() - timer ).toFixed( 2 ) + ' CPU Time', false, true ) };
+    if ( debug ) { log.output( 'Info', 'End - Adding Energy sources to Room Memory' ) };
+
+};
+
 // Add all of the mineral locations in a room to the Room object in memory
 const f_AddMineralsToMemory = function () {
     if ( debug ) { log.output( 'Info', 'Begin - Adding Minerals to Room Memory', true ) };
@@ -85,46 +125,6 @@ const f_AddMineralsToMemory = function () {
 
     if ( debug ) { log.output( 'Info', 'Adding Minerals to Room Memory took: ' + ( Game.cpu.getUsed() - timer ).toFixed( 2 ) + ' CPU Time', false, true ) };
     if ( debug ) { log.output( 'Info', 'End - Adding Minerals to Room Memory' ) };
-
-};
-
-// Add all of the sources in a room to the Room object in memory
-const f_AddSourcesToMemory_v2 = function () {
-
-    if ( debug ) { log.output( 'Info', 'Begin - Adding Energy sources to Room Memory', true ) };
-    if ( debug ) { var timer = Game.cpu.getUsed() };
-
-    // Declare Variables
-    const arrayOfEnergySources = oRoom.find( FIND_SOURCES );
-
-    if ( !oRoom.memory.sources ) {
-        oRoom.memory.sources = {};
-    };
-
-    arrayOfEnergySources.forEach( function ( oSource, nIndex ) {
-
-        if ( !oRoom.memory.sources[nIndex] ) {
-            oRoom.memory.sources[nIndex] = {};
-        };
-
-        if ( !oRoom.memory.sources[nIndex].id ) {
-            oRoom.memory.sources[nIndex].id = oSource.id;
-        };
-
-        // Store the nearby container in memory to be referenced by the Harvester and Hauler
-        if ( arrayOfContainers.length > 0 ) {
-            arrayOfContainers.forEach( function ( oContainer ) {
-                // Will find a container within 1 space of the mineral
-                if ( oContainer.pos.isNearTo( oSource ) ) {
-                    oRoom.memory.sources[nIndex].containerID = oContainer.id;
-                };
-            } );
-        };
-
-    } );
-
-    if ( debug ) { log.output( 'Info', 'Adding Energy sources to Room Memory took: ' + ( Game.cpu.getUsed() - timer ).toFixed( 2 ) + ' CPU Time', false, true ) };
-    if ( debug ) { log.output( 'Info', 'End - Adding Energy sources to Room Memory' ) };
 
 };
 
