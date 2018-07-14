@@ -51,8 +51,7 @@ module.exports = {
         };
 
         if ( !oEnergySource ) {
-            // Replace the line below using _.orderBy to clear the error
-            const aDroppedEnergy = _.sortByOrder( creep.pos.findInRange( FIND_DROPPED_RESOURCES, 3 ), ['amount'], ['desc'] );
+            const aDroppedEnergy = creep.pos.findInRange( FIND_DROPPED_RESOURCES, 3 );
             if ( aDroppedEnergy.length > 0 && aDroppedEnergy[0].amount > creep.carryCapacity - _.sum( creep.carry ) ) {
                 oEnergySource = aDroppedEnergy[0];
                 if ( debug ) { log.output( 'Debug', 'Picking up energy on ground with ' + oEnergySource.amount + ' energy', false, true ) };
