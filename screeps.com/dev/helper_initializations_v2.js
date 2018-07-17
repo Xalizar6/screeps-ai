@@ -61,7 +61,7 @@ const f_AddSourcesToMemory_v2 = function () {
         // Store the nearby container in memory to be referenced by the Harvester and Hauler
         if ( arrayOfContainers.length > 0 ) {
             arrayOfContainers.forEach( function ( oContainer ) {
-                // Will find a container within 1 space of the mineral
+                // Will find a container within 1 space of the energy source.
                 if ( oContainer.pos.isNearTo( oSource ) ) {
                     oRoom.memory.sources[nIndex].containerID = oContainer.id;
                 };
