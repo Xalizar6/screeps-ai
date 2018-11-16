@@ -23,7 +23,7 @@ module.exports = {
             // Loop through the room sources stored in memory
             for ( let i in aSourcesInMemory ) {
 
-                // Determine if the currently assigned harvester is alive - remove from memory if not.
+                // Determine if the currently assigned harvester is alive - remove from memory if not alive.
                 if ( aSourcesInMemory[i].harvester && !Game.creeps[aSourcesInMemory[i].harvester] ) {
                     log.output( "Event", "Removing dead Harvester " + aSourcesInMemory[i].harvester + " from source.", false, true );
                     delete aSourcesInMemory[i].harvester;
