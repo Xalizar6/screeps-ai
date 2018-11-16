@@ -3,7 +3,6 @@
 const myFunctions = require( 'helper_myFunctions' );
 const log = require( './helper_logging' );
 const debug = false; // Turn logging for this module on and off
-let timer = null;
 
 module.exports = {
 
@@ -11,7 +10,7 @@ module.exports = {
     run: function ( creep ) {
 
         if ( debug ) { log.output( 'Debug', 'Begin - Role Dedicated Harvester for ' + creep.name, true ) };
-        if ( debug ) { timer = Game.cpu.getUsed() };
+        if ( debug ) { var timer = Game.cpu.getUsed() };
 
         // Declare variables
         const aSourcesInMemory = creep.room.memory.sources;
