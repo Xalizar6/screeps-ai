@@ -26,6 +26,7 @@ module.exports = {
                 filter: ( i ) => i.structureType == STRUCTURE_EXTENSION && i.energy < i.energyCapacity
             } );
             if ( extensions.length > 0 ) {
+                // @ts-ignore
                 extensions = _.sortByOrder( extensions, ['energy'], ['asc'] );
                 drop = extensions[0];
                 if ( debug ) { log.output( 'Debug', 'Dropping off at extensions', false, true ) };
