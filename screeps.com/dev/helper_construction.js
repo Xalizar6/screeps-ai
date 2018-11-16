@@ -1,5 +1,7 @@
 "use strict"; // Declaring Strict Mode to enforce better coding standards
 
+//To Do: Check if storage exists in the room and place the containers in reference to Storage instead of Spawn
+
 const log = require( "./helper_logging" );
 const g_oSpawn = Game.spawns['Spawn1'];
 const g_oRoom = g_oSpawn.room;
@@ -22,7 +24,7 @@ const f_AddConstructionRCL1 = function () {
     if ( debug ) { log.output( 'Debug', 'Begin - Add Construction for RCL1', false, true ) };
     if ( debug ) { var timer = Game.cpu.getUsed() };
 
-    // Declare Variables
+    // Declare local Variables
     let aPath = [];
     let oLastPosition;
     let aControllerPath;
