@@ -12,6 +12,7 @@
 //  Deposit Resources
 
 
+const _ = require( 'lodash' );
 const myFunctions = require( 'helper_myFunctions' );
 const log = require( './helper_logging' );
 const debug = false; // Turn logging for this module on and off

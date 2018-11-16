@@ -11,6 +11,7 @@ log.init();
 log.output( 'Info', 'Begin - Initializing Modules', true );
 const timer1 = Game.cpu.getUsed();
 
+const _ = require( 'lodash' );
 const C_mRoleHarvester = require( 'role.harvester' );
 const C_mRoleUpgrader = require( 'role.upgrader' );
 const C_mRoleDedicatedHarvester = require( 'role.dedicatedHarvester' );

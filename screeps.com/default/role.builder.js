@@ -1,5 +1,6 @@
 "use strict"; // Declaring Strict Mode to enforce better coding standards
 
+const _ = require( 'lodash' );
 const myFunctions = require( 'helper_myFunctions' );
 const log = require( './helper_logging' );
 const debug = false; // Turn logging for this module on and off
@@ -49,10 +50,10 @@ module.exports = {
             };
 
         } else {
-            
+
             if ( debug ) { log.output( 'Debug', 'Getting Energy', false, true ) };
             myFunctions.getEnergy_v3( creep );
-            
+
             // If the room has a storage with enough energy, get energy from there
             // if ( creep.room.storage && creep.room.storage.store.energy > 5000 ) {
             //     energySource = creep.room.storage;

@@ -11,6 +11,7 @@ log.init();
 log.output( 'Info', 'Begin - Initializing Modules', true );
 const timer1 = Game.cpu.getUsed();
 
+const _ = require( 'lodash' );
 const C_mRoleHarvester = require( 'role.harvester' );
 const C_mRoleUpgrader = require( 'role.upgrader' );
 const C_mRoleDedicatedHarvester = require( 'role.dedicatedHarvester' );
@@ -24,35 +25,16 @@ const C_mConstructionCode = require( './helper_construction' );
 const mineralHarvester = require( './role.mineralHarvester' );
 const mineralHauler = require( "./role.mineralHauler" );
 const terminalManager = require( "./role.terminalManager" );
-const myFunctions = require( 'helper_myFunctions' );
-const init = require( 'helper_initializations' );
+const init = require( './helper_initializations_v2' );
 
 log.output( 'Info', 'Initializing modules took: ' + ( Game.cpu.getUsed() - timer1 ).toFixed( 2 ) + ' CPU Time', false, true );
 log.output( 'Info', 'End - Initializing Modules' );
 //-------------------------------------------------------
 
 //-------------------------------------------------------
-// Add sources in a room to the room memory
-log.output( 'Info', 'Begin - Adding Energy sources to Room Memory', true );
-const timer2 = Game.cpu.getUsed();
-
-init.addSourcesToMemory();
-
-log.output( 'Info', 'Adding Energy sources to Room Memory took: ' + ( Game.cpu.getUsed() - timer2 ).toFixed( 2 ) + ' CPU Time', false, true );
-log.output( 'Info', 'End - Adding Energy sources to Room Memory' );
+// Initialize memory
+init.initMemory();
 //-------------------------------------------------------
-
-//-------------------------------------------------------
-// Add minerals in a room to the room memory
-log.output( 'Info', 'Begin - Adding Minerals to Room Memory', true );
-const timer3 = Game.cpu.getUsed();
-
-init.addMineralsToMemory();
-
-log.output( 'Info', 'Adding Minerals to Room Memory took: ' + ( Game.cpu.getUsed() - timer3 ).toFixed( 2 ) + ' CPU Time', false, true );
-log.output( 'Info', 'End - Adding Minerals to Room Memory' );
-//-------------------------------------------------------
-
 
 // This loop is executed every tick
 module.exports.loop = function () {
@@ -76,7 +58,7 @@ module.exports.loop = function () {
     C_mMarketCode.run();
 
     // Run the Construction module    
-    // C_mConstructionCode.run();
+    C_mConstructionCode.run();
 
     // Call the role based work module for each creep
     for ( let i in Game.creeps ) {

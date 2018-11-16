@@ -1,4 +1,5 @@
 "use strict"; // Declaring Strict Mode to enforce better coding standards
+const _ = require( 'lodash' );
 const log = require( './helper_logging' );
 const myConstants = require( './helper_constants' );
 const debug = true; // Turn logging for this module on and off
