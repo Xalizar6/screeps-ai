@@ -1,5 +1,3 @@
-Test
-
 World Logic
     Room Logic - Based on the state of the room (Start Economy, Grow Economy, Fortify, Defend from attack, Capture Unoccupied, Capture Occupied)
         Task Level Logic based on the room Size
