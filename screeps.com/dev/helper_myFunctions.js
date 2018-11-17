@@ -15,6 +15,34 @@ module.exports = {
     },
 
     /** @param {Creep} creep **/
+    harvestEnergy_v2: function ( creep, source ) {
+
+        if ( creep.memory.role === 'dedicatedHarvester' ) {
+
+            if ( debug ) { log.output( 'Debug', creep.name + ' is a dedicated harvester', false, true ) };
+            if ( debug ) { log.output( 'Debug', 'My source ID is' + source.id, false, true ) };
+
+            const aSourcesInMemory = creep.room.memory.sources;
+
+            for ( let i in aSourcesInMemory ) {
+
+                console.log( aSourcesInMemory[i].id )
+
+                if ( source.id === aSourcesInMemory[i].id ) {
+
+                    if ( debug ) { log.output( 'Debug', 'My container ID is' + aSourcesInMemory[i].containerID, false, true ) };
+
+                }
+            };
+
+        }
+
+        if ( creep.harvest( source ) == ERR_NOT_IN_RANGE ) {
+            creep.moveTo( source, { visualizePathStyle: { stroke: '#f2f210' } } );
+        };
+    },
+
+    /** @param {Creep} creep **/
     transferEnergy: function ( creep, transferTarget ) {
         if ( creep.transfer( transferTarget, RESOURCE_ENERGY ) == ERR_NOT_IN_RANGE ) {
             creep.moveTo( transferTarget, { visualizePathStyle: { stroke: '#f2f210' } } );

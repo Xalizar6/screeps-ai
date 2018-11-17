@@ -60,7 +60,7 @@ module.exports = {
             };
 
             // Creep and Source are assigned, call the function to harvest energy
-            myFunctions.harvestEnergy( creep, source );
+            myFunctions.harvestEnergy_v2( creep, source );
 
 
         } else {
