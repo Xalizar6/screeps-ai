@@ -17,22 +17,40 @@ module.exports = {
     /** @param {Creep} creep **/
     harvestEnergy_v2: function ( creep, source ) {
 
+        if ( debug ) { log.output( 'Debug', 'Begin: HarvestEnergy_v2', false, true ) };
+
         if ( creep.memory.role === 'dedicatedHarvester' ) {
 
             if ( debug ) { log.output( 'Debug', creep.name + ' is a dedicated harvester', false, true ) };
-            if ( debug ) { log.output( 'Debug', 'My source ID is' + source.id, false, true ) };
+            if ( debug ) { log.output( 'Debug', 'Target source ID is: ' + source.id, false, true ) };
 
+            // Array of all of the sources in the room from memory
             const aSourcesInMemory = creep.room.memory.sources;
 
-            for ( let i in aSourcesInMemory ) {
+            // ID of the container near the source
+            // To Do: Error handle if there is no container
+            const sContainerID = _.result( _.find( aSourcesInMemory, 'id', source.id ), 'containerID' );
+            if ( debug ) { log.output( 'Debug', 'Target Container ID is: ' + sContainerID, false, true ) };
 
-                console.log( aSourcesInMemory[i].id )
+            // Get the location of the container we want to sit on
+            const oContainer = Game.getObjectById( sContainerID );
+            if ( debug ) { log.output( 'Debug', 'Target Container loc is: ' + oContainer.pos, false, true ) };
 
-                if ( source.id === aSourcesInMemory[i].id ) {
+            // Sit on top of the container if there is one or within 1 of the mineral source if no container
+            let range = null;
+            if ( oContainer ) {
+                range = 0
+            } else {
+                range = 1
+            };
 
-                    if ( debug ) { log.output( 'Debug', 'My container ID is' + aSourcesInMemory[i].containerID, false, true ) };
+            // Has the creep arrived?
+            if ( creep.pos.getRangeTo( oContainer.pos ) <= range ) {
+                creep.harvest( source )
 
-                }
+            } else {
+                // It hasn't arrived, so we get it to move to target position
+                creep.moveTo( oContainer.pos );
             };
 
         }
@@ -40,6 +58,9 @@ module.exports = {
         if ( creep.harvest( source ) == ERR_NOT_IN_RANGE ) {
             creep.moveTo( source, { visualizePathStyle: { stroke: '#f2f210' } } );
         };
+
+        if ( debug ) { log.output( 'Debug', 'End: HarvestEnergy_v2', false, true ) };
+
     },
 
     /** @param {Creep} creep **/
