@@ -137,7 +137,7 @@ module.exports = {
         };
 
         // Unregister the creep from the source in memory before it dies
-        if ( creep.ticksToLive <= 2 ) {
+        if ( creep.ticksToLive <= 5 ) {
             creep.say( "dying" );
 
             // Loop through the sources
