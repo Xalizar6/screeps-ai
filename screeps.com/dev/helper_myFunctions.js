@@ -24,39 +24,51 @@ module.exports = {
             if ( debug ) { log.output( 'Debug', creep.name + ' is a dedicated harvester', false, true ) };
             if ( debug ) { log.output( 'Debug', 'Target source ID is: ' + source.id, false, true ) };
 
-            // Array of all of the sources in the room from memory
+            // Array of the sources in the room from memory
             const aSourcesInMemory = creep.room.memory.sources;
 
-            // ID of the container near the source
-            // To Do: Error handle if there is no container
-            const sContainerID = _.result( _.find( aSourcesInMemory, 'id', source.id ), 'containerID' );
+            // Get the ID of the container near the source if there is one
+            const sContainerID = _.result( _.find( aSourcesInMemory, 'id', source.id ), 'containerID', 'noContainer' );
             if ( debug ) { log.output( 'Debug', 'Target Container ID is: ' + sContainerID, false, true ) };
 
-            // Get the location of the container we want to sit on
-            const oContainer = Game.getObjectById( sContainerID );
-            if ( debug ) { log.output( 'Debug', 'Target Container loc is: ' + oContainer.pos, false, true ) };
+            // If you find a container
+            let oTargetPos = null;
+            if ( sContainerID !== 'noContainer' ) {
+
+                // Get the location of the container and set it as your target position
+                oTargetPos = Game.getObjectById( sContainerID ).pos;
+
+            } else {
+
+                // Set the source as your target position
+                oTargetPos = source.pos;
+            };
+
+            if ( debug ) { log.output( 'Debug', 'Creep target pos: ' + oTargetPos, false, true ) };
 
             // Sit on top of the container if there is one or within 1 of the mineral source if no container
             let range = null;
-            if ( oContainer ) {
-                range = 0
+            if ( sContainerID !== 'noContainer' ) {
+                range = 0;
             } else {
-                range = 1
+                range = 1;
             };
 
-            // Has the creep arrived?
-            if ( creep.pos.getRangeTo( oContainer.pos ) <= range ) {
+            // Has the creep arrived at the target position?
+            if ( creep.pos.getRangeTo( oTargetPos ) <= range ) {
                 creep.harvest( source )
 
             } else {
                 // It hasn't arrived, so we get it to move to target position
-                creep.moveTo( oContainer.pos );
+                creep.moveTo( oTargetPos );
             };
 
-        }
+        } else {
 
-        if ( creep.harvest( source ) == ERR_NOT_IN_RANGE ) {
-            creep.moveTo( source, { visualizePathStyle: { stroke: '#f2f210' } } );
+            if ( creep.harvest( source ) == ERR_NOT_IN_RANGE ) {
+                creep.moveTo( source, { visualizePathStyle: { stroke: '#f2f210' } } );
+            };
+
         };
 
         if ( debug ) { log.output( 'Debug', 'End: HarvestEnergy_v2', false, true ) };
