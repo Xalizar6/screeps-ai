@@ -23,6 +23,17 @@ module.exports = {
         let drop = null;
         const oSpawn = Game.spawns["Spawn1"];
 
+        // Clear dead creeps from Source assignments
+        _.forEach( aSourcesInMemory, function ( oSource ) {
+
+            // If a hauler is assigned to the energy source but not found in the Game.creeps array then unassign
+            if ( oSource.hauler && !Game.creeps[oSource.hauler] ) {
+                log.output( "Event", "Removing dead Hauler " + oSource.hauler + " from source. " + oSource.id, false, true );
+                delete oSource.hauler;
+            };
+
+        } );
+
         // If hauling mode is on and creep is empty, turn off hauling mode
         if ( creep.memory.hauling && creep.carry.energy == 0 ) {
             creep.memory.hauling = false;
@@ -41,24 +52,15 @@ module.exports = {
 
             // Loop through the energy sources in the room's memory and see if this creep is assigned to one
             // Set the ID as the creep's Energy Source ID
-            for ( let i in aSourcesInMemory ) {
-
-                // Determine if the currently assigned hauler is alive - remove from memory if not.
-                if ( aSourcesInMemory[i].harvester && !Game.creeps[aSourcesInMemory[i].hauler] ) {
-                    log.output( "Event", "Removing dead Hauler " + aSourcesInMemory[i].hauler + " from source.", false, true );
-                    delete aSourcesInMemory[i].hauler;
-                };
-
-                if ( aSourcesInMemory[i].hauler === creep.name ) {
-                    // Give the creep the source object
-                    oEnergySource = Game.getObjectById( aSourcesInMemory[i].id );
+            _.forEach( aSourcesInMemory, function ( oSource ) {
+                if ( oSource.hauler === creep.name ) {
+                    // Give the creep the source object id
+                    oEnergySource = Game.getObjectById( oSource.id );
                     bCreepAlreadyAssigned = true;
                 };
+            } );
 
-            };
-
-            // If not already assigned to an energy source, loop through the energy sources until you
-            // find one that needs a hauler
+            // If not already assigned to an energy source, loop through the energy sources until you find one that needs a hauler
             // Set the ID as the creep's Energy Source ID.
             if ( !bCreepAlreadyAssigned ) {
 
@@ -81,6 +83,7 @@ module.exports = {
             };
 
             // Once assigned to an energy source look for dropped resources nearby to it
+            if ( debug ) { log.output( 'Debug', 'Assigned energy source: ' + oEnergySource.id, false, true ) };
             aResources = creep.room.find( FIND_DROPPED_RESOURCES );
             for ( let i in aResources ) {
 
