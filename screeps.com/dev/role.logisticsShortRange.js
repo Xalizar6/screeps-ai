@@ -36,7 +36,7 @@ module.exports = {
         };
 
         // If creep is empty, identify the assigned source to pickup near
-        if ( !creep.memory.hauling || creep.memory.hauling == false ) {
+        if ( !creep.memory.hauling ) {
             if ( debug ) { log.output( 'Debug', 'In refill mode', false, true ) };
 
             // Loop through the energy sources in the room's memory and see if this creep is assigned to one
