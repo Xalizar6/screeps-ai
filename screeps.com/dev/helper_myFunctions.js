@@ -47,15 +47,15 @@ module.exports = {
             if ( debug ) { log.output( 'Debug', 'Creep target pos: ' + oTargetPos, false, true ) };
 
             // Sit on top of the container if there is one or within 1 of the mineral source if no container
-            let range = null;
+            let nRange = null;
             if ( sContainerID !== 'noContainer' ) {
-                range = 0;
+                nRange = 0;
             } else {
-                range = 1;
+                nRange = 1;
             };
 
             // Has the creep arrived at the target position?
-            if ( creep.pos.getRangeTo( oTargetPos ) <= range ) {
+            if ( creep.pos.getRangeTo( oTargetPos ) <= nRange ) {
                 creep.harvest( source )
 
             } else {
