@@ -17,13 +17,14 @@ module.exports = {
         // Declare Variables
         const aSourcesInMemory = creep.room.memory.sources;
         let target = null;
-        let aResources = null;
+        let aDroppedResources = null;
         let oEnergySource = null;
         let bCreepAlreadyAssigned = false;
         let drop = null;
         const oSpawn = Game.spawns["Spawn1"];
 
         // Clear dead creeps from Source assignments
+        // To Do: Move to main? Move to Memory Initialization?
         _.forEach( aSourcesInMemory, function ( oSource ) {
 
             // If a hauler is assigned to the energy source but not found in the Game.creeps array then unassign
@@ -82,13 +83,14 @@ module.exports = {
 
             };
 
-            // Once assigned to an energy source look for dropped resources nearby to it
             if ( debug ) { log.output( 'Debug', 'Assigned energy source: ' + oEnergySource.id, false, true ) };
-            aResources = creep.room.find( FIND_DROPPED_RESOURCES );
-            for ( let i in aResources ) {
 
-                if ( aResources[i].pos.isNearTo( oEnergySource ) ) {
-                    target = aResources[i];
+            // Once assigned to an energy source look for dropped resources nearby to it
+            aDroppedResources = creep.room.find( FIND_DROPPED_RESOURCES );
+            for ( let i in aDroppedResources ) {
+
+                if ( aDroppedResources[i].pos.isNearTo( oEnergySource ) ) {
+                    target = aDroppedResources[i];
                 };
 
             };
