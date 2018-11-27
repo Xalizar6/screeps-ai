@@ -76,6 +76,7 @@ module.exports = {
     },
 
     /** @param {Creep} creep **/
+    // This method is deprecated and will be removed soon. Please use Creep.withdraw instead.
     transferEnergy: function ( creep, transferTarget ) {
         if ( creep.transfer( transferTarget, RESOURCE_ENERGY ) == ERR_NOT_IN_RANGE ) {
             creep.moveTo( transferTarget, { visualizePathStyle: { stroke: '#f2f210' } } );
