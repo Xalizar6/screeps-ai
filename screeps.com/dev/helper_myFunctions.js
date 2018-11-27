@@ -85,7 +85,7 @@ module.exports = {
 
     /** @param {Creep} creep **/
     withdrawEnergy: function ( creep, energySource ) {
-        if ( creep.withdraw( energySource, RESOURCE_ENERGY, creep.carryCapacity ) == ERR_NOT_IN_RANGE ) {
+        if ( creep.withdraw( energySource, RESOURCE_ENERGY ) == ERR_NOT_IN_RANGE ) {
             creep.moveTo( energySource, { visualizePathStyle: { stroke: '#2386ea' } } );
         };
     },
