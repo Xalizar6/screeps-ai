@@ -19,6 +19,7 @@ module.exports = {
         let target = null;
         let aDroppedResources = null;
         let oEnergySource = null;
+        let oPickupContainer = null;
         let bCreepAlreadyAssigned = false;
         let drop = null;
         const oSpawn = Game.spawns["Spawn1"];
@@ -58,6 +59,11 @@ module.exports = {
                     // Give the creep the source object id
                     oEnergySource = Game.getObjectById( oSource.id );
                     bCreepAlreadyAssigned = true;
+
+                    // Assign the container if there is one near the source
+                    if ( oSource.containerID ) {
+                        oPickupContainer = Game.getObjectById( oSource.containerID );
+                    };
                 };
             } );
 
@@ -75,6 +81,11 @@ module.exports = {
                         // Give the creep the source object
                         oEnergySource = Game.getObjectById( aSourcesInMemory[i].id );
 
+                        // Assign the container if there is one near the source
+                        if ( aSourcesInMemory[i].containerID ) {
+                            oPickupContainer = Game.getObjectById( aSourcesInMemory[i].containerID );
+                        };
+
                         // Exit the FOR loop so the creep isn't assigned to every available source
                         break;
                     };
@@ -84,19 +95,27 @@ module.exports = {
             };
 
             if ( debug ) { log.output( 'Debug', 'Assigned energy source: ' + oEnergySource.id, false, true ) };
+            if ( debug ) { log.output( 'Debug', 'Assigned pickup container: ' + oPickupContainer.id, false, true ) };
 
             // Once assigned to an energy source look for dropped resources nearby to it
             aDroppedResources = creep.room.find( FIND_DROPPED_RESOURCES );
             for ( let i in aDroppedResources ) {
 
-                if ( aDroppedResources[i].pos.isNearTo( oEnergySource ) ) {
+                if ( aDroppedResources[i].pos.isNearTo( oEnergySource ) && aDroppedResources[i].amount > 20 ) {
                     target = aDroppedResources[i];
+
+                    // Go pick up the dropped resources
+                    if ( debug ) { log.output( 'Debug', 'Picking up dropped resource at pos: ' + aDroppedResources[i].pos, false, true ) };
+                    myFunctions.pickupEnergy( creep, target );
                 };
 
             };
 
-            // Go pick up the dropped resources
-            myFunctions.pickupEnergy( creep, target );
+            if ( target == null && oPickupContainer !== null ) {
+                if ( debug ) { log.output( 'Debug', 'Picking up from container: ' + oPickupContainer.id, false, true ) };
+                myFunctions.withdrawEnergy( creep, oPickupContainer );
+            };
+
 
         } else {
 
