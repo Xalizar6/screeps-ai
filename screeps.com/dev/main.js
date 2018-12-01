@@ -37,7 +37,8 @@ init.initMemory();
 //-------------------------------------------------------
 
 // This loop is executed every tick
-module.exports.loop = function () {
+module.exports.loop = function ()
+{
 
     log.output( 'Info', "Begin - Main", true );
     const mainLoop = Game.cpu.getUsed();
@@ -49,10 +50,11 @@ module.exports.loop = function () {
     C_mSpawncode.run();
 
     // Run the Tower module
-    const aTowers = _.filter( Game.structures, ( s ) => s.structureType == STRUCTURE_TOWER );
-    for ( let i in aTowers ) {
-        C_mTowerCode.run( aTowers[i] );
-    };
+    const aTowers = _.filter( Game.structures, ( s ) => s.structureType === STRUCTURE_TOWER );
+    _.forEach( aTowers, function ( oTower )
+    {
+        C_mTowerCode.run( oTower );
+    } );
 
     // Run the Market module
     C_mMarketCode.run();
@@ -61,46 +63,55 @@ module.exports.loop = function () {
     C_mConstructionCode.run();
 
     // Call the role based work module for each creep
-    for ( let i in Game.creeps ) {
-        const oCreep = Game.creeps[i];
+    _.forEach( Game.creeps, function ( oCreep )
+    {
 
-        if ( oCreep.memory.role == 'harvester' ) {
+        if ( oCreep.memory.role === 'harvester' )
+        {
             C_mRoleHarvester.run( oCreep );
         };
 
-        if ( oCreep.memory.role == 'upgrader' ) {
+        if ( oCreep.memory.role === 'upgrader' )
+        {
             C_mRoleUpgrader.run( oCreep );
         };
 
-        if ( oCreep.memory.role == 'builder' ) {
+        if ( oCreep.memory.role === 'builder' )
+        {
             C_mRolebuilder.run( oCreep );
         };
 
-        if ( oCreep.memory.role == 'dedicatedHarvester' ) {
+        if ( oCreep.memory.role === 'dedicatedHarvester' )
+        {
             C_mRoleDedicatedHarvester.run( oCreep );
         };
 
-        if ( oCreep.memory.role == 'LogisticsShortRange' ) {
+        if ( oCreep.memory.role === 'LogisticsShortRange' )
+        {
             C_mRoleLogisticsShortRange.run( oCreep );
         };
 
-        if ( oCreep.memory.role == 'logisticsLocal' ) {
+        if ( oCreep.memory.role === 'logisticsLocal' )
+        {
             logisticsLocal.run( oCreep );
         };
 
-        if ( oCreep.memory.role === 'Mineral Harvester' ) {
+        if ( oCreep.memory.role === 'Mineral Harvester' )
+        {
             mineralHarvester.run( oCreep );
         };
 
-        if ( oCreep.memory.role === 'Mineral Hauler' ) {
+        if ( oCreep.memory.role === 'Mineral Hauler' )
+        {
             mineralHauler.run( oCreep );
         };
 
-        if ( oCreep.memory.role === 'Terminal Manager' ) {
+        if ( oCreep.memory.role === 'Terminal Manager' )
+        {
             terminalManager.run( oCreep );
         };
 
-    };
+    } );
 
     log.output( 'Info', 'Main took: ' + ( Game.cpu.getUsed() - mainLoop ).toFixed( 2 ) + ' CPU Time with ' + Game.cpu.bucket + ' bucket remaining', true, true );
     log.output( 'Info', 'End - Main' );
