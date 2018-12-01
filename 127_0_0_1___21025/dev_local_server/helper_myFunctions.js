@@ -148,6 +148,24 @@ module.exports = {
         if ( !oEnergySource )
         {
             oEnergySource = creep.pos.findClosestByPath( FIND_SOURCES_ACTIVE );
+
+            /* 
+                        let aContainers = creep.room.find( FIND_STRUCTURES,
+                            {
+                                filter: ( i ) => i.structureType === STRUCTURE_CONTAINER
+                            }
+                        );
+            
+                        if ( aContainers ) 
+                        {
+                            console.log( "aContainers: " + aContainers );
+                            console.log( _.map( aContainers, function ( container ) { container.pos.isNearTo( oEnergySource ) } ) );
+                        } else
+                        {
+                            console.log( "No Container near energy source" );
+                        }
+             */
+
             if ( oEnergySource )
             {
                 if ( debug ) { log.output( 'Debug', 'Picking up energy from source at ' + oEnergySource.pos, false, true ) };
