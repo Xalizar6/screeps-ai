@@ -41,15 +41,6 @@ module.exports = {
             if ( debug ) { log.output( 'Debug', 'Getting Energy', false, true ) };
             myFunctions.getEnergy_v3( creep );
 
-            // if ( creep.room.storage && creep.room.storage.store.energy > 5000 ) {
-            //     const energySource = creep.room.storage;
-            //     myFunctions.withdrawEnergy( creep, energySource );
-
-            // } else {
-            //     const energySource = creep.pos.findClosestByPath( FIND_SOURCES_ACTIVE, { maxOps: 500 } );
-            //     myFunctions.harvestEnergy( creep, energySource );
-            // };
-
         };
 
         if ( debug ) { log.output( 'Debug', 'Role Upgrader took: ' + ( Game.cpu.getUsed() - timer ) + ' CPU Time', false, true ) };
