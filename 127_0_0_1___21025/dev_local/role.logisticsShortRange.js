@@ -22,7 +22,6 @@ module.exports = {
         let oEnergySource = null;
         let oPickupContainer = null;
         let bCreepAlreadyAssigned = false;
-        let drop = null;
         const oSpawn = Game.spawns[ "Spawn1" ];
 
         // Clear dead creeps from Source assignments
@@ -140,6 +139,7 @@ module.exports = {
             if ( debug ) { log.output( 'Debug', 'In dropoff mode', false, true ) };
 
             // Check if Spawn needs energy
+            let drop = null;
             if ( drop == null )
             {
                 if ( oSpawn.energy < oSpawn.energyCapacity )
@@ -161,6 +161,32 @@ module.exports = {
                     extensions = _.sortByOrder( extensions, [ 'energy' ], [ 'asc' ] );
                     drop = extensions[ 0 ];
                     if ( debug ) { log.output( 'Debug', 'Dropping off at extensions', false, true ) };
+                };
+            };
+
+            // Check if the container near the Room Controller needs energy
+            if ( drop == null )
+            {
+                // If there is no container near the controller in memory then add it if it exists.
+                if ( !creep.memory.containerNearControllerID )
+                {
+                    let a_containersNearController = creep.room.controller.pos.findInRange( FIND_STRUCTURES, 2, { filter: { structureType: STRUCTURE_CONTAINER } } );
+                    if ( a_containersNearController.length )
+                    {
+                        creep.memory.containerNearControllerID = a_containersNearController[ 0 ].id;
+                    } else
+                    {
+                        creep.memory.containerNearControllerID = null;
+                    };
+                };
+
+                if ( creep.memory.containerNearControllerID !== null )
+                {
+                    let container = Game.getObjectById( creep.memory.containerNearControllerID );
+                    if ( container.store[ RESOURCE_ENERGY ] < 1800 )
+                    {
+                        drop = container;
+                    };
                 };
             };
 
