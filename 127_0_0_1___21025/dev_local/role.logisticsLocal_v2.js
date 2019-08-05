@@ -12,12 +12,15 @@
 //  Move to target
 //  Deposit Resources
 
+// Notes
+// Each of the State functions are expecting the current Creep object and an 'Options' object with one of two properties (nextState or context)
 
 const _ = require( 'lodash' );
 const log = require( './helper_logging' );
 const myFunctions = require( 'helper_myFunctions' );
 const myConstants = require( './helper_constants' );
 const debug = true; // Turn logging for this module on and off
+const moduleName = 'Logistics Local'
 let timer = null;
 
 module.exports = {
@@ -26,7 +29,7 @@ module.exports = {
     run: function ( creep )
     {
 
-        if ( debug ) { log.output( 'Debug', 'Begin - Role Logistics Local for ' + creep.name, true ) };
+        if ( debug ) { log.output( 'Debug', 'Begin - Role ' + moduleName + ' for ' + creep.name, true ) };
         if ( debug ) { timer = Game.cpu.getUsed() };
 
         // Add starting transition state to the creep memory if it doesn't already exist
@@ -110,8 +113,69 @@ module.exports = {
             };
         };
 
-        if ( debug ) { log.output( 'Debug', 'Role Logistics Local took: ' + ( Game.cpu.getUsed() - timer ) + ' CPU Time', false, true ) };
-        if ( debug ) { log.output( 'Debug', 'End - Role Logistics Local' ) };
+        if ( debug ) { log.output( 'Debug', 'Role ' + moduleName + ' took: ' + ( Game.cpu.getUsed() - timer ) + ' CPU Time', false, true ) };
+        if ( debug ) { log.output( 'Debug', 'End - ' + moduleName ) };
 
     },
+};
+
+/**
+ * @param {Creep} creep 
+ * @param {object} options 
+ */
+const runSpawning = function ( creep, options )
+{
+    if ( debug ) { log.output( 'Debug', 'Begin - ' + moduleName + ' Spawning routine for ' + creep.name, true ) };
+    const timer = Game.cpu.getUsed();
+
+    // Once the creep finishes spawning we transition to the next state
+    if ( creep.spawning === false )
+    {
+        creep.memory.state = options.nextState;
+        module.exports.run( creep );	// Call the main run function so that the next state function runs straight away
+        return;		// We put return here because once we transition to a different state, we don't want any of the following code in this function to run...
+    };
+
+    // Initialize the creep if that hasn't been done yet.
+    if ( !creep.memory.init )
+    {
+        // So that we know in the following ticks that it's already been initialized...
+        creep.memory.init = true;
+    };
+
+    if ( debug ) { log.output( 'Debug', moduleName + ' Spawning routine took: ' + ( Game.cpu.getUsed() - timer ) + ' CPU Time', false, true ) };
+    if ( debug ) { log.output( 'Debug', 'End - ' + moduleName + ' Spawning routine' ) };
+};
+
+const runMoving = function ( creep, options ) {
+
+    if ( debug ) { log.output( 'Debug', 'Begin - ' + moduleName + ' Moving routine for ' + creep.name, true ) };
+    const timer = Game.cpu.getUsed();
+
+    // This statement is shorthand for the function right below it. They are both here for clarity for now.
+    // let transitionState = options.context ? haulerContext(creep, myConstants.STATE_MOVING).nextState : options.nextState;
+
+    let transitionState = null;
+    if ( options.context ) {
+        transitionState = haulerContext( creep ).nextState;
+    } else {
+        transitionState = options.nextState;
+    };
+
+    // We know that creep.memory.targetPos is set up before this state is called. For haulers, it's set in haulerContext().
+    const destination = new RoomPosition( creep.memory.targetPos.x, creep.memory.targetPos.y, creep.memory.targetPos.roomName );
+
+    // Has the creep arrived?
+    if ( creep.pos.getRangeTo( destination ) <= 1 ) {
+        creep.memory.state = transitionState;
+        module.exports.run( creep );
+    } else {
+        // It hasn't arrived, so we get it to move to target position
+        creep.moveTo( destination );
+    };
+
+
+    if ( debug ) { log.output( 'Debug', moduleName + ' Moving routine took: ' + ( Game.cpu.getUsed() - timer ) + ' CPU Time', false, true ) };
+    if ( debug ) { log.output( 'Debug', 'End - ' + moduleName + ' Moving routine' ) };
+
 };
