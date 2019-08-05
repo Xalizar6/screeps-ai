@@ -123,6 +123,32 @@ module.exports = {
         const nMinEnergyInStorage = myConstants.STORAGE_ENERGY_STORAGE_TARGET;
         let oEnergySource = null;
 
+        if ( creep.memory.role === 'upgrader' )
+        {
+            if ( !creep.memory.containerNearControllerID )
+            {
+                let a_containersNearController = creep.room.controller.pos.findInRange( FIND_STRUCTURES, 2, { filter: { structureType: STRUCTURE_CONTAINER } } );
+                if ( a_containersNearController.length )
+                {
+                    creep.memory.containerNearControllerID = a_containersNearController[ 0 ].id;
+                } else
+                {
+                    creep.memory.containerNearControllerID = null;
+                };
+            };
+
+            if ( creep.memory.containerNearControllerID )
+            {
+                let container = Game.getObjectById( creep.memory.containerNearControllerID );
+                if ( container.store[ RESOURCE_ENERGY ] > 0 )
+                {
+                    oEnergySource = container;
+                    this.withdrawEnergy( creep, oEnergySource );
+                };
+            };
+        };
+
+
         if ( oEnergySource == null )
         {
             if ( oStorage && oStorage.store[ RESOURCE_ENERGY ] > nMinEnergyInStorage )
