@@ -1,3 +1,13 @@
+// Purpose: To move energy from near the Energy sources in the room to the Spawners, Extensions, Container near the room controller, or Storage.
+// To Do: Focus these guys on moving energy to the Spawners, Extensions, and Storage
+
+// Logic
+//  Remove old haulers from Memory
+//  Assign self to a Source to haul from
+//  Pick up dropped resources else get from the container
+
+
+
 "use strict"; // Declaring Strict Mode to enforce better coding standards
 
 const _ = require( 'lodash' );

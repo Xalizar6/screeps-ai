@@ -1,10 +1,12 @@
 "use strict"; // Declaring Strict Mode to enforce better coding standards
 
 // Logic
+//  Get Energy from Storage if available else get Energy from nearest Active Source
+//  To Do: Update to pick up energy from the ground or from a Container near the source
 //  Fill Spawners
 //  Fill Towers
 //  Fill Extensions
-//  Fill the Container near the Room Controller
+//  To Do: Fill the container near the Room Controller if one exists
 
 // States
 //  Determine which job to do
@@ -147,7 +149,8 @@ const runSpawning = function ( creep, options )
     if ( debug ) { log.output( 'Debug', 'End - ' + moduleName + ' Spawning routine' ) };
 };
 
-const runMoving = function ( creep, options ) {
+const runMoving = function ( creep, options )
+{
 
     if ( debug ) { log.output( 'Debug', 'Begin - ' + moduleName + ' Moving routine for ' + creep.name, true ) };
     const timer = Game.cpu.getUsed();
@@ -156,9 +159,11 @@ const runMoving = function ( creep, options ) {
     // let transitionState = options.context ? haulerContext(creep, myConstants.STATE_MOVING).nextState : options.nextState;
 
     let transitionState = null;
-    if ( options.context ) {
+    if ( options.context )
+    {
         transitionState = haulerContext( creep ).nextState;
-    } else {
+    } else
+    {
         transitionState = options.nextState;
     };
 
@@ -166,10 +171,12 @@ const runMoving = function ( creep, options ) {
     const destination = new RoomPosition( creep.memory.targetPos.x, creep.memory.targetPos.y, creep.memory.targetPos.roomName );
 
     // Has the creep arrived?
-    if ( creep.pos.getRangeTo( destination ) <= 1 ) {
+    if ( creep.pos.getRangeTo( destination ) <= 1 )
+    {
         creep.memory.state = transitionState;
         module.exports.run( creep );
-    } else {
+    } else
+    {
         // It hasn't arrived, so we get it to move to target position
         creep.moveTo( destination );
     };
