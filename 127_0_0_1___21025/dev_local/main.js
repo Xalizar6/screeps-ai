@@ -16,7 +16,7 @@ const C_mRoleHarvester = require( 'role.harvester' );
 const C_mRoleUpgrader = require( 'role.upgrader' );
 const C_mRoleDedicatedHarvester = require( 'role.dedicatedHarvester' );
 const logisticsLocal = require( 'role.logisticsLocal' );
-const C_mRoleLogisticsShortRange = require( 'role.logisticsShortRange' );
+const C_mRoleenergyHauler = require( 'role.energyHauler' );
 const C_mRolebuilder = require( 'role.builder' );
 const C_mSpawncode = require( 'spawncode' );
 const C_mTowerCode = require( 'towercode' );
@@ -86,9 +86,9 @@ module.exports.loop = function ()
             C_mRoleDedicatedHarvester.run( oCreep );
         };
 
-        if ( oCreep.memory.role === 'LogisticsShortRange' )
+        if ( oCreep.memory.role === 'Energy Hauler' )
         {
-            C_mRoleLogisticsShortRange.run( oCreep );
+            C_mRoleenergyHauler.run( oCreep );
         };
 
         if ( oCreep.memory.role === 'logisticsLocal' )
