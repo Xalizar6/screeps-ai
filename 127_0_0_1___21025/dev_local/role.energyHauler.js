@@ -16,8 +16,7 @@ let timer = null;
 module.exports = {
 
     /** @param {Creep} creep **/
-    run: function ( creep )
-    {
+    run: function ( creep ) {
 
         if ( debug ) { log.output( 'Debug', 'Begin - Role Logistics Short Range for ' + creep.name, true ) };
         if ( debug ) { timer = Game.cpu.getUsed() };
@@ -33,12 +32,10 @@ module.exports = {
 
         // Clear dead creeps from Source assignments
         // To Do: Move to main? Move to Memory Initialization?
-        _.forEach( aSourcesInMemory, function ( oSource )
-        {
+        _.forEach( aSourcesInMemory, function ( oSource ) {
 
             // If a hauler is assigned to the energy source but not found in the Game.creeps array then unassign
-            if ( oSource.hauler && !Game.creeps[ oSource.hauler ] )
-            {
+            if ( oSource.hauler && !Game.creeps[ oSource.hauler ] ) {
                 log.output( "Event", "Removing dead Hauler " + oSource.hauler + " from source. " + oSource.id, false, true );
                 delete oSource.hauler;
             };
@@ -46,37 +43,31 @@ module.exports = {
         } );
 
         // If hauling mode is on and creep is empty, turn off hauling mode
-        if ( creep.memory.hauling && creep.carry.energy == 0 )
-        {
+        if ( creep.memory.hauling && creep.carry.energy == 0 ) {
             creep.memory.hauling = false;
             creep.say( '🔄 refill' );
         };
 
         // If hauling mode is off and creep is full, turn on hauling mode
-        if ( !creep.memory.hauling && creep.carry.energy === creep.carryCapacity )
-        {
+        if ( !creep.memory.hauling && creep.carry.energy === creep.carryCapacity ) {
             creep.memory.hauling = true;
             creep.say( '🚧 hauling' );
         };
 
         // If creep is empty, identify the assigned source to pickup near
-        if ( !creep.memory.hauling )
-        {
+        if ( !creep.memory.hauling ) {
             if ( debug ) { log.output( 'Debug', 'In refill mode', false, true ) };
 
             // Loop through the energy sources in the room's memory and see if this creep is assigned to one
             // Set the ID as the creep's Energy Source ID
-            _.forEach( aSourcesInMemory, function ( oSource )
-            {
-                if ( oSource.hauler === creep.name )
-                {
+            _.forEach( aSourcesInMemory, function ( oSource ) {
+                if ( oSource.hauler === creep.name ) {
                     // Give the creep the source object id
                     oEnergySource = Game.getObjectById( oSource.id );
                     bCreepAlreadyAssigned = true;
 
                     // Assign the container if there is one near the source
-                    if ( oSource.containerID )
-                    {
+                    if ( oSource.containerID ) {
                         oPickupContainer = Game.getObjectById( oSource.containerID );
                     };
                 };
@@ -84,15 +75,12 @@ module.exports = {
 
             // If not already assigned to an energy source, loop through the energy sources until you find one that needs a hauler
             // Set the ID as the creep's Energy Source ID.
-            if ( !bCreepAlreadyAssigned )
-            {
+            if ( !bCreepAlreadyAssigned ) {
 
                 // Loop through the room sources stored in memory 
-                for ( let i in aSourcesInMemory )
-                {
+                for ( let i in aSourcesInMemory ) {
 
-                    if ( !aSourcesInMemory[ i ].hauler )
-                    {
+                    if ( !aSourcesInMemory[ i ].hauler ) {
                         // Assign the creep to the source
                         aSourcesInMemory[ i ].hauler = creep.name;
 
@@ -101,8 +89,7 @@ module.exports = {
                         if ( debug ) { log.output( 'Debug', 'Assigned energy source: ' + oEnergySource.id, false, true ) };
 
                         // Assign the container if there is one near the source
-                        if ( aSourcesInMemory[ i ].containerID )
-                        {
+                        if ( aSourcesInMemory[ i ].containerID ) {
                             oPickupContainer = Game.getObjectById( aSourcesInMemory[ i ].containerID );
                             if ( debug ) { log.output( 'Debug', 'Assigned pickup container: ' + oPickupContainer.id, false, true ) };
 
@@ -118,11 +105,9 @@ module.exports = {
 
             // Once assigned to an energy source look for dropped resources nearby to it
             aDroppedResources = creep.room.find( FIND_DROPPED_RESOURCES );
-            for ( let i in aDroppedResources )
-            {
+            for ( let i in aDroppedResources ) {
 
-                if ( aDroppedResources[ i ].pos.isNearTo( oEnergySource ) && aDroppedResources[ i ].amount > 20 )
-                {
+                if ( aDroppedResources[ i ].pos.isNearTo( oEnergySource ) && aDroppedResources[ i ].amount > 20 ) {
                     target = aDroppedResources[ i ];
 
                     // Go pick up the dropped resources
@@ -132,39 +117,33 @@ module.exports = {
 
             };
 
-            if ( target == null && oPickupContainer !== null )
-            {
+            if ( target == null && oPickupContainer !== null ) {
                 if ( debug ) { log.output( 'Debug', 'Picking up from container: ' + oPickupContainer.id, false, true ) };
                 myFunctions.withdrawEnergy( creep, oPickupContainer );
             };
 
 
-        } else
-        {
+        } else {
 
             // Creep is full so go drop off
             if ( debug ) { log.output( 'Debug', 'In dropoff mode', false, true ) };
 
             // Check if Spawn needs energy
             let drop = null;
-            if ( drop == null )
-            {
-                if ( oSpawn.energy < oSpawn.energyCapacity )
-                {
+            if ( drop == null ) {
+                if ( oSpawn.energy < oSpawn.energyCapacity ) {
                     drop = oSpawn;
                     if ( debug ) { log.output( 'Debug', 'Dropping off at spawn', false, true ) };
                 };
             };
 
             // Check if extensions need energy
-            if ( drop == null )
-            {
+            if ( drop == null ) {
                 let extensions = creep.room.find( FIND_MY_STRUCTURES, {
                     // filter: { structureType: STRUCTURE_EXTENSION }
                     filter: ( i ) => i.structureType == STRUCTURE_EXTENSION && i.energy < i.energyCapacity
                 } );
-                if ( extensions.length > 0 )
-                {
+                if ( extensions.length > 0 ) {
                     extensions = _.sortByOrder( extensions, [ 'energy' ], [ 'asc' ] );
                     drop = extensions[ 0 ];
                     if ( debug ) { log.output( 'Debug', 'Dropping off at extensions', false, true ) };
@@ -172,64 +151,51 @@ module.exports = {
             };
 
             // Check if the container near the Room Controller needs energy
-            if ( drop == null )
-            {
+            if ( drop == null ) {
                 // If there is no container near the controller in memory then add it if it exists.
-                if ( !creep.memory.containerNearControllerID )
-                {
+                if ( !creep.memory.containerNearControllerID ) {
                     let a_containersNearController = creep.room.controller.pos.findInRange( FIND_STRUCTURES, 2, { filter: { structureType: STRUCTURE_CONTAINER } } );
-                    if ( a_containersNearController.length )
-                    {
+                    if ( a_containersNearController.length ) {
                         creep.memory.containerNearControllerID = a_containersNearController[ 0 ].id;
-                    } else
-                    {
+                    } else {
                         creep.memory.containerNearControllerID = null;
                     };
                 };
 
-                if ( creep.memory.containerNearControllerID !== null )
-                {
+                if ( creep.memory.containerNearControllerID !== null ) {
                     let container = Game.getObjectById( creep.memory.containerNearControllerID );
-                    if ( container.store[ RESOURCE_ENERGY ] < 1800 )
-                    {
+                    if ( container.store[ RESOURCE_ENERGY ] < 1800 ) {
                         drop = container;
                     };
                 };
             };
 
             // Otherwise if there is Storage drop off there
-            if ( drop == null )
-            {
-                if ( creep.room.storage )
-                {
+            if ( drop == null ) {
+                if ( creep.room.storage ) {
                     if ( debug ) { log.output( 'Debug', 'Dropping off at storage', false, true ) };
                     drop = creep.room.storage;
                 };
             };
 
             // If a drop target was set then drop it there
-            if ( drop != null )
-            {
+            if ( drop != null ) {
                 myFunctions.transferEnergy( creep, drop )
-            } else
-            {
+            } else {
                 if ( debug ) { log.output( 'Debug', 'No drop target set', false, true ) };
             };
 
         };
 
         // Unregister the creep from the source in memory before it dies
-        if ( creep.ticksToLive <= 5 )
-        {
+        if ( creep.ticksToLive <= 5 ) {
             creep.say( "dying" );
 
             // Loop through the sources
-            for ( let i in aSourcesInMemory )
-            {
+            for ( let i in aSourcesInMemory ) {
 
                 // Remove the creep's assignment to the source before it dies
-                if ( aSourcesInMemory[ i ].hauler === creep.name )
-                {
+                if ( aSourcesInMemory[ i ].hauler === creep.name ) {
                     delete aSourcesInMemory[ i ].hauler;
                 };
 
