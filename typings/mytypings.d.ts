@@ -4,8 +4,6 @@ interface RoomMemory {
 
 interface CreepMemory {
     hauling: boolean;
-}
-
-interface CreepMemory {
+    role: string;
     containerNearControllerID: any;
 }
