@@ -1,2 +1,5 @@
 #Ignore file created by Screeps Steam client
 *.sync
+
+#Don't add the node_modules to the Git repository
+node_modules
