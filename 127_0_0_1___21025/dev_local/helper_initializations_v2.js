@@ -2,6 +2,12 @@
 
 /* global FIND_STRUCTURES STRUCTURE_CONTAINER FIND_SOURCES FIND_MINERALS FIND_MY_STRUCTURES STRUCTURE_EXTRACTOR */
 
+// Purpose:
+
+// Logic:
+//  Initialize global console commands.
+//  Initialize Room Level Memory
+
 // Declare Variables
 const consoleCommands = require('./helper_consoleCommands')
 const log = require('./helper_logging')
