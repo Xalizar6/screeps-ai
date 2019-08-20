@@ -2,12 +2,15 @@
 
 'use strict' // Declaring Strict Mode to enforce better coding standards
 
-// Purpose: To move energy from near the Energy sources to the Spawners, Extensions, Container near the room controller, and Storage.
+// Purpose:
+//  To move energy from near the Energy sources to the Spawners, Extensions, Container near the room controller, and Storage.
 
 // Logic
 //  Remove old haulers from Memory
 //  Assign self to a Source to haul from
 //  Pick up dropped resources else get from the container
+//  Drop off energy at the locations mentioned above
+//  Remove self as the hauler from the energy sources before death
 
 const _ = require('lodash')
 const myFunctions = require('helper_myFunctions')
