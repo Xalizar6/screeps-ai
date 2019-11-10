@@ -4,6 +4,6 @@
     "space_after_anon_function": true,
     "space_after_named_function": true,
     "end_with_newline": true,
-    "wrap_line_length": 80
+    "wrap_line_length": 120
   }
 }
