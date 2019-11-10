@@ -14,13 +14,13 @@ function Set-ScriptVariables {
 
 function Clear-OldFiles {
     Write-Host ("`nBegin - Clear-OldFiles")
-    Remove-Item -Path $server_dev_path\* -WhatIf
+    Remove-Item -Path $server_dev_path\*
     Write-Host ("End - Clear-OldFiles")
 }
 
 function Copy-LocalDevToServerDev {
     Write-Host ("`nBegin - Copy-LocalDevToServerDev")
-    Copy-Item -Path $local_dev_path\* -Destination $server_dev_path -Recurse -WhatIf
+    Copy-Item -Path $local_dev_path\* -Destination $server_dev_path -Recurse
     Write-Host ("End - Copy-LocalDevToServerDev")
 }
 
