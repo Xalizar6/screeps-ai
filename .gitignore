@@ -1,2 +1,3 @@
 #Ignore file created by Screeps Steam client
 *.sync
+node_modules
