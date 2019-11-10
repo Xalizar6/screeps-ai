@@ -4,8 +4,7 @@
     "checkJs": true
   },
   "exclude": [
-    "node_modules",
-    "utility"
+    "node_modules"
   ]
   // It is automatically bringing down the latest type files for lodash but not node, do I need node?
   // These are stored here () on the local PC.
