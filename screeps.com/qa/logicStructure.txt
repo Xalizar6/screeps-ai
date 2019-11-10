@@ -1,0 +1,47 @@
+World Logic
+    Room Logic - Based on the state of the room (Start Economy, Grow Economy, Fortify, Defend from attack, Capture Unoccupied, Capture Occupied)
+        Task Level Logic based on the room Size
+
+
+
+
+
+World Logic
+    Room Logic - room_Base //Prototype that holds functions and properties generic to all rooms
+        task.GatherEnergy
+            Room Size 1-2
+            Room Size 3+
+
+        task.upgradeController
+            Room Size 1-2
+            Room Size 3+
+
+        defendRoom_Creeps
+            Room Size 1-2
+            Room Size 3+
+
+    Room_dropSpawn //Extends room_Base with room specific actions
+            task_gatherEnergy
+                any special code for this task that is specific to this room
+                
+            task_upgradeController
+                any special code for this task that is specific to this room
+
+            defendRoom_Creeps
+                Size 1-2
+                Size 3+
+
+            buildRoads
+                Size 1-2
+                Size 3+
+            fortifyRoom
+                Size 1-2
+                Size 3+
+    
+    Room_takeMineral
+        task_gatherEnergy
+        Size 1-2
+
+    Room_takeOccupied    
+    Room_takeUnOccupied
+    Room_takeFortified
