@@ -9,7 +9,7 @@ function Set-ScriptVariables {
     # $script:DebugPreference = "SilentlyContinue"
     # $Script:VerbosePreference = "SilentlyContinue"
 
-    $script:c_server_dev_path = "$env:USERPROFILE\AppData\Local\Screeps\scripts\screeps.com\dev"
+    $script:c_server_qa_path = "$env:USERPROFILE\AppData\Local\Screeps\scripts\screeps.com\qa"
     $script:c_server_default_path = "$env:USERPROFILE\AppData\Local\Screeps\scripts\screeps.com\default"
 
 }
@@ -23,7 +23,7 @@ function Clear-OldFiles {
 
 function Copy-DevToDefault {
     Write-Host ("`nBegin - Copy-DevToDefault")
-    Copy-Item -Path $script:c_server_dev_path\* -Destination $script:c_server_default_path -Recurse
+    Copy-Item -Path $script:c_server_qa_path\* -Destination $script:c_server_default_path -Recurse
     Write-Host ("End - Copy-DevToDefault")
 }
 
