@@ -37,7 +37,6 @@ module.exports = {
             // If you found construction sites work on the one furthest along
             if ( aTargets.length > 0 ) {
                 // let buildtarget = creep.pos.findClosestByPath( aTargets, { maxOps: 500 } );
-                // @ts-ignore
                 let buildtargets = _.sortByOrder( aTargets, ['progress'], ['desc'] );
                 if ( debug ) { log.output( 'Debug', 'Building at location ' + buildtargets[0].pos, false, true ) };
                 if ( creep.build( buildtargets[0] ) == ERR_NOT_IN_RANGE ) {
