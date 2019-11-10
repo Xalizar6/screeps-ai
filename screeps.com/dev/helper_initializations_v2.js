@@ -44,7 +44,10 @@ const f_AddSourcesToMemory_v2 = function () {
     // Declare Variables
     const arrayOfEnergySources = oRoom.find( FIND_SOURCES );
 
-    if ( !oRoom.memory.sources ) {
+    if ( oRoom.memory.sources ) {
+        delete oRoom.memory.sources;
+        oRoom.memory.sources = {};
+    } else {
         oRoom.memory.sources = {};
     };
 
