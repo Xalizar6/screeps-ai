@@ -65,12 +65,18 @@ const fAddSourcesToMemoryV2 = function () {
   };
 
   arrayOfEnergySources.forEach(function (oSource, nIndex) {
-    if (!oRoom.memory.sources[nIndex]) {
-      oRoom.memory.sources[nIndex] = {}
+    // if (!oRoom.memory.sources[nIndex]) {
+    //   oRoom.memory.sources[nIndex] = {}
+    // };
+    if (!oRoom.memory.sources[oSource.id]) {
+      oRoom.memory.sources[oSource.id] = {}
     };
 
-    if (!oRoom.memory.sources[nIndex].id) {
-      oRoom.memory.sources[nIndex].id = oSource.id
+    // if (!oRoom.memory.sources[nIndex].id) {
+    //   oRoom.memory.sources[nIndex].id = oSource.id
+    // };
+    if (!oRoom.memory.sources[oSource.id].id) {
+      oRoom.memory.sources[oSource.id].id = oSource.id
     };
 
     // Store the nearby container in memory to be referenced by the Harvester and Hauler
