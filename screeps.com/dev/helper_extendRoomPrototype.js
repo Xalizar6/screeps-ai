@@ -20,8 +20,8 @@ exports.initRoomPrototype = function () {
       // return the locally stored value
       return this._sources
     },
-    // This makes it so the property doesn't show up when enumerating the properties
-    // of the creep. If you arent sure, put false.
+    // This makes it so the property shows up when enumerating the properties
+    // of the object. If you arent sure, put false.
     enumerable: true,
     // This makes the characteristics of the property modifiable and also makes
     // the property deletable. if you arent sure, put true.
