@@ -1,7 +1,9 @@
 'use strict' // Declaring Strict Mode to enforce better coding standards
 
-/* global Room FIND_SOURCES */
+/* global Room FIND_SOURCES _ */
+
 // TODO: FIgure out how to write this getter code when using the ObjectID as the name of the object in memory.
+// using _.keys(this.memory.sources) I get the two Source IDs
 exports.initRoomPrototype = function () {
   Object.defineProperty(Room.prototype, 'sources', {
     get: function () {
@@ -17,7 +19,7 @@ exports.initRoomPrototype = function () {
         // Get the source objects from the id's in memory and store them locally
         console.log("Didn't run memory loop")
         // this._sources = this.memory.sources.map(id => Game.getObjectById(id))
-        this._sources = this.memory.sources
+        this._sources = _.keys(this.memory.sources).map(source => Game.getObjectById(source))
       }
       // return the locally stored value
       return this._sources

@@ -164,3 +164,5 @@ for (let x in a) {
   console.log(x)
 };
 a.memory = 'test'
+
+Game.creeps.Keira.room.sources
