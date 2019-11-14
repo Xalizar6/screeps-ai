@@ -8,7 +8,7 @@ const log = require('./helper_logging')
 const oSpawn = Game.spawns['Spawn1']
 const oRoom = oSpawn.room
 const aSources = oRoom.find(FIND_SOURCES)
-const debug = true // Turn logging for this module on and off
+const debug = false // Turn logging for this module on and off
 
 module.exports = {
   run: function () {
