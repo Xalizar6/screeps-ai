@@ -2,18 +2,16 @@
 
 /* global Source _  */
 
-// TODO: Create the static location in memory where this shortcut should point to.
 exports.initSourcePrototype = function () {
   Object.defineProperty(Source.prototype, 'memory', {
     get: function () {
-      //   if (_.isUndefined(Memory.mySourcesMemory)) {
-      if (_.isUndefined(this.room.memory.mySourcesMemory)) {
-        this.room.memory.mySourcesMemory = {}
+      if (_.isUndefined(this.room.memory.sources)) {
+        this.room.memory.sources = {}
       }
-      if (!_.isObject(this.room.memory.mySourcesMemory)) {
+      if (!_.isObject(this.room.memory.sources)) {
         return undefined
       }
-      const result = this.room.memory.mySourcesMemory[this.id] = this.room.memory.mySourcesMemory[this.id] || {}
+      const result = this.room.memory.sources[this.id] = this.room.memory.sources[this.id] || {}
       return result
     },
     enumerable: false,
