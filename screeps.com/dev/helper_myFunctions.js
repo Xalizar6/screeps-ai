@@ -1,10 +1,10 @@
-/* global ERR_NOT_IN_RANGE RESOURCE_ENERGY FIND_STRUCTURES STRUCTURE_CONTAINER FIND_DROPPED_RESOURCES FIND_SOURCES_ACTIVE */
+/* global ERR_NOT_IN_RANGE RESOURCE_ENERGY FIND_STRUCTURES STRUCTURE_CONTAINER FIND_DROPPED_RESOURCES FIND_SOURCES */
 
 'use strict' // Declaring Strict Mode to enforce better coding standards
 const _ = require('lodash')
 const log = require('./helper_logging')
 const myConstants = require('./helper_constants')
-const debug = false // Turn logging for this module on and off
+const debug = true // Turn logging for this module on and off
 
 module.exports = {
 
@@ -194,9 +194,7 @@ module.exports = {
 
     if (oEnergySource == null) {
       // Locate the nearest energy source
-      oEnergySource = creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE, {
-        maxOps: 500
-      })
+      oEnergySource = creep.pos.findClosestByPath(FIND_SOURCES)
 
       // Check if there is a container nearby
       const aContainers = oEnergySource.pos.findInRange(FIND_STRUCTURES,
@@ -211,8 +209,7 @@ module.exports = {
       };
 
       // If there is a container, withdraw energy from there, else draw directly from the source
-      if (oPickupContainer !== null && oPickupContainer.store[
-          RESOURCE_ENERGY] > creep.carryCapacity) {
+      if (oPickupContainer !== null && oPickupContainer.store[RESOURCE_ENERGY] > creep.carryCapacity) {
         if (debug) {
           log.output('Debug', 'Getting energy from container id ' +
             oPickupContainer.id + ' found near energy source id ' +
