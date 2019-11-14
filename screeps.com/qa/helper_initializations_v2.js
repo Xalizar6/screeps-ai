@@ -63,18 +63,18 @@ const fAddSourcesToMemoryV2 = function () {
   };
 
   arrayOfEnergySources.forEach(function (oSource, nIndex) {
+    // Create the memory object for each source.
     if (!oRoom.memory.sources[oSource.id]) {
       oRoom.memory.sources[oSource.id] = {}
-    };
-
-    // Store the nearby container in memory to be referenced by the Harvester and Hauler
-    if (arrayOfContainers.length > 0) {
-      arrayOfContainers.forEach(function (oContainer) {
-        // Will find a container within 1 space of the energy source.
-        if (oContainer.pos.isNearTo(oSource)) {
-          oRoom.memory.sources[nIndex].containerID = oContainer.id
-        };
-      })
+      // Store the nearby container in memory to be referenced by the Harvester and Hauler
+      if (arrayOfContainers.length > 0) {
+        arrayOfContainers.forEach(function (oContainer) {
+          // Will find a container within 1 space of the energy source.
+          if (oContainer.pos.isNearTo(oSource)) {
+            oRoom.memory.sources[oSource.id].containerID = oContainer.id
+          };
+        })
+      };
     };
   })
 
