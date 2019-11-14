@@ -1,3 +1,6 @@
+interface Memory {
+    logging: any;
+}
 interface RoomMemory {
     sources: any;
     minerals: any;
