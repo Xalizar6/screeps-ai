@@ -2,7 +2,7 @@
 
 /* global Room FIND_SOURCES _ */
 
-// TODO: FIgure out how to write this getter code when using the ObjectID as the name of the object in memory.
+// TODO: Figure out how to write this getter code when using the ObjectID as the key of the object in memory.
 // using _.keys(this.memory.sources) I get the two Source IDs
 exports.initRoomPrototype = function () {
   Object.defineProperty(Room.prototype, 'sources', {
