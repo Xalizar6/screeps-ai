@@ -4,11 +4,13 @@ interface Memory {
 interface RoomMemory {
     sources: any;
     minerals: any;
-    construction: any;
+    construction: string;
 }
 
 interface CreepMemory {
+    containerNearControllerID: string;
+    energySource: string;
     hauling: boolean;
     role: string;
-    containerNearControllerID: any;
+    state: number;
 }
