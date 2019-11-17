@@ -28,6 +28,7 @@ const mineralHarvester = require('./role.mineralHarvester')
 const mineralHauler = require('./role.mineralHauler')
 const terminalManager = require('./role.terminalManager')
 const init = require('./helper_initializations_v2')
+const prototypes = require('./helper_initPrototypes')
 
 log.output('Info', 'Initializing modules took: ' + (Game.cpu.getUsed() - timer1)
   .toFixed(2) + ' CPU Time', false, true)
@@ -46,6 +47,9 @@ module.exports.loop = function () {
 
   // Initialize console commands with the alias of cc
   init.initConsoleCommands()
+
+  // Initialize the prototype updates
+  prototypes.initPrototypes()
 
   // Run the spawncode module
   spawnCode.run()

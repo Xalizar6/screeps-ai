@@ -71,10 +71,10 @@ module.exports = {
 
       // Loop through the energy sources in the room's memory and see if this creep is assigned to one
       // Set the ID as the creep's Energy Source ID
-      _.forEach(aSourcesInMemory, function (oSource) {
+      _.forEach(aSourcesInMemory, function (oSource, key) {
         if (oSource.hauler === creep.name) {
           // Give the creep the source object id
-          oEnergySource = Game.getObjectById(oSource.id)
+          oEnergySource = Game.getObjectById(key)
           bCreepAlreadyAssigned = true
 
           // Assign the container if there is one near the source
