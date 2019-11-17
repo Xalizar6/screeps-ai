@@ -4,7 +4,7 @@
 
 const myFunctions = require('helper_myFunctions')
 const log = require('./helper_logging')
-const debug = false // Turn logging for this module on and off
+const debug = true // Turn logging for this module on and off
 
 module.exports = {
 
@@ -21,28 +21,6 @@ module.exports = {
     const aSourcesInMemory = creep.room.memory.sources
     let bCreepAlreadyAssigned = false
     let target = null
-
-    /*
-        11/14/2019 [DR]: deprecated but testing
-        // Checking if the creep is about to die
-        if (creep.ticksToLive > 5) {
-          // Loop through the room sources stored in memory
-          for (const i in aSourcesInMemory) {
-            // Determine if the currently assigned harvester is alive - remove from memory if not alive.
-            if (aSourcesInMemory[i].harvester && !Game.creeps[aSourcesInMemory[i].harvester]) {
-              log.output('Event', 'Removing dead Harvester ' + aSourcesInMemory[i].harvester + ' from source.', false,
-                true)
-              delete aSourcesInMemory[i].harvester
-            };
-
-            // Determine if the creep is already assigned to a source
-            if (aSourcesInMemory[i].harvester === creep.name) {
-              // Give the creep the source object
-              source = Game.getObjectById(aSourcesInMemory[i].id)
-              bCreepAlreadyAssigned = true
-            };
-          };
-     */
 
     // Checking if the creep is about to die
     if (creep.ticksToLive > 5) {
@@ -62,28 +40,6 @@ module.exports = {
           bCreepAlreadyAssigned = true
         };
       })
-
-      /*
-            11/14/2019 [DR]: deprecated but testing
-            // If the creep wasn't already assigned to a source, then find one to assign
-            if (!bCreepAlreadyAssigned) {
-              // Loop through the room sources stored in memory
-              for (const i in aSourcesInMemory) {
-                if (!aSourcesInMemory[i].harvester) {
-                  // Assign the creep to the source
-                  aSourcesInMemory[i].harvester = creep.name
-                  log.output('Event', creep.name + ' is newly assigned to source ' + aSourcesInMemory[i].id, false, true)
-
-                  // Give the creep the source object
-                  target = Game.getObjectById(aSourcesInMemory[i].id)
-
-                  // Exit the FOR loop so the creep isn't assigned to every available source
-                  break
-                };
-              };
-            };
-
-       */
 
       // If the creep wasn't already assigned to a source, then find one to assign
       if (!bCreepAlreadyAssigned) {
