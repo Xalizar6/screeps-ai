@@ -193,7 +193,7 @@ module.exports = {
         if (creep.memory.containerNearControllerID !== null) {
           const container = Game.getObjectById(creep.memory
             .containerNearControllerID)
-          if (container.store[RESOURCE_ENERGY] < 1800) {
+          if (container && container.store[RESOURCE_ENERGY] < 1800) {
             drop = container
           };
         };

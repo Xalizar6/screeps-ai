@@ -85,7 +85,7 @@ module.exports = {
       if (creep.memory.containerNearControllerID) {
         const container = Game.getObjectById(creep.memory
           .containerNearControllerID)
-        if (container.store[RESOURCE_ENERGY] > 0) {
+        if (container && container.store[RESOURCE_ENERGY] > 0) {
           oEnergySource = container
           this.withdrawEnergy(creep, oEnergySource)
         };
