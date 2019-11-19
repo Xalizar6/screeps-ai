@@ -69,7 +69,7 @@ module.exports = {
     if (creep.memory.role === 'upgrader') {
       if (!creep.memory.containerNearControllerID) {
         const containersNearController = creep.room.controller.pos
-          .findInRange(FIND_STRUCTURES, 2, {
+          .findInRange(FIND_STRUCTURES, 3, {
             filter: {
               structureType: STRUCTURE_CONTAINER
             }
