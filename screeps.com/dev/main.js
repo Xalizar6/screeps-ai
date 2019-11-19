@@ -94,7 +94,7 @@ module.exports.loop = function () {
     };
 
     if (oCreep.memory.role === 'Mineral Harvester') {
-      mineralHarvester.run(oCreep)
+      mineralHarvester.main(oCreep)
     };
 
     if (oCreep.memory.role === 'Mineral Hauler') {

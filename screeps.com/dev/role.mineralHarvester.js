@@ -6,15 +6,15 @@ const myFunctions = require('./helper_myFunctions')
 const myConstants = require('./helper_constants')
 const log = require('./helper_logging')
 const debug = false // Turn logging for this module on and off
+const moduleName = 'Mineral Harvester'
 
 module.exports = {
-
-  run: function (creep) {
+  /** @param {Creep} creep **/
+  main: function (creep) {
+    let timer = null
     if (debug) {
-      log.output('Debug', 'Begin - Mineral Harvester Run routine for ' + creep.name, true)
-    };
-    if (debug) {
-      var timer = Game.cpu.getUsed()
+      log.output('Debug', 'Begin - Role ' + moduleName + ' for ' + creep.name, true)
+      timer = Game.cpu.getUsed()
     };
 
     // Add transition state information to the creep memory if it doesn't already exist
@@ -25,43 +25,44 @@ module.exports = {
     // Call the appropriate routine for the creep based on the current state
     switch (creep.memory.state) {
       case myConstants.STATE_SPAWNING:
-        runSpawning(creep, myConstants.STATE_MOVING)
+        spawning(creep, {
+          nextState: myConstants.STATE_MOVING
+        })
         break
       case myConstants.STATE_MOVING:
-        runMoving(creep, myConstants.STATE_HARVESTING)
+        moving(creep, {
+          nextState: myConstants.STATE_HARVESTING
+        })
         break
       case myConstants.STATE_HARVESTING:
-        runHarvesting(creep, myConstants.STATE_HARVESTING)
+        harvesting(creep, {})
         break
-    };
+    }
 
     if (debug) {
-      log.output('Debug', 'Mineral Harvester Run routine took: ' + (Game.cpu.getUsed() - timer) + ' CPU Time',
-        false, true)
-    };
-    if (debug) {
-      log.output('Debug', 'End - Mineral Harvester Run routine')
+      log.output('Debug', 'Role ' + moduleName + ' took: ' + (Game.cpu.getUsed() - timer) + ' CPU Time', false,
+        true)
+      log.output('Debug', 'End - Role ' + moduleName)
     };
   }
-
 }
 
-const runSpawning = function (creep, transitionState) {
+const spawning = function (creep, options) {
+  let timer = null
   if (debug) {
-    log.output('Debug', 'Begin - Mineral Harvester Spawning routine for ' + creep.name, true)
+    log.output('Debug', 'Begin - ' + moduleName + ' Spawning routine for ' + creep.name, true)
+    timer = Game.cpu.getUsed()
   };
-  const timer = Game.cpu.getUsed()
 
   // Once the creep finishes spawning we transition to the next state
-  if (creep.spawning === false) {
-    creep.memory.state = myConstants.STATE_MOVING
+  if (!creep.spawning) {
+    creep.memory.state = options.nextState
     // module.exports.run( creep ); // Call the main run function so that the next state function runs straight away
-    this.run(creep) // Call the main run function so that the next state function runs straight away
-    return // We put return here because once we transition to a different state, we don't want any of the following code in this function to run...
+    this.main(creep)
+    return
   };
 
-  // Initialize the creep if that hasn't been done yet.
-  if (!creep.memory.init) {
+  if (!creep.memory.initDone) {
     // Store the mineral source ID in the creep's memory. The source is taken from room memory.
     creep.memory.source = {}
     creep.memory.source.id = creep.room.memory.minerals[0].id
@@ -81,7 +82,7 @@ const runSpawning = function (creep, transitionState) {
     };
 
     // So that we know in the following ticks that it's already been initialized...
-    creep.memory.init = true
+    creep.memory.initDone = true
   };
 
   if (debug) {
@@ -93,7 +94,7 @@ const runSpawning = function (creep, transitionState) {
   };
 }
 
-const runMoving = function (creep, transitionState) {
+const moving = function (creep, options) {
   if (debug) {
     log.output('Debug', 'Begin - Mineral Harvester Moving routine for ' + creep.name, true)
   };
@@ -111,7 +112,7 @@ const runMoving = function (creep, transitionState) {
 
   // Has the creep arrived?
   if (creep.pos.getRangeTo(pos) <= range) {
-    creep.memory.state = myConstants.STATE_HARVESTING
+    creep.memory.state = options.nextState
     module.exports.run(creep)
   } else {
     // It hasn't arrived, so we get it to move to target position
@@ -127,7 +128,7 @@ const runMoving = function (creep, transitionState) {
   };
 }
 
-const runHarvesting = function (creep, transitionState) {
+const harvesting = function (creep, options) {
   if (debug) {
     log.output('Debug', 'Begin - Mineral Harvester Harvesting routine for ' + creep.name, true)
   };
