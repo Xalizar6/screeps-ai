@@ -46,16 +46,16 @@ module.exports = {
 }
 
 const spawning = function (creep, options) {
-  let timerSpawning = null
+  let timer = null
   if (debug) {
     log.output('Debug', 'Begin - ' + moduleName + ' Spawning routine for ' + creep.name, true)
-    timerSpawning = Game.cpu.getUsed()
+    timer = Game.cpu.getUsed()
   }
 
   if (!creep.spawning) {
     creep.memory.state = options.nextState
     // Call the main function so that the next state happens immediately rather than next tick.
-    module.exports.main(creep)
+    this.main(creep)
     return
   }
 
@@ -65,7 +65,7 @@ const spawning = function (creep, options) {
   }
 
   if (debug) {
-    log.output('Debug', moduleName + ' Spawning routine took: ' + (Game.cpu.getUsed() - timerSpawning) +
+    log.output('Debug', moduleName + ' Spawning routine took: ' + (Game.cpu.getUsed() - timer) +
       ' CPU Time', false, true)
     log.output('Debug', 'End - ' + moduleName + ' Spawning routine')
   }
