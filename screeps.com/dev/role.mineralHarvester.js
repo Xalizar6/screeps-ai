@@ -52,7 +52,7 @@ const spawning = function (creep, options) {
   if (debug) {
     log.output('Debug', 'Begin - ' + moduleName + ' Spawning routine for ' + creep.name, true)
     timer = Game.cpu.getUsed()
-  };
+  }
 
   // Once the creep finishes spawning we transition to the next state
   if (!creep.spawning) {
@@ -60,12 +60,15 @@ const spawning = function (creep, options) {
     // module.exports.run( creep ); // Call the main run function so that the next state function runs straight away
     this.main(creep)
     return
-  };
+  }
 
   if (!creep.memory.initDone) {
-    // Store the mineral source ID in the creep's memory. The source is taken from room memory.
-    creep.memory.source = {}
-    creep.memory.source.id = creep.room.memory.minerals[0].id
+
+    // Store the mineral source ID in the creep's memory.
+    creep.memory.mineralId = creep.room.mineral.id
+
+    // Store the Extractor ID that is built on the Mineral Source in Memory so we can monitor the cooldown timer.
+    creep.memory.extractorId = creep.room.extractor.id
 
     // Store the target position of the container near the mineral source in creep memory OR
     // store the target position of the mineral source in creep memory.  Both are taken from the room memory.
@@ -74,24 +77,17 @@ const spawning = function (creep, options) {
       creep.memory.targetPos = Game.getObjectById(creep.room.memory.minerals[0].containerID).pos
     } else {
       creep.memory.targetPos = Game.getObjectById(creep.room.memory.minerals[0].id).pos
-    };
-
-    // Store the Extractor ID that is built on the Mineral Source in Memory so we can monitor the cooldown timer.
-    if (creep.room.memory.minerals[0].extractorID) {
-      creep.memory.source.extractorID = creep.room.memory.minerals[0].extractorID
-    };
+    }
 
     // So that we know in the following ticks that it's already been initialized...
     creep.memory.initDone = true
-  };
+  }
 
   if (debug) {
-    log.output('Debug', 'Mineral Harvester Spawning routine took: ' + (Game.cpu.getUsed() - timer) + ' CPU Time',
-      false, true)
-  };
-  if (debug) {
-    log.output('Debug', 'End - Mineral Harvester Spawning routine')
-  };
+    log.output('Debug', moduleName + ' Spawning routine took: ' + (Game.cpu.getUsed() - timer) +
+      ' CPU Time', false, true)
+    log.output('Debug', 'End - ' + moduleName + ' Spawning routine')
+  }
 }
 
 const moving = function (creep, options) {
