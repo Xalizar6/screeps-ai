@@ -4,7 +4,7 @@ interface Memory {
 interface RoomMemory {
     sources: any;
     minerals: any;
-    construction: string;
+    construction: any;
 }
 
 interface CreepMemory {
