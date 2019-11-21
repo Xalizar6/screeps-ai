@@ -1,11 +1,11 @@
 'use strict' // Declaring Strict Mode to enforce better coding standards
 
-/* global RoomPosition */
+/* global */
 
 const myFunctions = require('./helper_myFunctions')
 const myConstants = require('./helper_constants')
 const log = require('./helper_logging')
-const debug = false // Turn logging for this module on and off
+const debug = true // Turn logging for this module on and off
 const moduleName = 'Mineral Harvester'
 
 module.exports = {
@@ -64,22 +64,16 @@ const spawning = function (creep, options) {
 
   if (!creep.memory.initDone) {
 
-    // Store the mineral source ID in the creep's memory.
     creep.memory.mineralId = creep.room.mineral.id
-
-    // Store the Extractor ID that is built on the Mineral Source in Memory so we can monitor the cooldown timer.
     creep.memory.extractorId = creep.room.extractor.id
 
-    // Store the target position of the container near the mineral source in creep memory OR
-    // store the target position of the mineral source in creep memory.  Both are taken from the room memory.
-    if (creep.room.memory.minerals[0].containerID) {
-      creep.memory.source.containerID = creep.room.memory.minerals[0].containerID
-      creep.memory.targetPos = Game.getObjectById(creep.room.memory.minerals[0].containerID).pos
+    if (creep.room.mineral.container) {
+      const container = creep.room.mineral.container
+      creep.memory.containerId = container.id
     } else {
-      creep.memory.targetPos = Game.getObjectById(creep.room.memory.minerals[0].id).pos
+      creep.memory.destination = (Game.getObjectById(creep.memory.mineralId)).pos
     }
 
-    // So that we know in the following ticks that it's already been initialized...
     creep.memory.initDone = true
   }
 
@@ -91,57 +85,62 @@ const spawning = function (creep, options) {
 }
 
 const moving = function (creep, options) {
+  let timer = null
   if (debug) {
-    log.output('Debug', 'Begin - Mineral Harvester Moving routine for ' + creep.name, true)
+    log.output('Debug', 'Begin - ' + moduleName + ' moving function for ' + creep.name, true)
+    timer = Game.cpu.getUsed()
   };
-  const timer = Game.cpu.getUsed()
 
-  const pos = new RoomPosition(creep.memory.targetPos.x, creep.memory.targetPos.y, creep.memory.targetPos.roomName)
+  const target = Game.getObjectById(creep.memory.mineralId)
 
   // Sit on top of the container if there is one or within 1 of the mineral source if no container
+  let destination = null
   let range = null
-  if (creep.memory.source.containerID) {
+  if (creep.memory.containerId) {
+    const container = Game.getObjectById(creep.memory.containerId)
+    destination = container.pos
     range = 0
   } else {
+    destination = target.pos
     range = 1
   };
 
   // Has the creep arrived?
-  if (creep.pos.getRangeTo(pos) <= range) {
+  if (creep.pos.getRangeTo(destination) <= range) {
     creep.memory.state = options.nextState
-    module.exports.run(creep)
+    this.main(creep)
   } else {
     // It hasn't arrived, so we get it to move to target position
-    creep.moveTo(pos)
-  };
+    creep.moveTo(destination)
+  }
 
   if (debug) {
-    log.output('Debug', 'Mineral Harvester Moving routine took: ' + (Game.cpu.getUsed() - timer) + ' CPU Time', false,
-      true)
-  };
-  if (debug) {
+    log.output('Debug', moduleName + ' moving function took: ' + (Game.cpu.getUsed() - timer) +
+      ' CPU Time', false, true)
     log.output('Debug', 'End - Mineral Harvester Moving routine')
   };
 }
 
 const harvesting = function (creep, options) {
+  let timer = null
   if (debug) {
-    log.output('Debug', 'Begin - Mineral Harvester Harvesting routine for ' + creep.name, true)
+    log.output('Debug', 'Begin - ' + moduleName + ' harvesting function for ' + creep.name, true)
+    timer = Game.cpu.getUsed()
   };
-  const timer = Game.cpu.getUsed()
 
   // Make sure the extractor is off cooldown when we try to extract from the mineral
-  const extractor = Game.getObjectById(creep.memory.source.extractorID)
+  const extractor = Game.getObjectById(creep.memory.extractorId)
   if (extractor.cooldown === 0) {
-    const source = Game.getObjectById(creep.memory.source.id)
+    log.output('Debug', 'Extracting minerals', false, true)
+    const source = Game.getObjectById(creep.memory.mineralId)
     myFunctions.harvestEnergy(creep, source)
-  };
+  } else {
+    log.output('Debug', 'Extractor is on cooldown for ' + extractor.cooldown + ' more ticks.', false, true)
+  }
 
   if (debug) {
-    log.output('Debug', 'Mineral Harvester Harvesting routine took: ' + (Game.cpu.getUsed() - timer) + ' CPU Time',
-      false, true)
-  };
-  if (debug) {
+    log.output('Debug', moduleName + ' harvesting function took: ' + (Game.cpu.getUsed() - timer) +
+      ' CPU Time', false, true)
     log.output('Debug', 'End - Mineral Harvester Harvesting routine')
   };
 }

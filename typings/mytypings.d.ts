@@ -7,6 +7,12 @@ interface RoomMemory {
     construction: any;
 }
 
+interface Room {
+    mineral: any;
+    extractor: any;
+    sources: any;
+}
+
 interface CreepMemory {
     containerNearControllerID: string;
     energySource: string;
