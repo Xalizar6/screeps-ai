@@ -133,8 +133,8 @@ const moving = function (creep, options) {
 
   // Has the creep arrived?
   if (creep.pos.getRangeTo(destination) <= range) {
-    creep.memory.state = myConstants.STATE_HARVESTING
-    module.exports.main(creep)
+    creep.memory.state = options.nextState
+    this.main(creep)
   } else {
     // It hasn't arrived, so we get it to move to target position
     creep.moveTo(destination)
