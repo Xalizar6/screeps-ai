@@ -117,7 +117,7 @@ const moving = function (creep, options) {
   if (debug) {
     log.output('Debug', moduleName + ' moving function took: ' + (Game.cpu.getUsed() - timer) +
       ' CPU Time', false, true)
-    log.output('Debug', 'End - Mineral Harvester Moving routine')
+    log.output('Debug', 'End - ' + moduleName + ' moving routine')
   };
 }
 
