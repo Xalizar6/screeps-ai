@@ -55,7 +55,7 @@ const spawning = function (creep, options) {
   if (!creep.spawning) {
     creep.memory.state = options.nextState
     // Call the main function so that the next state happens immediately rather than next tick.
-    this.main(creep)
+    module.exports.main(creep)
     return
   }
 
@@ -134,7 +134,7 @@ const moving = function (creep, options) {
   // Has the creep arrived?
   if (creep.pos.getRangeTo(destination) <= range) {
     creep.memory.state = options.nextState
-    this.main(creep)
+    module.exports.main(creep)
   } else {
     // It hasn't arrived, so we get it to move to target position
     creep.moveTo(destination)
