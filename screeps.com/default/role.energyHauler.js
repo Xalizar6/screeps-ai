@@ -177,7 +177,7 @@ module.exports = {
         // If there is no container near the controller in memory then add it if it exists.
         if (!creep.memory.containerNearControllerID) {
           const containersNearController = creep.room.controller.pos
-            .findInRange(FIND_STRUCTURES, 2, {
+            .findInRange(FIND_STRUCTURES, 3, {
               filter: {
                 structureType: STRUCTURE_CONTAINER
               }
@@ -193,7 +193,7 @@ module.exports = {
         if (creep.memory.containerNearControllerID !== null) {
           const container = Game.getObjectById(creep.memory
             .containerNearControllerID)
-          if (container.store[RESOURCE_ENERGY] < 1800) {
+          if (container && container.store[RESOURCE_ENERGY] < 1800) {
             drop = container
           };
         };

@@ -16,7 +16,7 @@ const timer1 = Game.cpu.getUsed()
 const _ = require('lodash')
 const roleHarvester = require('role.harvester')
 const roleUpgrader = require('role.upgrader')
-const roleDedicatedHarvester = require('role.dedicatedHarvester')
+const roleDedicatedHarvester = require('role.dedicatedHarvester_v2')
 const logisticsLocal = require('role.logisticsLocal')
 const roleEnergyHauler = require('role.energyHauler')
 const rolebuilder = require('role.builder')
@@ -82,7 +82,7 @@ module.exports.loop = function () {
     };
 
     if (oCreep.memory.role === 'dedicatedHarvester') {
-      roleDedicatedHarvester.run(oCreep)
+      roleDedicatedHarvester.main(oCreep)
     };
 
     if (oCreep.memory.role === 'Energy Hauler') {

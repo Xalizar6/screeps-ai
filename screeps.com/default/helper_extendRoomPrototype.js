@@ -17,11 +17,9 @@ exports.initRoomPrototype = function () {
             .map(source => source.id)
         }
         // Get the source objects from the id's in memory and store them locally
-        console.log("Didn't run memory loop")
-        // this._sources = this.memory.sources.map(id => Game.getObjectById(id))
         this._sources = _.keys(this.memory.sources).map(source => Game.getObjectById(source))
       }
-      // return the locally stored value
+      // return the locally stored values
       return this._sources
     },
     enumerable: true,
