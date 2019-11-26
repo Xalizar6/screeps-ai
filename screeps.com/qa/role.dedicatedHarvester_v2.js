@@ -46,10 +46,10 @@ module.exports = {
 }
 
 const spawning = function (creep, options) {
-  let timerSpawning = null
+  let timer = null
   if (debug) {
     log.output('Debug', 'Begin - ' + moduleName + ' Spawning routine for ' + creep.name, true)
-    timerSpawning = Game.cpu.getUsed()
+    timer = Game.cpu.getUsed()
   }
 
   if (!creep.spawning) {
@@ -65,7 +65,7 @@ const spawning = function (creep, options) {
   }
 
   if (debug) {
-    log.output('Debug', moduleName + ' Spawning routine took: ' + (Game.cpu.getUsed() - timerSpawning) +
+    log.output('Debug', moduleName + ' Spawning routine took: ' + (Game.cpu.getUsed() - timer) +
       ' CPU Time', false, true)
     log.output('Debug', 'End - ' + moduleName + ' Spawning routine')
   }
@@ -133,7 +133,7 @@ const moving = function (creep, options) {
 
   // Has the creep arrived?
   if (creep.pos.getRangeTo(destination) <= range) {
-    creep.memory.state = myConstants.STATE_HARVESTING
+    creep.memory.state = options.nextState
     module.exports.main(creep)
   } else {
     // It hasn't arrived, so we get it to move to target position

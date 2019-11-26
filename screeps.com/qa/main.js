@@ -94,11 +94,12 @@ module.exports.loop = function () {
     };
 
     if (oCreep.memory.role === 'Mineral Harvester') {
-      mineralHarvester.run(oCreep)
+      mineralHarvester.main(oCreep)
     };
 
     if (oCreep.memory.role === 'Mineral Hauler') {
-      mineralHauler.run(oCreep)
+      //   mineralHauler.run(oCreep)
+      mineralHauler.main(oCreep)
     };
 
     if (oCreep.memory.role === 'Terminal Manager') {
