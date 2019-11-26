@@ -58,12 +58,11 @@ const spawning = function (creep, options) {
   if (!creep.spawning) {
     creep.memory.state = options.nextState
     // module.exports.run( creep ); // Call the main run function so that the next state function runs straight away
-    this.main(creep)
+    module.exports.main(creep)
     return
   }
 
   if (!creep.memory.initDone) {
-
     creep.memory.mineralId = creep.room.mineral.id
     creep.memory.extractorId = creep.room.extractor.id
 
@@ -108,7 +107,7 @@ const moving = function (creep, options) {
   // Has the creep arrived?
   if (creep.pos.getRangeTo(destination) <= range) {
     creep.memory.state = options.nextState
-    this.main(creep)
+    module.exports.main(creep)
   } else {
     // It hasn't arrived, so we get it to move to target position
     creep.moveTo(destination)

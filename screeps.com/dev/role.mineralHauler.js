@@ -1,8 +1,7 @@
 'use strict' // Declaring Strict Mode to enforce better coding standards
 
-/* global RESOURCE_ENERGY */
+/* global */
 
-// const _ = require('lodash')
 const log = require('./helper_logging')
 const myConstants = require('./helper_constants')
 const debug = true // Turn logging for this module on and off
@@ -37,11 +36,13 @@ module.exports = {
       case myConstants.STATE_GRAB_RESOURCE:
         grabResource(creep, {
           nextState: myConstants.STATE_MOVING
+          //   context: haulerContext(creep)
         })
         break
       case myConstants.STATE_DEPOSIT_RESOURCE:
         depositResource(creep, {
           nextState: myConstants.STATE_MOVING
+          //   context: haulerContext(creep)
         })
         break
     };
@@ -135,19 +136,22 @@ const grabResource = function (creep, options) {
       if (debug) {
         log.output('Debug', 'Amount of ' + i + ' in the container: ' + container.store[i], false, true)
       }
-      if (container.store[i] >= creep.store.getCapacity()) {
+      if (container.store[i] >= 100) {
         const withdrawStatus = creep.withdraw(container, i)
         if (debug) {
           log.output('Debug', 'Creep.Withdraw() status: ' + withdrawStatus, false, true)
         }
-        if (debug) {
-          log.output('Debug', 'Creep going to unload', false, true)
-        }
-        creep.memory.state = options.nextState
-        module.exports.main(creep)
         break
       }
     }
+  }
+
+  if (creep.isFull) {
+    if (debug) {
+      log.output('Debug', 'Creep going to unload', false, true)
+    }
+    creep.memory.state = options.nextState
+    // module.exports.main(creep)
   }
 
   if (debug) {
@@ -162,16 +166,21 @@ const depositResource = function (creep, options) {
   if (debug) {
     log.output('Debug', 'Begin - ' + moduleName + ' depositResource routine for ' + creep.name, true)
     timer = Game.cpu.getUsed()
-  };
+  }
 
-  for (const i in creep.store) {
-    creep.transfer(creep.room.storage, i)
-    if (debug) {
-      log.output('Debug', 'Transferred ' + creep.store[i] + ' ' + i + ' to storage', false, true)
+  if (creep.room.storage) {
+    const storage = creep.room.storage
+    for (const resourceType in creep.store) {
+      creep.transfer(storage, resourceType)
+      if (debug) {
+        log.output('Debug', 'Transferred ' + creep.store[resourceType] + ' ' + resourceType + ' to storage', false,
+          true)
+      }
     }
   }
+
   creep.memory.state = options.nextState
-  module.exports.main(creep)
+  //   module.exports.main(creep)
 
   if (debug) {
     log.output('Debug', moduleName + ' depositResource routine took: ' + (Game.cpu.getUsed() - timer) + ' CPU Time',
