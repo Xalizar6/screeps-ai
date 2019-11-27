@@ -1,6 +1,6 @@
 'use strict' // Declaring Strict Mode to enforce better coding standards
 
-/* global STRUCTURE_TOWER */
+/* global STRUCTURE_TOWER _ */
 
 // -------------------------------------------------------
 // Including logging module first so it can be used below.
@@ -13,7 +13,7 @@ log.init()
 log.output('Info', 'Begin - Initializing Modules', true)
 const timer1 = Game.cpu.getUsed()
 
-const _ = require('lodash')
+// const _ = require('lodash')
 const roleHarvester = require('role.harvester')
 const roleUpgrader = require('role.upgrader')
 const roleDedicatedHarvester = require('role.dedicatedHarvester_v2')

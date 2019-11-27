@@ -2,7 +2,7 @@
 
 /* global Memory RESOURCE_ENERGY WORK CARRY MOVE */
 
-const _ = require('lodash')
+// const _ = require('lodash')
 const log = require('./helper_logging')
 const myConstants = require('./helper_constants')
 const debug = false // Turn logging for this module on and off

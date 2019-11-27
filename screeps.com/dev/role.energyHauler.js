@@ -12,7 +12,7 @@
 //  Drop off energy at the locations mentioned above
 //  Remove self as the hauler from the energy sources before death
 
-const _ = require('lodash')
+// const _ = require('lodash')
 const myFunctions = require('helper_myFunctions')
 const log = require('./helper_logging')
 const debug = false // Turn logging for this module on and off
