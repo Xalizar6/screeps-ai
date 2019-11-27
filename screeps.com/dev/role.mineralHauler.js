@@ -151,7 +151,7 @@ const grabResource = function (creep, options) {
       log.output('Debug', 'Creep going to unload', false, true)
     }
     creep.memory.state = options.nextState
-    // module.exports.main(creep)
+    module.exports.main(creep)
   }
 
   if (debug) {
@@ -179,8 +179,10 @@ const depositResource = function (creep, options) {
     }
   }
 
-  creep.memory.state = options.nextState
-  //   module.exports.main(creep)
+  if (creep.store.getUsedCapacity() === 0) {
+    creep.memory.state = options.nextState
+    module.exports.main(creep)
+  }
 
   if (debug) {
     log.output('Debug', moduleName + ' depositResource routine took: ' + (Game.cpu.getUsed() - timer) + ' CPU Time',
