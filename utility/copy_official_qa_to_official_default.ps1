@@ -1,6 +1,6 @@
 <#
     Purpose:
-        Move changes on the official server from the Dev branch to the Default branch.
+        Move changes on the official server from the QA branch to the Default branch.
 #>
 
 function Set-ScriptVariables {

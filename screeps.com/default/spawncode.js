@@ -1,6 +1,6 @@
 'use strict' // Declaring Strict Mode to enforce better coding standards
 
-/* global Memory RESOURCE_ENERGY WORK CARRY MOVE FIND_MINERALS LOOK_STRUCTURES */
+/* global Memory RESOURCE_ENERGY WORK CARRY MOVE */
 
 const _ = require('lodash')
 const log = require('./helper_logging')
@@ -36,8 +36,8 @@ module.exports = {
     const nMinNumberOfDedicatedHarvesters = nEnergySourcesInMemory
     const nMinNumberOfEnergyHauler = nEnergySourcesInMemory
     const nMinNumberOflogisticsLocal = 1
-    const nMinNumberOfMineralHarvester = 0
-    const nMinNumberOfMineralHaulers = 0
+    const nMinNumberOfMineralHarvester = 1
+    const nMinNumberOfMineralHaulers = 1
     const nMinNumberOfTerminalManagers = 0
     const spawn = Game.spawns['Spawn1']
     const room = spawn.room
@@ -172,13 +172,15 @@ module.exports = {
             role: 'builder'
           })
         };
-      } else if (checkForExtractor(room) && storage && aMineralHarvesters.length < nMinNumberOfMineralHarvester &&
-        checkMineralAmount(room) > 0) {
-        sSpawnStatus = spawn.createCreep([WORK, WORK, WORK, WORK, WORK, WORK, MOVE, MOVE, MOVE], undefined, {
+      } else if (room.extractor && storage && aMineralHarvesters.length < nMinNumberOfMineralHarvester &&
+        room.mineral.mineralAmount > 0) {
+        sSpawnStatus = spawn.createCreep([WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, MOVE, MOVE,
+          MOVE, MOVE, MOVE
+        ], undefined, {
           role: 'Mineral Harvester'
         })
-      } else if (checkForExtractor(room) && storage && aMineralHaulers.length < nMinNumberOfMineralHaulers &&
-        checkMineralAmount(room) > 0) {
+      } else if (room.extractor && storage && aMineralHaulers.length < nMinNumberOfMineralHaulers &&
+        room.mineral.mineralAmount > 0) {
         sSpawnStatus = spawn.createCreep([CARRY, CARRY, MOVE, MOVE], undefined, {
           role: 'Mineral Hauler'
         })
@@ -222,37 +224,8 @@ module.exports = {
 
 }
 
-const checkMineralAmount = function (room) {
-  return Game.getObjectById(room.memory.minerals[0].id).mineralAmount
-}
-
 const checkStorageAmount = function (room) {
   if (room.storage) {
     return room.storage.store[RESOURCE_ENERGY]
   }
-}
-
-const checkForExtractor = function (room) {
-  const aMinerals = room.find(FIND_MINERALS)
-  let aStructures = null
-
-  // aMinerals.forEach( function ( oMineral ) {
-  //     console.log(oMineral.pos);
-  //     let aStructures = oMineral.pos.lookFor( LOOK_MINERALS )
-  //     console.log(aStructures);
-  //     if ( aStructures.length > 0 ) {
-  //         return true;
-  //     };
-
-  // } );
-
-  for (const i in aMinerals) {
-    aStructures = aMinerals[i].pos.lookFor(LOOK_STRUCTURES)
-
-    if (aStructures.length > 0) {
-      return true
-    } else {
-      return false
-    };
-  };
 }

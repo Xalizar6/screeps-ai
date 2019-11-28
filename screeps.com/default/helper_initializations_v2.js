@@ -36,7 +36,8 @@ module.exports = {
     fAddSourcesToMemoryV2()
 
     // Add Minerals in the room to memory
-    fAddMineralsToMemory()
+    // 11/20/2019 [DR]: storing by extending the prototypes instead
+    // fAddMineralsToMemory()
 
     log.output('Info', 'Initializing Memory took: ' + (Game.cpu.getUsed() -
       timer).toFixed(2) + ' CPU Time', false, true)
