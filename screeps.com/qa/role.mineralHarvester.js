@@ -5,7 +5,7 @@
 const myFunctions = require('./helper_myFunctions')
 const myConstants = require('./helper_constants')
 const log = require('./helper_logging')
-const debug = true // Turn logging for this module on and off
+const debug = false // Turn logging for this module on and off
 const moduleName = 'Mineral Harvester'
 
 module.exports = {
@@ -130,11 +130,15 @@ const harvesting = function (creep, options) {
   // Make sure the extractor is off cooldown when we try to extract from the mineral
   const extractor = Game.getObjectById(creep.memory.extractorId)
   if (extractor.cooldown === 0) {
-    log.output('Debug', 'Extracting minerals', false, true)
+    if (debug) {
+      log.output('Debug', 'Extracting minerals', false, true)
+    }
     const source = Game.getObjectById(creep.memory.mineralId)
     myFunctions.harvestEnergy(creep, source)
   } else {
-    log.output('Debug', 'Extractor is on cooldown for ' + extractor.cooldown + ' more ticks.', false, true)
+    if (debug) {
+      log.output('Debug', 'Extractor is on cooldown for ' + extractor.cooldown + ' more ticks.', false, true)
+    }
   }
 
   if (debug) {

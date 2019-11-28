@@ -1,8 +1,8 @@
 'use strict' // Declaring Strict Mode to enforce better coding standards
 
-/* global Memory RESOURCE_ENERGY WORK CARRY MOVE */
+/* global Memory RESOURCE_ENERGY WORK CARRY MOVE _ */
 
-const _ = require('lodash')
+// const _ = require('lodash')
 const log = require('./helper_logging')
 const myConstants = require('./helper_constants')
 const debug = false // Turn logging for this module on and off

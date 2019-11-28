@@ -1,6 +1,6 @@
 'use strict' // Declaring Strict Mode to enforce better coding standards
 
-/* global */
+/* global _ */
 
 const log = require('./helper_logging')
 const myConstants = require('./helper_constants')
@@ -131,19 +131,16 @@ const grabResource = function (creep, options) {
   }
 
   const container = Game.getObjectById(creep.memory.containerId)
-  if (container.store.getUsedCapacity() > 0) {
-    for (const i in container.store) {
+  if (container.store.getUsedCapacity() >= creep.store.getCapacity()) {
+    _.forOwn(container.store, function (value, key) {
       if (debug) {
-        log.output('Debug', 'Amount of ' + i + ' in the container: ' + container.store[i], false, true)
+        log.output('Debug', 'Amount of ' + key + ' in the container: ' + value, false, true)
       }
-      if (container.store[i] >= 100) {
-        const withdrawStatus = creep.withdraw(container, i)
-        if (debug) {
-          log.output('Debug', 'Creep.Withdraw() status: ' + withdrawStatus, false, true)
-        }
-        break
+      const withdrawStatus = creep.withdraw(container, key)
+      if (debug) {
+        log.output('Debug', 'Creep.Withdraw() status: ' + withdrawStatus, false, true)
       }
-    }
+    })
   }
 
   if (creep.isFull) {
@@ -151,7 +148,7 @@ const grabResource = function (creep, options) {
       log.output('Debug', 'Creep going to unload', false, true)
     }
     creep.memory.state = options.nextState
-    // module.exports.main(creep)
+    module.exports.main(creep)
   }
 
   if (debug) {
@@ -179,8 +176,13 @@ const depositResource = function (creep, options) {
     }
   }
 
-  creep.memory.state = options.nextState
-  //   module.exports.main(creep)
+  if (creep.isEmpty) {
+    if (debug) {
+      log.output('Debug', 'Creep going to pickup', false, true)
+    }
+    creep.memory.state = options.nextState
+    module.exports.main(creep)
+  }
 
   if (debug) {
     log.output('Debug', moduleName + ' depositResource routine took: ' + (Game.cpu.getUsed() - timer) + ' CPU Time',
