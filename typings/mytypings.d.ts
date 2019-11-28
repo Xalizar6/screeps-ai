@@ -4,7 +4,9 @@ interface Memory {
 interface RoomMemory {
     sources: any;
     minerals: any;
+    mineral: any;
     construction: any;
+    extractor: any;
 }
 
 interface Room {
