@@ -1,7 +1,10 @@
 {
   "compilerOptions": {
-    "target": "es2016",
-    "checkJs": true
+    "target": "es6",
+    "module": "es6",
+    "moduleResolution": "node",
+    "checkJs": true,
+    "alwaysStrict": true
   },
   "exclude": [
     "node_modules",
