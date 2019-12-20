@@ -1,6 +1,6 @@
 'use strict' // Declaring Strict Mode to enforce better coding standards
 
-/* global STRUCTURE_TOWER */
+/* global STRUCTURE_TOWER Memory _ */
 
 // -------------------------------------------------------
 // Including logging module first so it can be used below.
@@ -13,7 +13,7 @@ log.init()
 log.output('Info', 'Begin - Initializing Modules', true)
 const timer1 = Game.cpu.getUsed()
 
-const _ = require('lodash')
+// const _ = require('lodash')
 const roleHarvester = require('role.harvester')
 const roleUpgrader = require('role.upgrader')
 const roleDedicatedHarvester = require('role.dedicatedHarvester_v2')
@@ -29,6 +29,7 @@ const mineralHauler = require('./role.mineralHauler')
 const terminalManager = require('./role.terminalManager')
 const init = require('./helper_initializations_v2')
 const prototypes = require('./helper_initPrototypes')
+const moduleName = 'Main'
 
 log.output('Info', 'Initializing modules took: ' + (Game.cpu.getUsed() - timer1)
   .toFixed(2) + ' CPU Time', false, true)
@@ -42,8 +43,20 @@ init.initMemory()
 
 // This loop is executed every tick
 module.exports.loop = function () {
-  log.output('Info', 'Begin - Main', true)
+  log.output('Info', 'Begin - ' + moduleName, true)
   const mainLoop = Game.cpu.getUsed()
+
+  //   Remove these items from Memory at an interval to update for possible changes.
+  if (Game.time % 1000 === 0) {
+    log.output('Event', 'Running the Clear Memory routine', true, true)
+    for (const index in Memory.rooms) {
+      // TODO: fix code that errors when I delete the construction from memory
+      //   delete Memory.rooms[index].construction
+      delete Memory.rooms[index].extractor
+      delete Memory.rooms[index].mineral
+      delete Memory.rooms[index].sources
+    }
+  }
 
   // Initialize console commands with the alias of cc
   init.initConsoleCommands()

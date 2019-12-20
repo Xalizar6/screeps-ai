@@ -17,7 +17,7 @@
 // Notes
 // Each of the State functions are expecting the current Creep object and an 'Options' object with one of two properties (nextState or context)
 
-const _ = require('lodash');
+// const _ = require('lodash');
 const log = require('./helper_logging');
 const myFunctions = require('helper_myFunctions');
 const myConstants = require('./helper_constants');
