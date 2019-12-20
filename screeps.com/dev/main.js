@@ -33,10 +33,8 @@ log.output('Info', 'Initializing modules took: ' + (Game.cpu.getUsed() - timer1)
 log.output('Info', 'End - Initializing Modules')
 // -------------------------------------------------------
 
-// -------------------------------------------------------
-// Initialize memory
+log.output('Event', 'Initializing Memory', true, true)
 init.initMemory()
-// -------------------------------------------------------
 
 // This loop is executed every tick
 module.exports.loop = function () {
@@ -54,6 +52,8 @@ module.exports.loop = function () {
       delete Memory.rooms[index].mineral
       delete Memory.rooms[index].sources
     }
+    log.output('Event', 'Initializing Memory', true, true)
+    init.initMemory()
   }
   // -------------------------------------------------------
 
