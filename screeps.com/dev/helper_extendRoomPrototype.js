@@ -10,7 +10,6 @@ exports.initRoomPrototype = function () {
         // If we dont have the value stored in memory
         if (!this.memory.sources) {
           // Find the sources and store their id's in memory,
-          // NOT the full objects
           this.memory.sources = this.find(FIND_SOURCES)
             .map(source => source.id)
         }
