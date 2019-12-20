@@ -33,6 +33,8 @@ module.exports = {
     fAddConstructionValueToMemory()
 
     // Add Energy sources in the room to memory
+    // TODO: Convert mineral hauler to use room properties for the source and container rather than the source
+    //      in memory then retire this function.
     fAddSourcesToMemoryV2()
 
     // Add Minerals in the room to memory
@@ -87,6 +89,7 @@ const fAddSourcesToMemoryV2 = function () {
 }
 
 // Add all of the mineral locations in a room to the Room object in memory
+// TODO: Retire this function
 const fAddMineralsToMemory = function () {
   if (debug) {
     log.output('Info', 'Begin - Adding Minerals to Room Memory', true)
