@@ -26,7 +26,7 @@ module.exports = {
     };
 
     // Get the number of energy sources in the room from memory to be used for creep count
-    const nEnergySourcesInMemory = _.size(Game.spawns['Spawn1'].room.memory.sources)
+    const nEnergySourcesInMemory = _.size(Game.spawns['Spawn1'].room.sources)
 
     // Set the minimum number of each kind of creep that we want for production
     let nMinNumberOfUpgraders = null
