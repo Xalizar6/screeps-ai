@@ -2,7 +2,7 @@
 
 /* global _ */
 
-const myFunctions = require('helper_myFunctions')
+const myFunctions = require('./helper_myFunctions')
 const myConstants = require('./helper_constants')
 const log = require('./helper_logging')
 const debug = false // Turn logging for this module on and off
