@@ -134,11 +134,7 @@ const runMoving = function (creep, options) {
 
   if (debug) {
     log.output('Debug', 'Destination = ' + destination, false, true)
-  };
-  if (debug) {
     log.output('Debug', 'Range = ' + range, false, true)
-  };
-  if (debug) {
     log.output('Debug', 'TransitionState = ' + transitionState, false, true)
   };
 
@@ -150,7 +146,9 @@ const runMoving = function (creep, options) {
       log.output('Debug', 'Will be in range of destination next tick', false, true)
     };
     const status = creep.moveTo(destination.pos)
-    console.log('MoveTo status = ' + status)
+    if (debug) {
+      log.output('Debug', 'MoveTo status = ' + status, false, true)
+    };
     creep.memory.state = transitionState
   } else if (creep.pos.getRangeTo(destination.pos) === range) {
     if (debug) {
@@ -162,7 +160,9 @@ const runMoving = function (creep, options) {
     if (debug) {
       log.output('Debug', 'Moving closer to destination', false, true)
     };
-    console.log('MoveTo status = ' + status)
+    if (debug) {
+      log.output('Debug', 'MoveTo status = ' + status, false, true)
+    };
   };
 
   if (debug) {
@@ -256,7 +256,7 @@ const getNext = function (creep) {
   };
 
   // If Energy in the terminal is low and the creep is not full then set destinationID to Storage and transition to Grab Resources
-  if (energyInTerminal < desiredEnergyInTerminal && _.sum(creep.carry) === 0) {
+  if (energyInTerminal < desiredEnergyInTerminal && creep.isEmpty) {
     if (debug) {
       log.output('Debug', 'Picking up Energy to add to Terminal', false, true)
     };
@@ -282,7 +282,7 @@ const getNext = function (creep) {
   };
 
   // If Oxygen in the terminal is low and the creep is not full then set Destination to Storage and transition to Grab Resources
-  if (oxygenInTerminal < desiredOxygenInTerminal && _.sum(creep.carry) === 0) {
+  if (oxygenInTerminal < desiredOxygenInTerminal && creep.isEmpty) {
     if (debug) {
       log.output('Debug', 'Picking up Oxygen to add to Terminal', false, true)
     };
