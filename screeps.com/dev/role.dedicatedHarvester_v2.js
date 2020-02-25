@@ -118,7 +118,15 @@ const moving = function (creep, options) {
     timer = Game.cpu.getUsed()
   }
 
+  if (debug) {
+    log.output('Debug', 'Creep memory energySource: ' + creep.memory.energySource, false, true)
+  }
+
   const target = Game.getObjectById(creep.memory.energySource)
+
+  if (debug) {
+    log.output('Debug', 'target: ' + target, false, true)
+  }
 
   let destination = null
   let range = null

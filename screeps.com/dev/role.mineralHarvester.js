@@ -5,7 +5,7 @@
 const myFunctions = require('./helper_myFunctions')
 const myConstants = require('./helper_constants')
 const log = require('./helper_logging')
-const debug = false // Turn logging for this module on and off
+const debug = true // Turn logging for this module on and off
 const moduleName = 'Mineral Harvester'
 
 module.exports = {
@@ -57,7 +57,7 @@ const spawning = function (creep, options) {
   // Once the creep finishes spawning we transition to the next state
   if (!creep.spawning) {
     creep.memory.state = options.nextState
-    // module.exports.run( creep ); // Call the main run function so that the next state function runs straight away
+    // Call the main run function so that the next state function runs straight away
     module.exports.main(creep)
     return
   }
