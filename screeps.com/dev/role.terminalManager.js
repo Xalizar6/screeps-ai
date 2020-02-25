@@ -87,9 +87,9 @@ const runSpawning = function (creep, options) {
   };
 
   // Initialize the creep if that hasn't been done yet.
-  if (!creep.memory.init) {
+  if (!creep.memory.initDone) {
     creep.memory.command = {}
-    creep.memory.init = true
+    creep.memory.initDone = true
   };
 
   if (debug) {
@@ -235,6 +235,13 @@ const runDepositResource = function (creep, options) {
 }
 
 const getNext = function (creep) {
+  /*
+  TODO:
+      I'll need an array of the resources I want to keep stocked in the terminal and the desired amount
+      I'll need to loop though all of the resources currently stored in the terminal and determine if they are below my target
+      This will dictate if we have an action to restock the terminal.
+  */
+
   let timer = null
   if (debug) {
     log.output('Debug', 'Begin - ' + moduleName + ' getNext function for ' + creep.name, true)
