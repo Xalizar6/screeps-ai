@@ -50,6 +50,7 @@ module.exports.loop = function () {
       //   delete Memory.rooms[index].construction
       delete Memory.rooms[index].extractor
       delete Memory.rooms[index].mineral
+      delete Memory.rooms[index].minerals
       delete Memory.rooms[index].sources
     }
     log.output('Event', 'Initializing Memory', true, true)
