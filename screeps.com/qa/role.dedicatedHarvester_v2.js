@@ -2,7 +2,7 @@
 
 /* global _ */
 
-const myFunctions = require('helper_myFunctions')
+const myFunctions = require('./helper_myFunctions')
 const myConstants = require('./helper_constants')
 const log = require('./helper_logging')
 const debug = false // Turn logging for this module on and off
@@ -118,7 +118,15 @@ const moving = function (creep, options) {
     timer = Game.cpu.getUsed()
   }
 
+  if (debug) {
+    log.output('Debug', 'Creep memory energySource: ' + creep.memory.energySource, false, true)
+  }
+
   const target = Game.getObjectById(creep.memory.energySource)
+
+  if (debug) {
+    log.output('Debug', 'target: ' + target, false, true)
+  }
 
   let destination = null
   let range = null

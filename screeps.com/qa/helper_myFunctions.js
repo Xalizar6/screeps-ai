@@ -1,4 +1,4 @@
-/* global ERR_NOT_IN_RANGE RESOURCE_ENERGY FIND_STRUCTURES STRUCTURE_CONTAINER FIND_DROPPED_RESOURCES FIND_SOURCES */
+/* global _ ERR_NOT_IN_RANGE RESOURCE_ENERGY FIND_STRUCTURES STRUCTURE_CONTAINER FIND_DROPPED_RESOURCES FIND_SOURCES_ACTIVE */
 
 'use strict' // Declaring Strict Mode to enforce better coding standards
 // const _ = require('lodash')
@@ -20,7 +20,6 @@ module.exports = {
   },
 
   /** @param {Creep} creep **/
-  // This method is deprecated and will be removed soon. Please use Creep.withdraw instead.
   transferEnergy: function (creep, transferTarget) {
     if (creep.transfer(transferTarget, RESOURCE_ENERGY) ===
       ERR_NOT_IN_RANGE) {
@@ -110,12 +109,8 @@ module.exports = {
         .carryCapacity - _.sum(creep.carry)) {
         oEnergySource = aDroppedEnergy[0]
         if (debug) {
-          log.output('Debug', 'Picking up energy on ground with ' +
-            oEnergySource.amount + ' energy', false, true)
-        };
-        if (debug) {
-          log.output('Debug', 'Energy source location ' + oEnergySource.pos,
-            false, true)
+          log.output('Debug', 'Picking up ' + oEnergySource.amount + ' energy from the ground at location ' +
+            oEnergySource.pos, false, true)
         };
         this.pickupEnergy(creep, oEnergySource)
       };
@@ -123,7 +118,7 @@ module.exports = {
 
     if (oEnergySource == null) {
       // Locate the nearest energy source
-      oEnergySource = creep.pos.findClosestByPath(FIND_SOURCES)
+      oEnergySource = creep.pos.findClosestByRange(FIND_SOURCES_ACTIVE)
 
       // Check if there is a container nearby
       const aContainers = oEnergySource.pos.findInRange(FIND_STRUCTURES,
@@ -140,15 +135,15 @@ module.exports = {
       // If there is a container, withdraw energy from there, else draw directly from the source
       if (oPickupContainer !== null && oPickupContainer.store[RESOURCE_ENERGY] > creep.carryCapacity) {
         if (debug) {
-          log.output('Debug', 'Getting energy from container id ' +
-            oPickupContainer.id + ' found near energy source id ' +
+          log.output('Debug', 'Getting energy from container ' +
+            oPickupContainer.id + ' found near Source ' +
             oEnergySource.id, false, true)
         };
         this.withdrawEnergy(creep, oPickupContainer)
       } else {
         if (oEnergySource) {
           if (debug) {
-            log.output('Debug', 'Picking up energy from source at ' +
+            log.output('Debug', 'Harvesting energy from Source ' +
               oEnergySource.pos, false, true)
           };
           this.harvestEnergy(creep, oEnergySource)
