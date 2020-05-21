@@ -4,7 +4,7 @@
 // const _ = require('lodash')
 const log = require('./helper_logging')
 const myConstants = require('./helper_constants')
-const debug = true // Turn logging for this module on and off
+const debug = false // Turn logging for this module on and off
 
 module.exports = {
 
@@ -20,7 +20,6 @@ module.exports = {
   },
 
   /** @param {Creep} creep **/
-  // This method is deprecated and will be removed soon. Please use Creep.withdraw instead.
   transferEnergy: function (creep, transferTarget) {
     if (creep.transfer(transferTarget, RESOURCE_ENERGY) ===
       ERR_NOT_IN_RANGE) {
@@ -110,12 +109,8 @@ module.exports = {
         .carryCapacity - _.sum(creep.carry)) {
         oEnergySource = aDroppedEnergy[0]
         if (debug) {
-          log.output('Debug', 'Picking up energy on ground with ' +
-            oEnergySource.amount + ' energy', false, true)
-        };
-        if (debug) {
-          log.output('Debug', 'Energy source location ' + oEnergySource.pos,
-            false, true)
+          log.output('Debug', 'Picking up ' + oEnergySource.amount + ' energy from the ground at location ' +
+            oEnergySource.pos, false, true)
         };
         this.pickupEnergy(creep, oEnergySource)
       };
@@ -148,7 +143,7 @@ module.exports = {
       } else {
         if (oEnergySource) {
           if (debug) {
-            log.output('Debug', 'Harvesting energy from Source at ' +
+            log.output('Debug', 'Harvesting energy from Source ' +
               oEnergySource.pos, false, true)
           };
           this.harvestEnergy(creep, oEnergySource)
