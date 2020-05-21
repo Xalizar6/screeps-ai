@@ -20,10 +20,10 @@ function Clear-OldFiles {
     Write-Host ("End - Clear-OldFiles")
 }
 
-function Copy-DevToDefault {
-    Write-Host ("`nBegin - Copy-DevToDefault")
+function Copy-DevToQa {
+    Write-Host ("`nBegin - Copy-DevToQa")
     Copy-Item -Path $script:c_server_dev_path\* -Destination $script:c_server_qa_path -Recurse
-    Write-Host ("End - Copy-DevToDefault")
+    Write-Host ("End - Copy-DevToQa")
 }
 
 function Start-Main {
@@ -34,7 +34,7 @@ function Start-Main {
     Clear-OldFiles
     Write-Host ("`nSleeping...")
     Start-Sleep 05
-    Copy-DevToDefault
+    Copy-DevToQa
 
     Write-Host ("End - Start-Main")
 }
