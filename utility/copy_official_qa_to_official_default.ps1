@@ -20,7 +20,6 @@ function Clear-OldFiles {
     Write-Host ("End - Clear-OldFiles")
 }
 
-
 function Copy-DevToDefault {
     Write-Host ("`nBegin - Copy-DevToDefault")
     Copy-Item -Path $script:c_server_qa_path\* -Destination $script:c_server_default_path -Recurse
