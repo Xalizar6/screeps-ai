@@ -1,5 +1,3 @@
-'use strict' // Declaring Strict Mode to enforce better coding standards
-
 /* global STRUCTURE_TOWER Memory _ */
 
 // -------------------------------------------------------
@@ -13,15 +11,14 @@ log.init()
 log.output('Info', 'Begin - Initializing Modules', true)
 const timer1 = Game.cpu.getUsed()
 
-// const _ = require('lodash')
-const roleHarvester = require('role.harvester')
-const roleUpgrader = require('role.upgrader')
-const roleDedicatedHarvester = require('role.dedicatedHarvester_v2')
-const logisticsLocal = require('role.logisticsLocal')
-const roleEnergyHauler = require('role.energyHauler')
-const rolebuilder = require('role.builder')
-const spawnCode = require('spawncode')
-const towerCode = require('towercode')
+const roleHarvester = require('./role.harvester')
+const roleUpgrader = require('./role.upgrader')
+const roleDedicatedHarvester = require('./role.dedicatedHarvester_v2')
+const logisticsLocal = require('./role.logisticsLocal')
+const roleEnergyHauler = require('./role.energyHauler')
+const rolebuilder = require('./role.builder')
+const spawnCode = require('./spawncode')
+const towerCode = require('./towercode')
 const marketCode = require('./marketCode')
 const constructionCode = require('./helper_construction')
 const mineralHarvester = require('./role.mineralHarvester')
@@ -36,17 +33,16 @@ log.output('Info', 'Initializing modules took: ' + (Game.cpu.getUsed() - timer1)
 log.output('Info', 'End - Initializing Modules')
 // -------------------------------------------------------
 
-// -------------------------------------------------------
-// Initialize memory
+log.output('Event', 'Initializing Memory', true, true)
 init.initMemory()
-// -------------------------------------------------------
 
 // This loop is executed every tick
 module.exports.loop = function () {
   log.output('Info', 'Begin - ' + moduleName, true)
   const mainLoop = Game.cpu.getUsed()
 
-  //   Remove these items from Memory at an interval to update for possible changes.
+  // -------------------------------------------------------
+  //   Remove these items from Memory at an interval to update for world changes.
   if (Game.time % 1000 === 0) {
     log.output('Event', 'Running the Clear Memory routine', true, true)
     for (const index in Memory.rooms) {
@@ -56,7 +52,10 @@ module.exports.loop = function () {
       delete Memory.rooms[index].mineral
       delete Memory.rooms[index].sources
     }
+    log.output('Event', 'Initializing Memory', true, true)
+    init.initMemory()
   }
+  // -------------------------------------------------------
 
   // Initialize console commands with the alias of cc
   init.initConsoleCommands()
