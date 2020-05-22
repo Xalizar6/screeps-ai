@@ -1,4 +1,6 @@
 /*
+    Note: Old reference code while I revamp and update the v1 file
+
     Logic
         Should only spawn if the terminal has more or less resources than it needs
             To Do: Build this into Spawncode
