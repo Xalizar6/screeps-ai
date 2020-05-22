@@ -4,7 +4,7 @@
 // const _ = require('lodash')
 const log = require('./helper_logging')
 const myConstants = require('./helper_constants')
-const debug = false // Turn logging for this module on and off
+const debug = true // Turn logging for this module on and off
 
 module.exports = {
 
@@ -96,7 +96,7 @@ module.exports = {
         nMinEnergyInStorage) {
         oEnergySource = oStorage
         if (debug) {
-          log.output('Debug', 'Picking up energy from storage', false, true)
+          log.output('Debug', 'Picking up energy from storage with ' + oStorage.store[RESOURCE_ENERGY] + ' energy', false, true)
         };
         this.withdrawEnergy(creep, oEnergySource)
       };
@@ -109,44 +109,49 @@ module.exports = {
         .carryCapacity - _.sum(creep.carry)) {
         oEnergySource = aDroppedEnergy[0]
         if (debug) {
-          log.output('Debug', 'Picking up ' + oEnergySource.amount + ' energy from the ground at location ' +
+          log.output('Debug', 'Picking up energy from a pile of ' + oEnergySource.amount + ' at location ' +
             oEnergySource.pos, false, true)
         };
         this.pickupEnergy(creep, oEnergySource)
       };
     };
 
-    if (oEnergySource == null) {
-      // Locate the nearest energy source
+    if (oEnergySource === null) {
+      // Locate the nearest active energy source
       oEnergySource = creep.pos.findClosestByRange(FIND_SOURCES_ACTIVE)
 
-      // Check if there is a container nearby
-      const aContainers = oEnergySource.pos.findInRange(FIND_STRUCTURES,
-        1, {
+      // If a source is found
+      if (oEnergySource) {
+        // Check if there is a container nearby
+        const aContainers = oEnergySource.pos.findInRange(FIND_STRUCTURES, 1, {
           filter: (i) => i.structureType === STRUCTURE_CONTAINER
         })
 
-      // Grab the container from the array if there is one.
-      let oPickupContainer = null
-      if (aContainers.length > 0) {
-        oPickupContainer = Game.getObjectById((_.first(aContainers)).id)
-      };
-
-      // If there is a container, withdraw energy from there, else draw directly from the source
-      if (oPickupContainer !== null && oPickupContainer.store[RESOURCE_ENERGY] > creep.carryCapacity) {
-        if (debug) {
-          log.output('Debug', 'Getting energy from container ' +
-            oPickupContainer.id + ' found near Source ' +
-            oEnergySource.id, false, true)
+        // Grab the container from the array if there is one.
+        let oPickupContainer = null
+        if (aContainers.length > 0) {
+          oPickupContainer = Game.getObjectById((_.first(aContainers)).id)
         };
-        this.withdrawEnergy(creep, oPickupContainer)
-      } else {
-        if (oEnergySource) {
+
+        // If there is a container, withdraw energy from there, else draw directly from the source
+        if (oPickupContainer !== null && oPickupContainer.store[RESOURCE_ENERGY] > creep.carryCapacity) {
           if (debug) {
-            log.output('Debug', 'Harvesting energy from Source ' +
-              oEnergySource.pos, false, true)
+            log.output('Debug', 'Getting energy from container ' +
+              oPickupContainer.id + ' found near Source ' +
+              oEnergySource.id, false, true)
           };
-          this.harvestEnergy(creep, oEnergySource)
+          this.withdrawEnergy(creep, oPickupContainer)
+        } else {
+          if (oEnergySource) {
+            if (debug) {
+              log.output('Debug', 'Harvesting energy from Source ' + oEnergySource.pos, false, true)
+            };
+            this.harvestEnergy(creep, oEnergySource)
+          };
+        }
+      } else {
+        if (debug) {
+          log.output('Debug', 'No viable Source was found, waiting patiently...', false, true)
         };
       }
     };
