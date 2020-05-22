@@ -4,7 +4,7 @@
 // const _ = require('lodash')
 const log = require('./helper_logging')
 const myConstants = require('./helper_constants')
-const debug = true // Turn logging for this module on and off
+const debug = false // Turn logging for this module on and off
 
 module.exports = {
 
