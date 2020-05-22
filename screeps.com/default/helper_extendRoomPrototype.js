@@ -5,15 +5,14 @@
 exports.initRoomPrototype = function () {
   Object.defineProperty(Room.prototype, 'sources', {
     get: function () {
-      // If we dont have the value stored locally
+      // If we don't have the value stored locally from a previous call this game loop.
       if (!this._sources) {
-        // If we dont have the value stored in memory
+        // If we don't have the value stored in memory
         if (!this.memory.sources) {
-          // Find the sources and store their id's in memory,
-          this.memory.sources = this.find(FIND_SOURCES)
-            .map(source => source.id)
+          // Find the sources and store their ids, not the full object, in memory,
+          this.memory.sources = this.find(FIND_SOURCES).map(source => source.id)
         }
-        // Get the source objects from the id's in memory and store them locally
+        // Get the source objects from the ids in memory and store them locally
         this._sources = _.keys(this.memory.sources).map(source => Game.getObjectById(source))
       }
       // return the locally stored values
@@ -25,11 +24,11 @@ exports.initRoomPrototype = function () {
 
   Object.defineProperty(Room.prototype, 'mineral', {
     get: function () {
-      // If we dont have the value stored locally
+      // If we don't have the value stored locally from a previous call this game loop.
       if (!this._mineral) {
         // If we dont have the value stored in memory
         if (!this.memory.mineral) {
-          // Find the mineral and store the id in memory, NOT the full object
+          // Find the mineral and store the id in memory
           this.memory.mineral = this.find(FIND_MINERALS).map(mineral => mineral.id)
         }
         // Get the mineral object from the id in memory and store  locally
@@ -44,11 +43,11 @@ exports.initRoomPrototype = function () {
 
   Object.defineProperty(Room.prototype, 'extractor', {
     get: function () {
-      // If we dont have the value stored locally
+      // If we don't have the value stored locally from a previous call this game loop.
       if (!this._extractor) {
         // If we dont have the value stored in memory
         if (!this.memory.extractor) {
-          // Find the extractor and store the id in memory, NOT the full object
+          // Find the extractor and store the id in memory
           this.memory.extractor = this.find(FIND_MY_STRUCTURES, {
             filter: {
               structureType: STRUCTURE_EXTRACTOR

@@ -50,6 +50,7 @@ module.exports.loop = function () {
       //   delete Memory.rooms[index].construction
       delete Memory.rooms[index].extractor
       delete Memory.rooms[index].mineral
+      delete Memory.rooms[index].minerals
       delete Memory.rooms[index].sources
     }
     log.output('Event', 'Initializing Memory', true, true)
@@ -120,6 +121,6 @@ module.exports.loop = function () {
   })
 
   log.output('Info', 'Main took: ' + (Game.cpu.getUsed() - mainLoop).toFixed(2) + ' CPU Time with ' + Game.cpu
-    .bucket + 'bucket remaining', true, true)
+    .bucket + ' bucket remaining', true, true)
   log.output('Info', 'End - Main')
 }
