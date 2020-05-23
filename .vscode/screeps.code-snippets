@@ -23,5 +23,17 @@
       "if (debug) {log.output('Debug', '$1', false, true)};",
     ],
     "description": "Log output to console based on Debug setting"
+  },
+
+  "Log Timer - Begin": {
+    "scope": "javascript",
+    "prefix": "logtb",
+    "body": [
+      "let timer = null",
+      "if (debug) {log.output('Debug', 'Begin - Role ' + moduleName + ' for ' + creep.name, true)",
+      "timer = Game.cpu.getUsed()};",
+    ],
+    "description": "Log timing - beginnnig of function"
   }
+
 }
