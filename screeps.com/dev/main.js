@@ -46,11 +46,11 @@ module.exports.loop = function () {
   if (Game.time % 1000 === 0) {
     log.output('Event', 'Running the Clear Memory routine', true, true)
     for (const index in Memory.rooms) {
-      // TODO: fix code that errors when I delete the construction from memory
-      //   delete Memory.rooms[index].construction
+      delete Memory.rooms[index].construction
       delete Memory.rooms[index].extractor
-      delete Memory.rooms[index].mineral
-      delete Memory.rooms[index].minerals
+      //   TODO: Cleanup these two items
+      //   delete Memory.rooms[index].mineral // 5/22/2020 [DR]: shouldn't need anymore
+      //   delete Memory.rooms[index].minerals // 5/22/2020 [DR]: shouldn't need anymore
       delete Memory.rooms[index].sources
     }
     log.output('Event', 'Initializing Memory', true, true)
