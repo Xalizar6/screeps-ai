@@ -45,7 +45,7 @@ module.exports = {
 
     // Adjust the number of Upgraders if we have enough energy stored - temporary until I start selling energy
     if (storage && storage.store[RESOURCE_ENERGY] > myConstants.STORAGE_ENERGY_STORAGE_TARGET) {
-      nMinNumberOfUpgraders = 7
+      nMinNumberOfUpgraders = 3
     } else if (room.controller.level < 8) {
       nMinNumberOfUpgraders = 4
     } else if (room.controller.level === 8) {
