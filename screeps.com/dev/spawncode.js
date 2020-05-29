@@ -150,9 +150,13 @@ module.exports = {
           sSpawnStatus = spawn.createCreep([WORK, CARRY, MOVE, MOVE], undefined, {
             role: 'upgrader'
           })
-        } else if (room.energyCapacityAvailable >= 800) {
-          sSpawnStatus = spawn.createCreep([WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE,
-            MOVE
+        } else if (room.energyCapacityAvailable >= 800 && room.energyCapacityAvailable < 1250) {
+          sSpawnStatus = spawn.createCreep([WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE], undefined, {
+            role: 'upgrader'
+          })
+        } else if (room.energyCapacityAvailable >= 1250) {
+          sSpawnStatus = spawn.createCreep([WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE,
+            MOVE, MOVE, MOVE, MOVE, MOVE, MOVE
           ], undefined, {
             role: 'upgrader'
           })
@@ -184,8 +188,8 @@ module.exports = {
         sSpawnStatus = spawn.createCreep([CARRY, CARRY, MOVE, MOVE], undefined, {
           role: 'Mineral Hauler'
         })
-      } else if (room.terminal && aTerminalManagers.length < nMinNumberOfTerminalManagers && checkStorageAmount(
-          room) > myConstants.STORAGE_ENERGY_STORAGE_TARGET) {
+      } else if (room.terminal && aTerminalManagers.length < nMinNumberOfTerminalManagers && checkStorageAmount(room) > myConstants
+        .STORAGE_ENERGY_STORAGE_TARGET) {
         sSpawnStatus = spawn.createCreep([CARRY, CARRY, CARRY, CARRY, MOVE, MOVE], undefined, {
           role: 'Terminal Manager'
         })
@@ -196,7 +200,7 @@ module.exports = {
     if (spawn.spawning) {
       const spawningCreep = Game.creeps[spawn.spawning.name]
       log.output('Event', 'Spawning new creep named ' + spawningCreep.name + ' with the role ' + spawningCreep
-        .memory.role, false, true)
+        .memory.role + ' in ' + spawn.spawning.remainingTime + ' ticks.', false, true)
       spawn.room.visual.text(
         '🛠️' + spawningCreep.memory.role,
         spawn.pos.x + 1,
