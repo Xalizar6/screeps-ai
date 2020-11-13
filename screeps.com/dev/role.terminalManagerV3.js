@@ -126,6 +126,7 @@ const runDispatch = (creep) => {
     creepMemory.range = 1
     creepMemory.resourceType = RESOURCE_ENERGY
     creepMemory.nextState = myConstants.STATE_GRAB_RESOURCE
+    creep.memory.state = myConstants.STATE_MOVING
     bTaskAssigned = true
   };
 
@@ -138,6 +139,7 @@ const runDispatch = (creep) => {
     creepMemory.range = 1
     creepMemory.resourceType = RESOURCE_ENERGY
     creepMemory.nextState = myConstants.STATE_DEPOSIT_RESOURCE
+    creep.memory.state = myConstants.STATE_MOVING
     bTaskAssigned = true
   };
 
@@ -150,6 +152,7 @@ const runDispatch = (creep) => {
     creepMemory.range = 1
     creepMemory.resourceType = RESOURCE_UTRIUM
     creepMemory.nextState = myConstants.STATE_GRAB_RESOURCE
+    creep.memory.state = myConstants.STATE_MOVING
     bTaskAssigned = true
   };
 
@@ -162,6 +165,7 @@ const runDispatch = (creep) => {
     creepMemory.range = 1
     creepMemory.resourceType = RESOURCE_UTRIUM
     creepMemory.nextState = myConstants.STATE_DEPOSIT_RESOURCE
+    creep.memory.state = myConstants.STATE_MOVING
     bTaskAssigned = true
   };
 
@@ -199,14 +203,21 @@ const runMoving = function (creep, options) {
   //   or
   // Move closer to the Destination
   if (creep.pos.getRangeTo(destination.pos) === range + 1) {
-    if (debug) {
-      log.output('Debug', 'Will be in range of destination next tick', false, true)
-    };
+
     const status = creep.moveTo(destination.pos)
     if (debug) {
       log.output('Debug', 'MoveTo status = ' + status, false, true)
     };
-    creep.memory.state = transitionState
+
+    if (status === 0) {
+      if (debug) {
+        log.output('Debug', 'Will be in range of destination next tick', false, true)
+      };
+      creep.memory.state = transitionState
+    } else {
+      log.output('Debug', 'Unable to move this tick.', false, true)
+    }
+
   } else if (creep.pos.getRangeTo(destination.pos) === range) {
     if (debug) {
       log.output('Debug', 'Already in range of destination', false, true)
@@ -214,12 +225,20 @@ const runMoving = function (creep, options) {
     creep.memory.state = transitionState
   } else {
     const status = creep.moveTo(destination.pos)
-    if (debug) {
-      log.output('Debug', 'Moving closer to destination', false, true)
-    };
+
     if (debug) {
       log.output('Debug', 'MoveTo status = ' + status, false, true)
     };
+    if (status === 0) {
+
+      if (debug) {
+        log.output('Debug', 'Moving closer to destination', false, true)
+      };
+    } else {
+      if (debug) {
+        log.output('Debug', 'Unable to move this tick.', false, true)
+      };
+    }
   };
 
   if (debug) {
