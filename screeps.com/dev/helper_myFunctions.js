@@ -8,6 +8,26 @@ const debug = false // Turn logging for this module on and off
 
 module.exports = {
 
+  /**  @param {number} status */
+  convertMoveReturnStatusToConstant: function (status) {
+    switch (status) {
+      case 0:
+        return 'OK'
+      case -1:
+        return 'ERR_NOT_OWNER'
+      case -4:
+        return 'ERR_BUSY'
+      case -9:
+        return 'ERR_NOT_IN_RANGE'
+      case -10:
+        return 'ERR_INVALID_ARGS'
+      case -11:
+        return 'ERR_TIRED'
+      case -12:
+        return 'ERR_NO_BODYPART'
+    }
+  },
+
   /** @param {Creep} creep **/
   harvestEnergy: function (creep, source) {
     if (creep.harvest(source) === ERR_NOT_IN_RANGE) {
