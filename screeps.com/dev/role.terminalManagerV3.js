@@ -1,26 +1,9 @@
-/*
-    Logic
-        Should only spawn if the terminal has more or less resources than it needs
-            To Do: Build this into Spawncode
-        Once spawned it should move resources between the terminal and room storage
-        Values for how much should be in the terminal are stored in the Constants file
-
-    States
-        Spawning
-        Dispatch
-        Moving (to terminal / to storage)
-        Grab Resources
-        Deposit Resources
-        Idle
-
-*/
-
 'use strict' // Declaring Strict Mode to enforce better coding standards
 
 /* global _ RESOURCE_ENERGY RESOURCE_UTRIUM */
-
 const log = require('./helper_logging')
 const myConstants = require('./helper_constants')
+const myFunctions = require('./helper_myFunctions')
 const debug = true // Turn logging for this module on and off
 const moduleName = 'Terminal Manager V3'
 
@@ -170,17 +153,25 @@ const runDispatch = (creep) => {
   };
 
   // Do nothing
+  if (!bTaskAssigned) {
+    creepMemory.destinationID = terminal.id
+    creepMemory.range = 1
+    creepMemory.resourceType = null
+    creepMemory.nextState = myConstants.STATE_DISPATCH
+    creep.memory.state = myConstants.STATE_IDLE
+  }
+
   if (debug) {
     log.output('Debug', moduleName + ' Dispatch routine took: ' + (Game.cpu.getUsed() - timer) +
       ' CPU Time', false, true)
-    log.output('Debug', 'End - ' + moduleName + ' Dispatch routine')
+    log.output('Debug', 'End - ' + moduleName + ' Dispatch routine', false, true)
   }
 }
 
 const runMoving = function (creep, options) {
   let timer = null
   if (debug) {
-    log.output('Debug', 'Begin - ' + moduleName + ' moving function for ' + creep.name, true)
+    log.output('Debug', 'Begin - ' + moduleName + ' Moving routine for ' + creep.name, true)
     timer = Game.cpu.getUsed()
   }
 
@@ -188,7 +179,10 @@ const runMoving = function (creep, options) {
   let destination = null
   let range = null
   let transitionState = null
+  let result = null
+  let status = null
 
+  // Fill variables from info in the memory
   destination = Game.getObjectById(creep.memory.command.destinationID)
   range = creep.memory.command.range
   transitionState = creep.memory.command.nextState
@@ -202,57 +196,60 @@ const runMoving = function (creep, options) {
   // Check if you've arrived at the destination and transition to the next state
   //   or
   // Move closer to the Destination
-  if (creep.pos.getRangeTo(destination.pos) === range + 1) {
+  switch (creep.pos.getRangeTo(destination.pos)) {
 
-    const status = creep.moveTo(destination.pos)
-    if (debug) {
-      log.output('Debug', 'MoveTo status = ' + status, false, true)
-    };
+    case range + 1:
+      result = creep.moveTo(destination.pos)
+      status = myFunctions.convertMoveReturnStatusToConstant(result)
 
-    if (status === 0) {
-      if (debug) {
-        log.output('Debug', 'Will be in range of destination next tick', false, true)
-      };
+      if (status === 'OK') {
+        creep.memory.state = transitionState
+        if (debug) {
+          log.output('Debug', 'Will be in range of destination next tick', false, true)
+        };
+      } else {
+        if (debug) {
+          log.output('Debug', 'MoveTo status = ' + status, false, true)
+        };
+      }
+      break
+
+    case range:
       creep.memory.state = transitionState
-    } else {
-      log.output('Debug', 'Unable to move this tick.', false, true)
-    }
-
-  } else if (creep.pos.getRangeTo(destination.pos) === range) {
-    if (debug) {
-      log.output('Debug', 'Already in range of destination', false, true)
-    };
-    creep.memory.state = transitionState
-  } else {
-    const status = creep.moveTo(destination.pos)
-
-    if (debug) {
-      log.output('Debug', 'MoveTo status = ' + status, false, true)
-    };
-    if (status === 0) {
-
       if (debug) {
-        log.output('Debug', 'Moving closer to destination', false, true)
+        log.output('Debug', 'Already in range of destination', false, true)
       };
-    } else {
-      if (debug) {
-        log.output('Debug', 'Unable to move this tick.', false, true)
-      };
-    }
-  };
+      break
+
+    default:
+      result = creep.moveTo(destination.pos)
+      status = myFunctions.convertMoveReturnStatusToConstant(result)
+
+      if (status === 'OK') {
+        if (debug) {
+          log.output('Debug', 'Moving closer to destination', false, true)
+        };
+      } else {
+        if (debug) {
+          log.output('Debug', 'MoveTo status = ' + status, false, true)
+        };
+      }
+      break
+  }
 
   if (debug) {
-    log.output('Debug', moduleName + ' moving function took: ' + (Game.cpu.getUsed() - timer) +
+    log.output('Debug', moduleName + ' Moving routine took: ' + (Game.cpu.getUsed() - timer) +
       ' CPU Time', false, true)
-    log.output('Debug', 'End - ' + moduleName + ' moving function')
+    log.output('Debug', 'End - ' + moduleName + ' Moving function', false, true)
   }
 }
 
 const runGrabResource = function (creep) {
+  let timer = null
   if (debug) {
-    log.output('Debug', 'Begin - Run Grab Resources routine for ' + creep.name, true)
-  };
-  const timer = Game.cpu.getUsed()
+    log.output('Debug', 'Begin - ' + moduleName + ' GrabResource routine for ' + creep.name, true)
+    timer = Game.cpu.getUsed()
+  }
 
   const creepMemory = creep.memory.command
 
@@ -272,18 +269,18 @@ const runGrabResource = function (creep) {
   };
 
   if (debug) {
-    log.output('Debug', 'Run Grab Resources routine took: ' + (Game.cpu.getUsed() - timer) + ' CPU Time', false, true)
-  };
-  if (debug) {
-    log.output('Debug', 'End - Run Grab Resources routine')
-  };
+    log.output('Debug', moduleName + ' GrabResource routine took: ' + (Game.cpu.getUsed() - timer) +
+      ' CPU Time', false, true)
+    log.output('Debug', 'End - ' + moduleName + ' GrabResource routine')
+  }
 }
 
 const runDepositResource = function (creep) {
+  let timer = null
   if (debug) {
-    log.output('Debug', 'Begin - Run Deposit Resources routine for ' + creep.name, true)
-  };
-  const timer = Game.cpu.getUsed()
+    log.output('Debug', 'Begin - ' + moduleName + ' DepositResource routine for ' + creep.name, true)
+    timer = Game.cpu.getUsed()
+  }
 
   const creepMemory = creep.memory.command
 
@@ -303,16 +300,17 @@ const runDepositResource = function (creep) {
   };
 
   if (debug) {
-    log.output('Debug', 'Run Deposit Resources routine took: ' + (Game.cpu.getUsed() - timer) + ' CPU Time', false,
-      true)
-  };
-  if (debug) {
-    log.output('Debug', 'End - Run Deposit Resources routine')
-  };
+    log.output('Debug', moduleName + ' DepositResource routine took: ' + (Game.cpu.getUsed() - timer) +
+      ' CPU Time', false, true)
+    log.output('Debug', 'End - ' + moduleName + ' DepositResource routine')
+  }
 }
 
 const runIdle = function (creep) {
   if (debug) {
     log.output('Debug', 'Idle, waiting for work', false, true)
   };
+  if (Game.time % 25 === 0) {
+    creep.memory.state = creep.memory.command.nextState
+  }
 }
