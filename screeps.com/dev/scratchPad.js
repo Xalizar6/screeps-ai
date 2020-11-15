@@ -1,4 +1,8 @@
 // @ts-nocheck
+
+// show all of the keys of the global object
+Object.keys(global)
+
 //shows the roles and time to live of all of my creeps
 for (let key in Game.creeps) {
   console.log(key + " " + Game.creeps[key].memory.role + " " + Game.creeps[key].ticksToLive)
@@ -45,6 +49,14 @@ _.size(Game.constructionSites)
 // Show the closest Resource by path
 Game.creeps.Ellie.pos.findClosestByPath(FIND_SOURCES_ACTIVE)
 
+// Convert a return value of a call to the Key Name / Constant Name / Text rather than integer
+// Reference: https://stackoverflow.com/questions/9907419/how-to-get-a-key-in-a-javascript-object-by-its-value
+function getKeyByValue (object, value) {
+  return Object.keys(object).find(key => object[key] === value);
+}
+
+// Return the key from the global object for a specific value
+Object.keys(global).find(k => global[k] === -1)
 
 // CPU Properties
 Game.cpu.limit

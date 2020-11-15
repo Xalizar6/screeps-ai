@@ -1,34 +1,27 @@
 /* global _ ERR_NOT_IN_RANGE RESOURCE_ENERGY FIND_STRUCTURES STRUCTURE_CONTAINER FIND_DROPPED_RESOURCES FIND_SOURCES_ACTIVE */
 
 'use strict' // Declaring Strict Mode to enforce better coding standards
-// const _ = require('lodash')
 const log = require('./helper_logging')
 const myConstants = require('./helper_constants')
 const debug = false // Turn logging for this module on and off
 
 module.exports = {
 
-  /**  @param {number} status */
-  convertMoveReturnStatusToConstant: function (status) {
-    switch (status) {
-      case 0:
-        return 'OK'
-      case -1:
-        return 'ERR_NOT_OWNER'
-      case -4:
-        return 'ERR_BUSY'
-      case -9:
-        return 'ERR_NOT_IN_RANGE'
-      case -10:
-        return 'ERR_INVALID_ARGS'
-      case -11:
-        return 'ERR_TIRED'
-      case -12:
-        return 'ERR_NO_BODYPART'
-    }
+  // Converts a value of one of the globals to the matching Key Name for converting integers to error messages.
+  // Reference: https://stackoverflow.com/questions/9907419/how-to-get-a-key-in-a-javascript-object-by-its-value
+  /**
+   * @param {number|string} value - Return value of one of the default commands
+   * @param {object} object - The GLOBAL object which we pass in by default
+   */
+  // @ts-ignore Ignoring the fact that global isn't defined anywhere.
+  getGlobalKeyByValue: function (value, object = global) {
+    return Object.keys(object).find(key => object[key] === value)
   },
 
-  /** @param {Creep} creep **/
+  /**
+   * @param {Creep} creep
+   * @param {Source} source
+   **/
   harvestEnergy: function (creep, source) {
     if (creep.harvest(source) === ERR_NOT_IN_RANGE) {
       creep.moveTo(source, {

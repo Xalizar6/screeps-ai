@@ -3,7 +3,7 @@
 
 // const _ = require( 'lodash' );
 const log = require('./helper_logging')
-const debug = true // Turn logging for this module on and off
+const debug = false // Turn logging for this module on and off
 const moduleName = 'Market Code'
 
 module.exports = {
@@ -75,12 +75,12 @@ const runSellUtrium = function (myRoom) {
 
   const todayHistory = energyHistory[energyHistory.length - 1]
   const yesterdayHistory = energyHistory[energyHistory.length - 2]
-  console.log(yesterdayHistory.date)
-  console.log(yesterdayHistory.avgPrice)
-  console.log(todayHistory.date)
-  console.log(todayHistory.avgPrice)
+  //   console.log(yesterdayHistory.date)
+  //   console.log(yesterdayHistory.avgPrice)
+  //   console.log(todayHistory.date)
+  //   console.log(todayHistory.avgPrice)
   let twodayAvg = (yesterdayHistory.avgPrice + todayHistory.avgPrice) / 2
-  console.log('2 day average: ' + twodayAvg)
+  //   console.log('2 day average: ' + twodayAvg)
 
   _.forEach(buyOrders, function (order) {
     if (order.amount >= 1000) {

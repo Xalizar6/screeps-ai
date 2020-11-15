@@ -1,10 +1,10 @@
 'use strict' // Declaring Strict Mode to enforce better coding standards
 
-/* global _ RESOURCE_ENERGY RESOURCE_UTRIUM */
+/* global _ RESOURCE_ENERGY RESOURCE_UTRIUM OK */
 const log = require('./helper_logging')
 const myConstants = require('./helper_constants')
 const myFunctions = require('./helper_myFunctions')
-const debug = false // Turn logging for this module on and off
+const debug = true // Turn logging for this module on and off
 const moduleName = 'Terminal Manager V3'
 
 module.exports = {
@@ -101,7 +101,7 @@ const runDispatch = (creep) => {
   };
 
   // If Energy in the terminal is low and the creep is not full then set destinationID to Storage and transition to Grab Resources
-  if (!bTaskAssigned && energyInTerminal < desiredEnergyInTerminal && creep.isEmpty) {
+  if (!bTaskAssigned && energyInTerminal < desiredEnergyInTerminal && energyInStorage > desiredEnergyInStorage && creep.isEmpty) {
     if (debug) {
       log.output('Debug', 'Setting task to pick up Energy to add to Terminal', false, true)
     };
@@ -180,7 +180,6 @@ const runMoving = function (creep, options) {
   let range = null
   let transitionState = null
   let result = null
-  let status = null
 
   // Fill variables from info in the memory
   destination = Game.getObjectById(creep.memory.command.destinationID)
@@ -197,19 +196,17 @@ const runMoving = function (creep, options) {
   //   or
   // Move closer to the Destination
   switch (creep.pos.getRangeTo(destination.pos)) {
-
     case range + 1:
       result = creep.moveTo(destination.pos)
-      status = myFunctions.convertMoveReturnStatusToConstant(result)
 
-      if (status === 'OK') {
+      if (result === OK) {
         creep.memory.state = transitionState
         if (debug) {
-          log.output('Debug', 'Will be in range of destination next tick', false, true)
+          log.output('Debug', 'Status: Will be in range of destination next tick, transitioning to next STATE', false, true)
         };
       } else {
         if (debug) {
-          log.output('Debug', 'MoveTo status = ' + status, false, true)
+          log.output('Debug', 'Status: Failed move command: (' + myFunctions.getGlobalKeyByValue(result) + ')', false, true)
         };
       }
       break
@@ -217,21 +214,20 @@ const runMoving = function (creep, options) {
     case range:
       creep.memory.state = transitionState
       if (debug) {
-        log.output('Debug', 'Already in range of destination', false, true)
+        log.output('Debug', 'Status: Already in range of destination, transitioning to next STATE', false, true)
       };
       break
 
     default:
       result = creep.moveTo(destination.pos)
-      status = myFunctions.convertMoveReturnStatusToConstant(result)
 
-      if (status === 'OK') {
+      if (result === OK) {
         if (debug) {
-          log.output('Debug', 'Moving closer to destination', false, true)
+          log.output('Debug', 'Status: Moving closer to destination', false, true)
         };
       } else {
         if (debug) {
-          log.output('Debug', 'MoveTo status = ' + status, false, true)
+          log.output('Debug', 'Status: Failed move command: (' + myFunctions.getGlobalKeyByValue(result) + ')', false, true)
         };
       }
       break
@@ -261,9 +257,9 @@ const runGrabResource = function (creep) {
 
   // Pick up the resource
   if (source.store[resource] >= creep.carryCapacity && _.sum(creep.carry) < creep.carryCapacity) {
-    const withdrawStatus = creep.withdraw(source, resource)
+    const result = creep.withdraw(source, resource)
     if (debug) {
-      log.output('Debug', 'Creep withdrew ' + resource + ' with a status of ' + withdrawStatus, false, true)
+      log.output('Debug', 'Creep withdrew ' + resource + ' with a status of ' + myFunctions.getGlobalKeyByValue(result), false, true)
     };
     creep.memory.state = myConstants.STATE_DISPATCH
   };
@@ -291,11 +287,11 @@ const runDepositResource = function (creep) {
   const resource = creepMemory.resourceType
 
   // Deposit the resource
-  const depositStatus = creep.transfer(destination, resource)
+  const result = creep.transfer(destination, resource)
   creep.memory.state = myConstants.STATE_DISPATCH
 
   if (debug) {
-    log.output('Debug', 'Transferred ' + resource + ' to ' + destination + ' with a status of ' + depositStatus,
+    log.output('Debug', 'Transferred ' + resource + ' to ' + destination + ' with a status of ' + myFunctions.getGlobalKeyByValue(result),
       false, true)
   };
 
