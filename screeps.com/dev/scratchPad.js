@@ -1,9 +1,40 @@
 // @ts-nocheck
 
+/* global _ */
+
+// Working with Objects and properties.
 // show all of the keys of the global object
 Object.keys(global)
 
-//shows the roles and time to live of all of my creeps
+// Recursive Object reference: https://stackoverflow.com/questions/2549320/looping-through-an-object-tree-recursively
+function eachRecursive (obj) {
+  for (var k in obj) {
+    if (typeof obj[k] == "object" && obj[k] !== null) {
+      eachRecursive(obj[k]);
+    } else {
+      console.log(obj[k])
+    }
+  }
+}
+eachRecursive(Game.creeps)
+
+_.forOwn(Game.creeps, function (value, key) {
+  console.log("Key: " + key, "Value: " + value)
+})
+
+_.forOwn(Memory.creeps, function (value, key) {
+  console.log("Key: " + key, "Value: " + value)
+})
+
+_.forEach(energyHistory, function (daily) {
+  for (const key in daily) {
+    if (daily.hasOwnProperty(key)) {
+      console.log(key + ': ' + daily[key])
+    }
+  }
+})
+
+// shows the roles and time to live of all of my creeps
 for (let key in Game.creeps) {
   console.log(key + " " + Game.creeps[key].memory.role + " " + Game.creeps[key].ticksToLive)
 }
@@ -22,11 +53,6 @@ for (let key in Game.spawns) {
 for (let i in Game.rooms) {
   console.log(Game.rooms[i]);
 }
-
-// Shows all of the properties of a specific object
-for (let i in Game.creeps.Elizabeth) {
-  console.log(i)
-};
 
 // Kills all of my creeps for testing ToDO: Working?
 for (let i in Game.creeps) {
@@ -71,25 +97,6 @@ const extensions = Game.spawns['Spawn1'].room.find(FIND_MY_STRUCTURES, {
     structureType: STRUCTURE_EXTENSION
   }
 });
-
-//Recursive Object reference: https://stackoverflow.com/questions/2549320/looping-through-an-object-tree-recursively
-function eachRecursive (obj) {
-  for (var k in obj) {
-    if (typeof obj[k] == "object" && obj[k] !== null) {
-      eachRecursive(obj[k]);
-    } else {
-      console.log(obj[k])
-    }
-  }
-}
-eachRecursive(Game.creeps)
-
-_.forOwn(Game.creeps, function (value, key) {
-  console.log("Key: " + key, "Value: " + value)
-})
-_.forOwn(Memory.creeps, function (value, key) {
-  console.log("Key: " + key, "Value: " + value)
-})
 
 var oSpawn1 = Game.spawns["Spawn1"];
 var aExtensions = oSpawn1.room.find(FIND_MY_STRUCTURES, {

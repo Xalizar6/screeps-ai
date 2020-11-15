@@ -1,10 +1,11 @@
 'use strict' // Declaring Strict Mode to enforce better coding standards
-/* global _  RESOURCE_UTRIUM ORDER_BUY RESOURCE_ENERGY RESOURCE_OXYGEN */
+/* global _ OK RESOURCE_UTRIUM ORDER_BUY RESOURCE_ENERGY  */
 
 // const _ = require( 'lodash' );
 const log = require('./helper_logging')
-const debug = false // Turn logging for this module on and off
+const debug = true // Turn logging for this module on and off
 const moduleName = 'Market Code'
+const myFunctions = require('./helper_myFunctions')
 
 module.exports = {
 
@@ -36,57 +37,30 @@ const runSellUtrium = function (myRoom) {
     timer = Game.cpu.getUsed()
   }
 
-  //   const terminal = myRoom.terminal
-  const buyOrders = Game.market.getAllOrders({
+  let buyOrders = Game.market.getAllOrders({
     type: ORDER_BUY,
     resourceType: RESOURCE_UTRIUM
   })
-  const sellAmount = 1000
+  buyOrders = _.sortByOrder(buyOrders, 'price', 'desc')
   let bestDeal = null
   let bestMargin = 0
-
-  /*
-      for ( let i = 0; i < 5; i++ ) {
-          if ( debug ) {
-              let sellAmount = 1000;
-              let transactionCost = Game.market.calcTransactionCost( sellAmount, myRoom.name, sbo[i].roomName );
-              let sellValue = sellAmount * sbo[i].price;
-              let valueOfEnergy = transactionCost * 0.02;
-              let profit = sellValue - valueOfEnergy;
-              let margin = profit / sellValue * 100;
-              log.output( 'Debug', sbo[i].id + " " + sbo[i].resourceType + " " + sbo[i].amount + " " + sbo[i].price, true, true )
-              log.output( 'Debug', "Sell Amount: " + sellAmount + " units", false, true );
-              log.output( 'Debug', "Sell Value: " + sellValue + " credits", false, true );
-              log.output( 'Debug', "Transaction Energy Cost: " + transactionCost + " energy", false, true );
-              log.output( 'Debug', "Transaction Cost: " + valueOfEnergy + " credits", false, true );
-              log.output( 'Debug', "Profit: " + profit, false, true );
-              log.output( 'Debug', "Margin: " + margin, false, true );
-          };
-      };
-  */
-  const energyHistory = Game.market.getHistory(RESOURCE_ENERGY)
-  //   _.forEach(energyHistory, function (daily) {
-  //     for (const key in daily) {
-  //       if (daily.hasOwnProperty(key)) {
-  //         console.log(key + ': ' + daily[key])
-  //       }
-  //     }
-  //   })
-
-  const todayHistory = energyHistory[energyHistory.length - 1]
-  const yesterdayHistory = energyHistory[energyHistory.length - 2]
-  //   console.log(yesterdayHistory.date)
-  //   console.log(yesterdayHistory.avgPrice)
-  //   console.log(todayHistory.date)
-  //   console.log(todayHistory.avgPrice)
-  let twodayAvg = (yesterdayHistory.avgPrice + todayHistory.avgPrice) / 2
-  //   console.log('2 day average: ' + twodayAvg)
+  const terminal = myRoom.terminal
+  const avgUtriumCost = getTwoDayAvgUtriumCost()
+  let orderSize = null
+  let result = null
 
   _.forEach(buyOrders, function (order) {
-    if (order.amount >= 1000) {
-      const transactionCost = Game.market.calcTransactionCost(sellAmount, myRoom.name, order.roomName)
-      const sellValue = sellAmount * order.price
-      const valueOfEnergy = transactionCost * 0.217
+    if (order.price >= avgUtriumCost) {
+      if (order.amount > terminal.store[RESOURCE_UTRIUM]) {
+        orderSize = terminal.store[RESOURCE_UTRIUM]
+      } else {
+        orderSize = order.amount
+      }
+
+      const avgEnergyCost = getTwoDayAvgEnergyCost()
+      const transactionCost = Game.market.calcTransactionCost(orderSize, myRoom.name, order.roomName)
+      const sellValue = orderSize * order.price
+      const valueOfEnergy = transactionCost * avgEnergyCost
       const profit = sellValue - valueOfEnergy
       const margin = profit / sellValue * 100
 
@@ -95,37 +69,43 @@ const runSellUtrium = function (myRoom) {
         bestDeal = order
 
         if (debug) {
-          log.output('Debug', 'id: ' + order.id + ' type: ' + order.resourceType + ' amount: ' + order.amount + ' price: ' + order
-            .price + ' roomName: ' + bestDeal.roomName, true, true)
-          log.output('Debug', 'Sell Amount: ' + sellAmount + ' units', false, true)
+          log.output('Debug', 'Order id: ' + order.id, true, true)
+          log.output('Debug', 'Room Name: ' + bestDeal.roomName, false, true)
+          log.output('Debug', 'Resource Type: ' + myFunctions.getGlobalKeyByValue(order.resourceType), false, true)
+          log.output('Debug', 'Order amount: ' + order.amount, false, true)
+          log.output('Debug', 'Sell Amount: ' + orderSize + ' units', false, true)
+          log.output('Debug', 'Order price: ' + order.price, false, true)
           log.output('Debug', 'Sell Value: ' + sellValue + ' credits', false, true)
+          log.output('Debug', 'Average Utrium price: ' + avgUtriumCost.toFixed(3), false, true)
+          log.output('Debug', 'Average Energy price: ' + avgEnergyCost.toFixed(3), false, true)
           log.output('Debug', 'Transaction Energy Cost: ' + transactionCost + ' energy', false, true)
-          log.output('Debug', 'Transaction Cost: ' + valueOfEnergy + ' credits', false, true)
-          log.output('Debug', 'Profit: ' + profit, false, true)
+          log.output('Debug', 'Transaction Cost: ' + valueOfEnergy.toFixed(2) + ' credits', false, true)
+          log.output('Debug', 'Profit: ' + profit.toFixed(2), false, true)
           log.output('Debug', 'Margin: ' + margin.toFixed(2), false, true)
         };
       };
     };
   })
 
-  //   if (bestDeal != null) {
-  //     // @ts-ignore
-  //     if (debug) {
-  //       log.output('Debug', 'Best deal: ' + bestDeal.id + ' ' + bestDeal.resourceType + ' ' + bestDeal.amount + ' ' +
-  //         bestDeal.price + ' ' + bestDeal.roomName, true, true)
-  //     };
+  if (bestDeal) {
+    if (debug) {
+      log.output('Debug', 'Best deal: ' + bestDeal.id + ' ' + bestDeal.resourceType + ' ' + bestDeal.amount + ' ' + bestDeal.price + ' ' +
+        bestDeal.roomName, true, true)
+    };
 
-  //     if (bestMargin > 80 && !terminal.cooldown) {
-  //       log.output('Event', 'Terminal selling resources based on the best deal at ' + bestMargin.toFixed(2) +
-  //         '% margin', true, true)
-  //       // @ts-ignore
-  //       Game.market.deal(bestDeal.id, sellAmount, myRoom.name)
-  //     } else {
-  //       if (debug) {
-  //         log.output('Debug', 'Not selling due to margins too low or on cooldown', true, true)
-  //       };
-  //     };
-  //   };
+    if (bestMargin > 25 && !terminal.cooldown) {
+      result = Game.market.deal(bestDeal.id, orderSize, myRoom.name)
+      if (result === OK) {
+        log.output('Event', 'Status: Terminal selling resources based on the best deal at ' + bestMargin.toFixed(2) + '% margin', true,
+          true)
+      }
+    } else {
+      if (debug) {
+        log.output('Debug', 'Status: Not selling due to margins too low or on cooldown, return value was ' + myFunctions
+          .getGlobalKeyByValue(result), true, true)
+      };
+    };
+  };
 
   /*
       _.forEach( myRooms, function ( room ) {
@@ -144,100 +124,18 @@ const runSellUtrium = function (myRoom) {
   }
 }
 
-const runSellOxygen = function (myRoom) {
-  if (debug) {
-    log.output('Debug', 'Begin - runSellOxygen routine for ' + myRoom.name, false, true)
-  };
-  const timer = Game.cpu.getUsed()
+function getTwoDayAvgEnergyCost () {
+  const energySaleHistory = Game.market.getHistory(RESOURCE_ENERGY)
+  const todaySaleHistory = energySaleHistory[energySaleHistory.length - 1]
+  const yesterdaySaleHistory = energySaleHistory[energySaleHistory.length - 2]
+  const twoDayAvgPrice = (yesterdaySaleHistory.avgPrice + todaySaleHistory.avgPrice) / 2
+  return twoDayAvgPrice
+}
 
-  const terminal = myRoom.terminal
-  const buyOrders = Game.market.getAllOrders({
-    resourceType: RESOURCE_OXYGEN,
-    type: ORDER_BUY
-  })
-  // let sbo = _.sortByOrder( buyOrders, ['price'], ['desc'] );
-  const sellAmount = 1000
-  let bestDeal = null
-  let bestMargin = 0
-
-  /*
-      for ( let i = 0; i < 5; i++ ) {
-          if ( debug ) {
-              let sellAmount = 1000;
-              let transactionCost = Game.market.calcTransactionCost( sellAmount, myRoom.name, sbo[i].roomName );
-              let sellValue = sellAmount * sbo[i].price;
-              let valueOfEnergy = transactionCost * 0.02;
-              let profit = sellValue - valueOfEnergy;
-              let margin = profit / sellValue * 100;
-              log.output( 'Debug', sbo[i].id + " " + sbo[i].resourceType + " " + sbo[i].amount + " " + sbo[i].price, true, true )
-              log.output( 'Debug', "Sell Amount: " + sellAmount + " units", false, true );
-              log.output( 'Debug', "Sell Value: " + sellValue + " credits", false, true );
-              log.output( 'Debug', "Transaction Energy Cost: " + transactionCost + " energy", false, true );
-              log.output( 'Debug', "Transaction Cost: " + valueOfEnergy + " credits", false, true );
-              log.output( 'Debug', "Profit: " + profit, false, true );
-              log.output( 'Debug', "Margin: " + margin, false, true );
-          };
-      };
-  */
-
-  _.forEach(buyOrders, function (order) {
-    if (order.amount >= 1000) {
-      const transactionCost = Game.market.calcTransactionCost(sellAmount, myRoom.name, order.roomName)
-      const sellValue = sellAmount * order.price
-      const valueOfEnergy = transactionCost * 0.02
-      const profit = sellValue - valueOfEnergy
-      const margin = profit / sellValue * 100
-
-      if (margin > bestMargin) {
-        bestMargin = margin
-        bestDeal = order
-
-        if (debug) {
-          log.output('Debug', 'id: ' + order.id + ' type: ' + order.resourceType + ' amount: ' + order.amount + ' price: ' + order
-            .price + ' roomName: ' + bestDeal.roomName, true, true)
-          log.output('Debug', 'Sell Amount: ' + sellAmount + ' units', false, true)
-          log.output('Debug', 'Sell Value: ' + sellValue + ' credits', false, true)
-          log.output('Debug', 'Transaction Energy Cost: ' + transactionCost + ' energy', false, true)
-          log.output('Debug', 'Transaction Cost: ' + valueOfEnergy + ' credits', false, true)
-          log.output('Debug', 'Profit: ' + profit, false, true)
-          log.output('Debug', 'Margin: ' + margin.toFixed(2), false, true)
-        };
-      };
-    };
-  })
-
-  //   if (bestDeal != null) {
-  //     // @ts-ignore
-  //     if (debug) {
-  //       log.output('Debug', 'Best deal: ' + bestDeal.id + ' ' + bestDeal.resourceType + ' ' + bestDeal.amount + ' ' +
-  //         bestDeal.price + ' ' + bestDeal.roomName, true, true)
-  //     };
-
-  //     if (bestMargin > 80 && !terminal.cooldown) {
-  //       log.output('Event', 'Terminal selling resources based on the best deal at ' + bestMargin.toFixed(2) +
-  //         '% margin', true, true)
-  //       // @ts-ignore
-  //       Game.market.deal(bestDeal.id, sellAmount, myRoom.name)
-  //     } else {
-  //       if (debug) {
-  //         log.output('Debug', 'Not selling due to margins too low or on cooldown', true, true)
-  //       };
-  //     };
-  //   };
-
-  /*
-      _.forEach( myRooms, function ( room ) {
-          let terminal = room.terminal;
-          if ( terminal && !terminal.cooldown && terminal.store.energy ) {
-              // Game.market.deal( buyOrders[0].id, terminal.store.energy / 2, room.name )
-          }
-      } )
-
-  */
-
-  if (debug) {
-    log.output('Debug', 'runSellOxygen routine took: ' + (Game.cpu.getUsed() - timer).toFixed(2) + ' CPU Time', false,
-      true)
-    log.output('Debug', 'End - runSellOxygen routine for ' + myRoom.name, false, true)
-  };
+function getTwoDayAvgUtriumCost () {
+  const utriumSaleHistory = Game.market.getHistory(RESOURCE_UTRIUM)
+  const todaySaleHistory = utriumSaleHistory[utriumSaleHistory.length - 1]
+  const yesterdaySaleHistory = utriumSaleHistory[utriumSaleHistory.length - 2]
+  const twoDayAvgPrice = (yesterdaySaleHistory.avgPrice + todaySaleHistory.avgPrice) / 2
+  return twoDayAvgPrice
 }
