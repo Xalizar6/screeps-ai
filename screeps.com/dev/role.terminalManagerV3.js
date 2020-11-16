@@ -56,7 +56,7 @@ const runSpawning = function (creep) {
   }
 
   // Once the creep finishes spawning we transition to the next state
-  if (!creep.spawning) {
+  if (checkIfFinalSpawnTick(creep) || !creep.spawning) {
     creep.memory.state = myConstants.STATE_DISPATCH
     // module.exports.run(creep) // Call the main run function so that the next state function runs straight away
     return // We put return here because once we transition to a different state, we don't want any of the following code in this function to run...
@@ -309,4 +309,19 @@ const runIdle = function (creep) {
   if (Game.time % 25 === 0) {
     creep.memory.state = creep.memory.command.nextState
   }
+}
+
+/** Allows us to transition to the next STATE immediately upon spawning rather than 1 tick after spawning
+ * @param {Creep} creep - The creep being spawned
+ */
+function checkIfFinalSpawnTick (creep) {
+  let bReturnValue = false
+  _.forOwn(Game.spawns, function (spawn, key) {
+    if (spawn.room.name === creep.room.name && spawn.spawning) {
+      if (spawn.spawning.name === creep.name && spawn.spawning.remainingTime === 1) {
+        bReturnValue = true
+      }
+    }
+  })
+  return bReturnValue
 }
