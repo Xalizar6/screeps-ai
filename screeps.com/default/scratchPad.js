@@ -128,8 +128,6 @@ for (let i in aSources) {
   console.log(aSources[i].id)
 };
 
-Game.rooms.W36N18.memory.sources
-
 // Array of objects to repair
 const targets = creep.room.find(FIND_STRUCTURES, {
   filter: object => object.hits < object.hitsMax
@@ -166,3 +164,9 @@ for (let x in a) {
 a.memory = 'test'
 
 Game.creeps.Keira.room.sources
+Game.creeps.Audrey.suicide()
+Game.rooms.E7N59.memory.sources
+Game.rooms.E7N59.
+Game.spawns["Spawn1"].spawning
+Game.spawns["Spawn1"].spawning.remainingTime
+cc.lc()
