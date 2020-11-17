@@ -1,5 +1,40 @@
 // @ts-nocheck
-//shows the roles and time to live of all of my creeps
+
+/* global _ */
+
+// Working with Objects and properties.
+// show all of the keys of the global object
+Object.keys(global)
+
+// Recursive Object reference: https://stackoverflow.com/questions/2549320/looping-through-an-object-tree-recursively
+function eachRecursive (obj) {
+  for (var k in obj) {
+    if (typeof obj[k] == "object" && obj[k] !== null) {
+      eachRecursive(obj[k]);
+    } else {
+      console.log(obj[k])
+    }
+  }
+}
+eachRecursive(Game.creeps)
+
+_.forOwn(Game.creeps, function (value, key) {
+  console.log("Key: " + key, "Value: " + value)
+})
+
+_.forOwn(Memory.creeps, function (value, key) {
+  console.log("Key: " + key, "Value: " + value)
+})
+
+_.forEach(energyHistory, function (daily) {
+  for (const key in daily) {
+    if (daily.hasOwnProperty(key)) {
+      console.log(key + ': ' + daily[key])
+    }
+  }
+})
+
+// shows the roles and time to live of all of my creeps
 for (let key in Game.creeps) {
   console.log(key + " " + Game.creeps[key].memory.role + " " + Game.creeps[key].ticksToLive)
 }
@@ -18,11 +53,6 @@ for (let key in Game.spawns) {
 for (let i in Game.rooms) {
   console.log(Game.rooms[i]);
 }
-
-// Shows all of the properties of a specific object
-for (let i in Game.creeps.Elizabeth) {
-  console.log(i)
-};
 
 // Kills all of my creeps for testing ToDO: Working?
 for (let i in Game.creeps) {
@@ -45,6 +75,14 @@ _.size(Game.constructionSites)
 // Show the closest Resource by path
 Game.creeps.Ellie.pos.findClosestByPath(FIND_SOURCES_ACTIVE)
 
+// Convert a return value of a call to the Key Name / Constant Name / Text rather than integer
+// Reference: https://stackoverflow.com/questions/9907419/how-to-get-a-key-in-a-javascript-object-by-its-value
+function getKeyByValue (object, value) {
+  return Object.keys(object).find(key => object[key] === value);
+}
+
+// Return the key from the global object for a specific value
+Object.keys(global).find(k => global[k] === -1)
 
 // CPU Properties
 Game.cpu.limit
@@ -59,25 +97,6 @@ const extensions = Game.spawns['Spawn1'].room.find(FIND_MY_STRUCTURES, {
     structureType: STRUCTURE_EXTENSION
   }
 });
-
-//Recursive Object reference: https://stackoverflow.com/questions/2549320/looping-through-an-object-tree-recursively
-function eachRecursive (obj) {
-  for (var k in obj) {
-    if (typeof obj[k] == "object" && obj[k] !== null) {
-      eachRecursive(obj[k]);
-    } else {
-      console.log(obj[k])
-    }
-  }
-}
-eachRecursive(Game.creeps)
-
-_.forOwn(Game.creeps, function (value, key) {
-  console.log("Key: " + key, "Value: " + value)
-})
-_.forOwn(Memory.creeps, function (value, key) {
-  console.log("Key: " + key, "Value: " + value)
-})
 
 var oSpawn1 = Game.spawns["Spawn1"];
 var aExtensions = oSpawn1.room.find(FIND_MY_STRUCTURES, {
